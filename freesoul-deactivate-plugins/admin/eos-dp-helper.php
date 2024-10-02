@@ -356,17 +356,6 @@ function eos_dp_options_page() {
 			esc_attr( isset( $_GET['page'] ) && $menu_page[4] === sanitize_text_field( $_GET['page'] ) ? $menu_page[5] : '__return_false' ),
 			absint( $menu_page[6] ) );
 	}
-	if( !is_multisite() && ! defined( 'EOS_DP_PRO_VERSION' ) ) {
-		add_submenu_page( 
-			'eos_dp_menu',
-			esc_html__( 'Hire us', 'freesoul-deactivate-plugins' ),
-			esc_html__( 'Hire us', 'freesoul-deactivate-plugins' ),
-			$capability,
-			'eos_dp_hireus',
-			isset( $_GET['page'] ) && 'eos_dp_hireus' === sanitize_text_field( $_GET['page'] ) ? 'eos_dp_hireus_callback' : '__return_false',
-			250 
-		);
-	}
 	if( ( ! defined( 'FDP_PRO_ACTIVE' ) || true !== FDP_PRO_ACTIVE ) && isset( $GLOBALS['submenu'] ) ) {
 		$GLOBALS['submenu']['eos_dp_menu'][] = array( esc_html__( 'Upgrade', 'freesoul-deactivate-plugins' ), $capability, FDP_STORE_URL );
 	}
@@ -761,7 +750,6 @@ function eos_dp_is_fdp_page() {
 				'eos_dp_favorite_plugins',
 				'eos_dp_firing_order',
 				'eos_dp_help',
-				'eos_dp_hireus',
 				'eos_dp_addons',
 				'eos_dp_hooks',
 				'eos_dp_reset_settings',
@@ -1545,7 +1533,7 @@ function eos_dp_menu_items(){
 				'active_if' => array( 'eos_dp_url', 'eos_dp_admin_url', 'eos_dp_translation_urls' ),
 				'subitems'  => array( 'eos_dp_url', 'eos_dp_admin_url', 'eos_dp_translation_urls' ),
 				'href'      => admin_url( 'admin.php?page=eos_dp_url' ),
-				'file'      => $menu_file . 'frontend-urls.php',
+				'file'      => $menu_file . 'custom-urls.php',
 			),
 			'backend'      => array(
 				'title'     => __( 'Backend', 'freesoul-deactivate-plugins' ),

@@ -39,12 +39,15 @@ function eos_dp_add_admin_inline_script() {
 		});
 	}
 	function fdp_correct_fdp_admin_menu_links(){
-		var fdp_links=document.getElementById("toplevel_page_eos_dp_menu").getElementsByTagName("a"),k=0;
-		if(fdp_links && fdp_links.length > 0){
-			for(k;k<fdp_links.length;++k){
-				fdp_links[k].addEventListener("click",function(){
-					if(this.href==="<?php echo esc_url ( FDP_STORE_URL ); ?>")this.target="_fdp_store";
-				});
+		var fdp_menu=document.getElementById("toplevel_page_eos_dp_menu");
+		if(fdp_menu && fdp_menu.length>0){
+			var fdp_links=fdp_menu.getElementsByTagName("a"),k=0;
+			if(fdp_links && fdp_links.length > 0){
+				for(k;k<fdp_links.length;++k){
+					fdp_links[k].addEventListener("click",function(){
+						if(this.href==="<?php echo esc_url ( FDP_STORE_URL ); ?>")this.target="_fdp_store";
+					});
+				}
 			}
 		}
 	}

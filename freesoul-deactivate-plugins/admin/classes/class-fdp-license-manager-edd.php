@@ -193,8 +193,8 @@ class FDP_EDD_SL_Plugin_Updater {
 
 		printf(
 			'<tr class="plugin-update-tr %3$s" id="%1$s-update" data-slug="%1$s" data-plugin="%2$s">',
-			$this->slug,
-			$file,
+			esc_attr( $this->slug ),
+			esc_attr( $file ),
 			in_array( $this->name, $this->get_active_plugins(), true ) ? 'active' : 'inactive'
 		);
 

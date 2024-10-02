@@ -119,9 +119,6 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 	  <li class="hover"><a target="_blank" rel="noopener" href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/"><?php esc_html_e( 'Documentation', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <li class="hover"><a target="_blank" rel="noopener" href="https://wordpress.org/support/plugin/freesoul-deactivate-plugins/"><?php esc_html_e( 'Support Forum', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <li class="hover<?php echo '' === $pro ? ' fdp-pro-feature fdp-dismiss-pro-notice' : ''; ?>"><a target="_blank" rel="noopener" href="https://support.freesoul-deactivate-plugins.com/"><?php esc_html_e( 'Premium Support', 'freesoul-deactivate-plugins' ); ?></a></li>
-	  <?php if( !is_multisite() ) { ?>
-	  <li class="hover"><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_hireus' ) ); ?>"><?php esc_html_e( 'Hire Us', 'freesoul-deactivate-plugins' ); ?></a></li>
-	  <?php } ?>
 	  <?php do_action( 'fdp_help_submenu_end' ); ?>
 	</ul>
   </li>

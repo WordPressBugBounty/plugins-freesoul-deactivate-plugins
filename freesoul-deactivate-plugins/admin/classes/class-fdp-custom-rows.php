@@ -118,7 +118,7 @@ class FDP_Custom_Rows_Page extends Eos_Fdp_Matrix_Page {
 			  <?php if ( defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE ) { ?>
 		  <span class="hover fdp-exact-filter<?php echo isset( $urlA['f'] ) && '1' === $urlA['f'] ? '' : ' fdp-exact-filter-off'; ?> dashicons dashicons-filter" title="<?php esc_attr_e( 'Disable exactly the plugins of this row/filter the plugins of this row and take into account also other settings.', 'freesoul-deactivate-plugins' ); ?>"></span>
 		  <?php } ?>
-		  <input type="text" class="eos-dp-url-input" title="<?php echo isset( $urlA['url'] ) ? esc_attr( $urlA['url'] ) : ''; ?>" placeholder="<?php echo wp_kses_post( sprintf( __( 'Write here the URL', 'freesoul-deactivate-plugins' ), esc_url( $this->home_url ) ) ); ?>" value="<?php echo isset( $urlA['url'] ) ? esc_attr( $urlA['url'] ) : ''; ?>" />
+		  <input type="text" class="eos-dp-url-input" title="<?php echo isset( $urlA['url'] ) ? esc_attr( $urlA['url'] ) : ''; ?>" placeholder="<?php echo wp_kses_post( sprintf( apply_filters( 'fdp_custom_row_placeholder', __( 'Write here the URL', 'freesoul-deactivate-plugins' ) ), esc_url( $this->home_url ) ) ); ?>" value="<?php echo isset( $urlA['url'] ) ? esc_attr( $urlA['url'] ) : ''; ?>" />
 			  <?php if ( isset( $urlA['needs_url'] ) && absint( $urlA['needs_url'] ) > 0 ) { ?>
 		  <span class="eos-dp-ncu-wrn dashicons dashicons-warning" title="<?php echo wp_kses_post( sprintf( __( 'This URL covers the post ID %s. It was not possibe to manage it with the Singles settings.', 'freesoul-deactivate-plugins' ), esc_html( $urlA['needs_url'] ) ) ); ?>"></span>
 		  <?php } ?>

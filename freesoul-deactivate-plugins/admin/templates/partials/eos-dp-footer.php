@@ -32,7 +32,7 @@ function eos_dp_save_button( $css_class = false ) {
 	$page    = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
 	if ( current_user_can( 'activate_plugins' ) ) {
 		?>
-	<div class="<?php echo apply_filters( 'fdp_save_button_wrapper_css_class', 'eos-dp-btn-wrp' ); ?>" style="margin-top:40px">
+	<div class="<?php echo esc_attr( apply_filters( 'fdp_save_button_wrapper_css_class', 'eos-dp-btn-wrp' ) ); ?>" style="margin-top:40px">
 		<?php echo wp_kses_post( $warning ); ?>
 		<input type="submit" name="submit" class="eos-dp-save-<?php
 		echo esc_attr( $page );

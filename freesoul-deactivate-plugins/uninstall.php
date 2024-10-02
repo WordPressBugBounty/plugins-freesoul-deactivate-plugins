@@ -1,7 +1,7 @@
 <?php
 /**
  * It fires on plugin deletion.
-
+ *
  * @package Freesoul Deactivate Plugins
  */
 

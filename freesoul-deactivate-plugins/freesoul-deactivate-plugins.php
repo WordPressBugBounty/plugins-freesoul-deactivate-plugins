@@ -7,8 +7,7 @@
  * Author URI: https://josemortellaro.com
  * Domain Path: /languages/
  * Text Domain: freesoul-deactivate-plugins
- * Version: 2.2.7
- * Network: True
+ * Version: 2.2.8
  *
  * @package Freesoul Deactivate Plugins
  */
@@ -31,13 +30,13 @@ if ( ! is_admin() && defined( 'FDP_EXCLUDE_FRONT' ) && FDP_EXCLUDE_FRONT && isse
 	return;
 }
 
-if( defined( 'FDP_STANDARD_DISABLED' ) && FDP_STANDARD_DISABLED ){
+if( defined( 'FDP_STANDARD_DISABLED' ) && FDP_STANDARD_DISABLED ) {
 	// Don't run if current URL is in the array defined in 'FDP_SKIP_URLS' in wp-config.php.
 	return;
 }
 
 // Definitions.
-define( 'EOS_DP_VERSION', '2.2.7' );
+define( 'EOS_DP_VERSION', '2.2.8' );
 define( 'FDP_PLUGIN_FILE', __FILE__ );
 define( 'EOS_DP_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) );
 define( 'EOS_DP_PLUGIN_URL', untrailingslashit( plugins_url( '', __FILE__ ) ) );

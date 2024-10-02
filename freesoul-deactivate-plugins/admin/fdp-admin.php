@@ -119,7 +119,6 @@ if ( eos_dp_is_fdp_page() ) {
 		array( array( 'eos_dp_reset_settings' ), 'pages/eos-dp-reset.php' ),
 		array( array( 'eos_dp_experiments' ), 'pages/eos-dp-experiments.php' ),
 		array( array( 'eos_dp_help' ), 'pages/eos-dp-help.php' ),
-		array( array( 'eos_dp_hireus' ), 'pages/eos-dp-hireus.php' ),
 		array( array( 'eos_dp_addons' ), 'pages/eos-dp-addons.php' ),
 		array( array( 'eos_dp_create_plugin' ), 'pages/eos-dp-create-plugin.php' ),
 		array( array( 'eos_dp_favorite_plugins' ), 'pages/eos-dp-favorite-plugins.php' ),
@@ -940,14 +939,16 @@ add_action(
 					}
 					if ( ! is_multisite() && current_user_can( 'update_core' ) ) {
 						$update_data            = isset( $update_data ) ? $update_data : wp_get_update_data();
-						$nums['menu-dashboard'] = sprintf(
-							__( 'Updates %s' ),
-							sprintf(
-								'<span class="update-plugins count-%s"><span class="update-count">%s</span></span>',
-								$update_data['counts']['total'],
-								number_format_i18n( $update_data['counts']['total'] )
-							)
-						);
+						if( false !== strpos( $nums['menu-dashboard'], 'update' ) ) {
+							$nums['menu-dashboard'] = sprintf(
+								__( 'Updates %s' ),
+								sprintf(
+									'<span class="update-plugins count-%s"><span class="update-count">%s</span></span>',
+									$update_data['counts']['total'],
+									number_format_i18n( $update_data['counts']['total'] )
+								)
+							);
+						}
 					}
 					$fdp_admin_menu       = eos_dp_get_option( 'eos_dp_admin_menu' );
 					$fdp_admin_submenu    = eos_dp_get_option( 'eos_dp_admin_submenu' );

@@ -363,7 +363,7 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 					$rank_key = $permalinks_slugs[$this->tax_slug];
 					if( isset( $rank_math_opts[$rank_key] ) && 'on' === sanitize_text_field( $rank_math_opts[$rank_key] ) ) {
 						add_action( 'eos_dp_after_footer', function() {
-							echo '<style id="fdp-all-archives-disabled-css">' . sanitize_text_field( strip_tags( $this->missing_base_css() ) ) . '</style>';
+							echo '<style id="fdp-all-archives-disabled-css">' . sanitize_text_field( strip_tags( $this->missing_base_css() ) ) . '</style>'; //phpcs:ignore WordPress.Security.EscapeOutput -- No need to escape cause already escaped in the method missing_base_css.
 						} );
 						return true;
 					}
