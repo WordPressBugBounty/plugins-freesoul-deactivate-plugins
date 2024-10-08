@@ -128,7 +128,7 @@ class FDP_One_Place extends Eos_Fdp_One_Column_Page {
 		</div>
 		<input type="hidden" id="fdp-one-place-options" value="<?php echo esc_attr( stripslashes( $this->options ) ); ?>" />
 		<?php
-		wp_enqueue_script( 'fdp-one-place', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-one-place.js' );
+		wp_enqueue_script( 'fdp-one-place', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-one-place.js', array(), null, true );
 		wp_localize_script( 
 			'fdp-one-place',
 			'fdp_one_place_params',

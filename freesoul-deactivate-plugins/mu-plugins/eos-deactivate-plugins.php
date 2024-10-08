@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.2.8
+  Version: 2.2.9
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -52,7 +52,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.2.8' );
+define( 'EOS_DP_MU_VERSION','2.2.9' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -2727,7 +2727,8 @@ add_action( 'send_headers', function(){
 	 */
 	global $eos_dp_paths;
 	$n = $eos_dp_paths ? count( array_unique( array_filter( $eos_dp_paths ) ) ) : 'none';
-	header( 'Disabled-plugins: '.absint( $n ).' on '.date( 'Y-m-d h:i:s' ) );
+	$pro = defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE ? '-pro' : '';
+	header( 'Disabled-plugins' . esc_attr( $pro ) . ': '.absint( $n ).' on '.date( 'Y-m-d h:i:s' ) );
 }, 100 );
 
 add_filter( 'wp_php_error_message',function( $message, $error ){
@@ -2968,7 +2969,7 @@ add_action( 'admin_bar_menu', 'eos_dp_admin_top_bar', 9999 );
  * @since 2.2.8
  */
 function eos_dp_admin_top_bar( $admin_top_bar ) {
-	if( isset( $_GET['post'] ) && absint( $_GET['post'] ) > 0 || ( isset( $GLOBALS['post'] ) && function_exists( 'is_singular' ) && is_singular() ) ) {
+	if( isset( $_GET['post'] ) && absint( $_GET['post'] ) > 0 || ( isset( $GLOBALS['post'] ) && function_exists( 'is_singular' ) && is_singular() ) && current_user_can( 'activate_plugins' ) ) {
 		$post = isset( $_GET['post'] ) && absint( $_GET['post'] ) > 0 ? get_post( absint( $_GET['post'] ) ) : $GLOBALS['post'];
 		if( $post && is_object( $post ) ) {
 			$admin_top_bar->add_menu( array(

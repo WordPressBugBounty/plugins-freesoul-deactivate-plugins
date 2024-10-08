@@ -481,6 +481,7 @@ function eos_dp_admin_head() {
 	<style id="fdp-plugin-filter-css" type="text/css"></style>
 	<style id="fdp-inline-backend-css" type="text/css">
 	ul#wf-onboarding-banner{display: none !important}
+	.fdp [class^='cdp-'], .fdp [class*=' cdp-']{display:none !important}
 	.fdp-plugins-filter-list li:hover{opacity:0.7}
 	.fdp-no-jquery #wpwrap #wpcontent #wpbody #wpbody-content .notice.fdp-no-jquery{display:block !important}
 	.fdp #adminmenumain [href="#wpbody-content"]{position:absolute;top:-1000em}
@@ -939,7 +940,7 @@ add_action(
 					}
 					if ( ! is_multisite() && current_user_can( 'update_core' ) ) {
 						$update_data            = isset( $update_data ) ? $update_data : wp_get_update_data();
-						if( false !== strpos( $nums['menu-dashboard'], 'update' ) ) {
+						if( isset( $nums['menu-dashboard'] ) && false !== strpos( $nums['menu-dashboard'], 'update' ) ) {
 							$nums['menu-dashboard'] = sprintf(
 								__( 'Updates %s' ),
 								sprintf(

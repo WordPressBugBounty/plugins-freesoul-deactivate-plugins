@@ -70,7 +70,7 @@ if ( is_dir( $dirPath ) ) {
 				rmdir( $value );
 			} else {
 				if ( file_exists( $value ) ) {
-					unlink( $value );
+					wp_delete_file( $value );
 				}
 			}
 		}

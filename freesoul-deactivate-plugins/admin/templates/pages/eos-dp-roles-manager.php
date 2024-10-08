@@ -15,8 +15,8 @@ function eos_dp_pro_roles_manager_callback() {
 		<?php
 		return;
 	}
-	wp_enqueue_script( 'fdp-pro-settings', EOS_DP_SETTINGS_JS_URL, array( 'eos-dp-backend' ), true );
-	wp_enqueue_script( 'fdp-pro-roles-manager', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-roles-manager.js', array( 'eos-dp-backend' ), true );
+	wp_enqueue_script( 'fdp-pro-settings', EOS_DP_SETTINGS_JS_URL, array( 'eos-dp-backend' ), null, true );
+	wp_enqueue_script( 'fdp-pro-roles-manager', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-roles-manager.js', array( 'eos-dp-backend' ),null, true );
 	wp_localize_script(
 		'fdp-pro-settings',
 		'fdp_setts_js',

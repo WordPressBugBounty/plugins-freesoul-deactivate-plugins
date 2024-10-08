@@ -4,7 +4,7 @@ Contributors:      giuse
 Requires at least: 4.6
 Tested up to:      6.6
 Requires PHP:      7.2
-Stable tag:        2.2.8
+Stable tag:        2.2.9
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -155,14 +155,10 @@ For any question or if something doesn't work, don't hesitate to open a thread o
 == Changelog ==
 
 
-= 2.2.8 =
-* Fixed: not possible to activate the plugin on the subsites of a network
-* Added: FDP menu itemm added to the admin top bar
-* Removed: Hire Us page
-* Removed: Backend cleanup for new installations (kept only for PRO users now)
-* Fixed: "Dashboard" replaced with "Updates" in the admin main navigation unders certain conditions
-* Fixed: JS errors for users who haven't the rights to see the FDP backend pages
-* Added: hook for Assets deactivation by template file (feature of incoming version PRO v. 1.1.1.2)
+= 2.2.9 =
+* Fixed: PHP warnings
+* Fixed: Link to FDP Singles in the admin top bar shown also to users who can't activate plugins
+
 
 
 *<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/change-log/">Complete Change Log</a>

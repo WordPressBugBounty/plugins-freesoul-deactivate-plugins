@@ -84,7 +84,7 @@ function eos_dp_scripts() {
 					update_user_meta( get_current_user_id(), 'dismissed_wp_pointers', implode( ',', $all_dismissed ) );
 					wp_enqueue_style( 'wp-pointer' );
 					wp_localize_script( 'wp-pointer', 'fdpWpPointer', array( 'dismiss_text' => esc_html__( "Don't show again", 'freesoul-deactivate-plugins' ) ) );
-					wp_enqueue_script( 'fdp-pointer', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-pointers.js', array( 'wp-pointer' ) );
+					wp_enqueue_script( 'fdp-pointer', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-pointers.js', array( 'wp-pointer' ), null, true );
 					wp_localize_script( 'fdp-pointer', 'fdpPointer', $valid_pointers );
 					$rtl = is_rtl() ? '-rtl' : '';
 					wp_enqueue_style( 'pointer-css', includes_url() . 'css/wp-pointer' . $rtl . '.min.css' );
@@ -97,7 +97,7 @@ function eos_dp_scripts() {
 		$deps[] = 'jquery-ui-draggable';
 		$deps[] = 'jquery-ui-sortable';
 	}
-	wp_enqueue_script( 'eos-dp-backend', EOS_DP_MAIN_JS . '.js', $deps, false, true );
+	wp_enqueue_script( 'eos-dp-backend', EOS_DP_MAIN_JS . '.js', $deps, null, true );
 	wp_localize_script( 'eos-dp-backend', 'eos_dp_js', $params );
 }
 
@@ -196,7 +196,7 @@ function eos_dp_redirect_to_settings() {
 		// if the plugin was updated and we need to update also the mu-plugin.
 		define( 'EOS_DP_DOING_MU_UPDATE', true );
 		if ( file_exists( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' ) ) {
-			unlink( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' );
+			wp_delete_file( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' );
 		}
 		require EOS_DP_PLUGIN_DIR . '/plugin-activation.php';
 		eos_dp_update_option( 'eos_dp_version', EOS_DP_VERSION );
@@ -1169,7 +1169,7 @@ function eos_dp_delete_folder( $dirPath ) {
 				if ( is_dir( $value ) ) {
 					rmdir( $value );
 				} else {
-					unlink( $value );
+					wp_delete_file( $value );
 				}
 			}
 		}

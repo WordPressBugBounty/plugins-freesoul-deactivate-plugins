@@ -30,7 +30,7 @@ add_role(
 	)
 );
 if ( file_exists( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' ) ) {
-	unlink( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' );
+	wp_delete_file( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' );
 }
 eos_dp_write_file( EOS_DP_PLUGIN_DIR . '/mu-plugins/eos-deactivate-plugins.php', WPMU_PLUGIN_DIR, WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php', true );
 

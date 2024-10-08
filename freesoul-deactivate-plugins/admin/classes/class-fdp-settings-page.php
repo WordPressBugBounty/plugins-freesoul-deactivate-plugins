@@ -55,7 +55,7 @@ class FDP_Settings_Page extends Eos_Fdp_Plugins_Manager_Page {
 
 	public function before_section( $page_slug ) {
 		if ( $this->save_button ) {
-			wp_enqueue_script( 'fdp-pro-settings', EOS_DP_SETTINGS_JS_URL, array( 'eos-dp-backend' ), true );
+			wp_enqueue_script( 'fdp-pro-settings', EOS_DP_SETTINGS_JS_URL, array( 'eos-dp-backend' ), null, true );
 			wp_localize_script(
 				'fdp-pro-settings',
 				'fdp_setts_js',

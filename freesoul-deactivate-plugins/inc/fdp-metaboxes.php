@@ -44,7 +44,7 @@ function eos_dp_meta_box_callback( $post ) {
 		'html_url'   => EOS_DP_PLUGIN_URL . '/inc/html/',
 		'is_metabox' => 'true',
 	);
-	wp_enqueue_script( 'eos-dp-backend-single', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-metaboxes-5.0.2.js', array( 'jquery' ) );
+	wp_enqueue_script( 'eos-dp-backend-single', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-metaboxes-5.0.2.js', array( 'jquery' ), null, true );
 	wp_localize_script( 'eos-dp-backend-single', 'eos_dp_js', $params );
 	wp_nonce_field( 'eos_dp_meta_boxes', 'eos_dp_meta_boxes_nonce' );
 	wp_nonce_field( 'eos_dp_setts', 'eos_dp_setts' );

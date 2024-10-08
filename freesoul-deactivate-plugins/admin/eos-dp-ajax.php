@@ -1587,7 +1587,7 @@ function eos_dp_save_option_to_filesystem( $option, $value ) {
 		$arrFiles = glob( $upload_dirs['basedir'] . '/FDP/fdp-options/' . sanitize_key( substr( md5( $option ), 0, 8 ) ) . '*.json' );
 		foreach ( $arrFiles as $file ) {
 			if ( file_exists( $file ) ) {
-				unlink( $file );
+				wp_delete_file( $file );
 			}
 		}
 		return $wp_filesystem->put_contents(
@@ -1613,7 +1613,7 @@ function eos_dp_from_filesystem_to_db( $option, $value ) {
 					unset( $main_opts[ 'skip_db_for_' . str_replace( 'eos_dp_', '', $option ) ] );
 				}
 				if ( eos_dp_update_option( 'eos_dp_opts', $main_opts ) ) {
-					unlink( $file );
+					wp_delete_file( $file );
 					break;
 				}
 			}
