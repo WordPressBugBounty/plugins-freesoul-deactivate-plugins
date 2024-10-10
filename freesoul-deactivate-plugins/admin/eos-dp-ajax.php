@@ -780,6 +780,20 @@ function eos_dp_pro_auto_settings_admin( $post_args = false, $plugins = false ) 
 		}
 	}
 	if ( $plugins ) {
+		$opts = function_exists( 'eos_dp_pro_get_option' ) ? eos_dp_pro_get_option( 'eos_dp_pro_main' ) : false;
+		$sleep_time = 300000;
+		if( $opts ) {
+			$opts = isset( $opts['eos_dp_general_setts'] ) ? $opts['eos_dp_general_setts'] : array();
+			$sleep_times = array(
+				'very_fast' => 0,
+				'fast' => 100000,
+				'medium' => 300000,
+				'slow' => 600000,
+				'very_slow' => 1000000
+			);
+			$sleep_time = isset( $opts['autosuggestion_speed'] ) && in_array( sanitize_text_field( $opts['autosuggestion_speed'] ), array_keys( $sleep_times ) ) ? $sleep_times[ sanitize_text_field( $opts['autosuggestion_speed'] ) ] : 300000;
+	
+		}
 		$time           = microtime( 1 );
 		$plugins        = array_slice( $plugins, $offset, 4 );
 		$unused_plugins = array();

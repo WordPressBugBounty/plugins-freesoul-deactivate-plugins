@@ -4,7 +4,7 @@ Contributors:      giuse
 Requires at least: 4.6
 Tested up to:      6.6
 Requires PHP:      7.2
-Stable tag:        2.2.9
+Stable tag:        2.3.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -155,9 +155,8 @@ For any question or if something doesn't work, don't hesitate to open a thread o
 == Changelog ==
 
 
-= 2.2.9 =
-* Fixed: PHP warnings
-* Fixed: Link to FDP Singles in the admin top bar shown also to users who can't activate plugins
+= 2.3.0 =
+* Fixed: Backend menu items redirecting to documentation also for non-empty settings
 
 
 
