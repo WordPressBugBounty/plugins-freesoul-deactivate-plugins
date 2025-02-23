@@ -721,8 +721,12 @@ function eos_dp_check_license_on_update_plugins( $transient ) {
 		if ( defined( 'FDP_PRO_LICENSE_EDD' ) && FDP_PRO_LICENSE_EDD ) {
 			$licenseCode = get_option( 'eos_dp_pro_edd_license_key' );
 			if ( $licenseCode ) {
-				define( 'EDD_SAMPLE_STORE_URL', 'https://shop.freesoul-deactivate-olugins.com/edd?fdp-edd-lic=true' );
-				define( 'EDD_SAMPLE_ITEM_ID', 2672 );
+				if( ! defined( 'EDD_SAMPLE_STORE_URL' ) ) {
+					define( 'EDD_SAMPLE_STORE_URL', 'https://shop.freesoul-deactivate-plugins.com/?fdp-edd-lic=true' );
+				}
+				if( ! defined( 'EDD_SAMPLE_ITEM_ID' ) ) {
+					define( 'EDD_SAMPLE_ITEM_ID', 3712 );
+				}
 				require_once EOS_DP_PLUGIN_DIR . '/admin/classes/class-fdp-license-manager-edd.php';
 				$edd_updater = new FDP_EDD_SL_Plugin_Updater(
 					EDD_SAMPLE_STORE_URL,
@@ -1321,3 +1325,45 @@ function eos_dp_admin_inline_style() {
 // Load all the FDP add-ons.
 require_once EOS_DP_PLUGIN_DIR . '/admin/classes/class-fdp-load-addons.php';
 $load_fdp_addons = new FDP_Load_Addons();
+
+// Load the Site Health class and create the Site Health Tests object. To do.
+add_action( 'admin_init', function() {
+	require_once EOS_DP_PLUGIN_DIR . '/admin/classes/class-fdp-site-health.php';
+	$fdp_site_health = new FDP_Site_Health();
+} );
+
+add_action( 'fdp_before_main_nav_menu_items', function() {
+	if( defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE ) return;
+	return; // todo: remove this line when the offer for the PRO version will be active.
+?>
+<style id="fdp-offer-css">
+	#fdp-offer-bar{
+		background:#1E2F42;
+		height: 20px;
+		padding-left: 20px;
+		padding-right: 20px;
+		margin-left: -20px;
+		margin-right: -20px;
+		padding-top:10px;
+		padding-bottom:10px;
+		color:#fff;
+		text-align:center
+	}
+	#fdp-offer-bar a{
+		text-transform:uppercase;
+		letter-spacing:2px;
+		font-size:1rem;
+		text-decoration:none;
+		color:#fff;
+	}
+	@media screen and (max-width:1100px){
+		#fdp-offer-bar a{
+			font-size:0.6rem
+		}
+	}
+</style>
+<div id="fdp-offer-bar">
+	<a href="https://shop.freesoul-deactivate-plugins.com/special-offer?ffdpbk=1" target="_fdp_special_offer" rel="noopener">Unlock PRO Power! Get 5 years of FDP PRO License and pay only for 1 year!&nbsp;&nbsp;&nbsp;<span class="button" style="top:-5px;position:relative">Only Available Now!</span></a>
+</div>
+<?php
+} );

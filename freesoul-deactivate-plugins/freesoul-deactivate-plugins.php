@@ -7,7 +7,10 @@
  * Author URI: https://josemortellaro.com
  * Domain Path: /languages/
  * Text Domain: freesoul-deactivate-plugins
- * Version: 2.3.0
+ * Requires PHP: 7.2
+ * Requires CP:  1.4
+ * Premium URI:  https://freesoul-deactivate-plugins.com/
+ * Version: 2.4.0
  *
  * @package Freesoul Deactivate Plugins
  */
@@ -36,13 +39,13 @@ if( defined( 'FDP_STANDARD_DISABLED' ) && FDP_STANDARD_DISABLED ) {
 }
 
 // Definitions.
-define( 'EOS_DP_VERSION', '2.3.0' );
+define( 'EOS_DP_VERSION', '2.4.0' );
 define( 'FDP_PLUGIN_FILE', __FILE__ );
 define( 'EOS_DP_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) );
 define( 'EOS_DP_PLUGIN_URL', untrailingslashit( plugins_url( '', __FILE__ ) ) );
 define( 'EOS_DP_PLUGIN_BASE_NAME', untrailingslashit( plugin_basename( __FILE__ ) ) );
 define( 'EOS_DP_PLUGINS_DIRNAME', basename( dirname( __DIR__ ) ) );
-define( 'EOS_DP_MAIN_STYLESHEET', EOS_DP_PLUGIN_URL . '/admin/assets/css/fdp-admin-3.9.5' );
+define( 'EOS_DP_MAIN_STYLESHEET', EOS_DP_PLUGIN_URL . '/admin/assets/css/fdp-admin-3.9.6' );
 define( 'EOS_DP_MAIN_JS', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-admin-5.0.4' );
 define( 'EOS_DP_SETTINGS_JS_URL', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-settings-1.1.1.js' );
 

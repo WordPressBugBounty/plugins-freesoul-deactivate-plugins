@@ -26,7 +26,7 @@ function eos_dp_help_callback() {
 
 function eos_dp_help_home_section() {
 	if ( defined( 'FDP_PRO_ACTIVE' ) ) {
-		$support_url  = 'https://freesoul-deactivate-plugins.com/plugins/log-a-support-ticket/';
+		$support_url  = 'https://support.freesoul-deactivate-plugins.com/';
 		$support_text = esc_html__( 'Premium Support', 'freesoul-deactivate-plugins' );
 	} else {
 		$support_url  = 'https://wordpress.org/support/plugin/freesoul-deactivate-plugins/';

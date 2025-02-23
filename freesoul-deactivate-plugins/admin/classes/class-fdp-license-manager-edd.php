@@ -95,7 +95,6 @@ class FDP_EDD_SL_Plugin_Updater {
 	 * @return array Modified update array with custom plugin data.
 	 */
 	public function check_update( $_transient_data ) {
-
 		global $pagenow;
 
 		if ( ! is_object( $_transient_data ) ) {
@@ -107,7 +106,6 @@ class FDP_EDD_SL_Plugin_Updater {
 		}
 
 		$current = $this->get_repo_api_data();
-
 		if ( false !== $current && is_object( $current ) && isset( $current->new_version ) ) {
 			if ( version_compare( $this->version, $current->new_version, '<' ) ) {
 				$_transient_data->response[ $this->name ] = $current;
@@ -130,7 +128,6 @@ class FDP_EDD_SL_Plugin_Updater {
 	 */
 	public function get_repo_api_data() {
 		$version_info = $this->get_cached_version_info();
-
 		if ( false === $version_info ) {
 			$version_info = $this->api_request(
 				'plugin_latest_version',
@@ -139,7 +136,6 @@ class FDP_EDD_SL_Plugin_Updater {
 					'beta' => $this->beta,
 				)
 			);
-
 			if ( ! $version_info ) {
 				return false;
 			}
@@ -434,6 +430,7 @@ class FDP_EDD_SL_Plugin_Updater {
 	 * @return bool
 	 */
 	private function request_recently_failed() {
+
 		$failed_request_details = get_option( $this->failed_request_cache_key );
 
 		// Request has never failed.
@@ -538,15 +535,13 @@ class FDP_EDD_SL_Plugin_Updater {
 				'body'      => $api_params,
 			)
 		);
-
 		if ( is_wp_error( $request ) || ( 200 !== wp_remote_retrieve_response_code( $request ) ) ) {
 			$this->log_failed_request();
 
 			return false;
 		}
 
-		$request = json_decode( wp_remote_retrieve_body( $request ) );
-
+		$request = json_decode(  strip_tags( wp_remote_retrieve_body( $request ) ) );
 		if ( $request && isset( $request->sections ) ) {
 			$request->sections = maybe_unserialize( $request->sections );
 		} else {

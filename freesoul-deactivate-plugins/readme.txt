@@ -1,21 +1,23 @@
-=== Freesoul Deactivate Plugins - Plugin manager and cleanup ===
+=== Freesoul Deactivate Plugins - Disable plugins on individual WordPress pages ===
 
 Contributors:      giuse
 Requires at least: 4.6
-Tested up to:      6.6
+Tested up to:      6.7
 Requires PHP:      7.2
-Stable tag:        2.3.0
+Stable tag:        2.4.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
 
 Load plugins only where you need them. No bloat, no conflicts, more speed. Deactivate plugins where they don't add anything useful.
 
-== Description ==
+== Disable plugins on individual WordPress pages ==
 
 FDP allows you to **deactivate plugins on specific pages** for <a href="https://wordpress.org/plugins/search/speed+optimization/">speed optimization</a>, <a href="https://wordpress.org/plugins/search/debugging/">debugging</a> and <a href="https://wordpress.org/plugins/search/problem-solving/">problem-solving</a>.
 
 It works for every page, blog posts, custom posts that are publicly queryable, archives and backend pages.
+
+Turning off plugins selectively can improve the performance, but also solve conflicts between plugins.
 
 
 == 🚀 Deactivate plugins on specific pages to improve the performance ==
@@ -34,7 +36,7 @@ With FDP no matter how many plugins you have, you can keep them active only wher
 
 
 
-== 🧹 How clean up your website in minutes ==
+== 🧹 How to stop a plugin on specific WordPress pages ==
 
 Watch this video to have an overview of how to clean up your website with Freesoul Deactivate Plugins.
 
@@ -51,11 +53,11 @@ If on a specific page you keep active only the plugins that you really need, mos
 
 
 == 🆓 Features of the free version. With the free version of FDP you can: ==
+⭐ Conditional plugin loading
 ⭐ Deactivate plugins on <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/singles/">specific pages, posts, custom posts</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/post-types/">post types</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/archives/">archives</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/term-archives/">term archives</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/search/">search results page</a>, <a href="https://freesoul-deactivate-plugins.com/documentation/device/">devices</a>
-⭐ <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/backend">Deactivate plugins and the theme on specific backend pages</a>
 ⭐ Deactivate the JavaScript execution for problem solving (preview on front-end)
 ⭐ Deactivate plugins by custom URL on the <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/custom-urls/">frontend</a>
-⭐ Have an automatic suggestion about the unused plugins for the homepage and the backend
+⭐ Have an automatic suggestion about the unused plugins for the homepage
 ⭐ Change plugins firing order
 ⭐ Create a functional plugin in no time
 ⭐ Import/Export list of favourite plugins
@@ -149,14 +151,18 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 Read **<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/">📄 how deactivate plugins on specific pages</a>** to learn how to selectively load only the plugins that you really need.
 
 For any question or if something doesn't work, don't hesitate to open a thread on the <a href="https://wordpress.org/support/plugin/freesoul-deactivate-plugins/">support forum</a>
-
+Enabling debugging in wp-config.php is often one of the easiest ways to diagnose issues in WordPress. It helps you understand what’s going wrong by displaying error messages and logs.
+Need a step-by-step guide? Read <a href="https://freesoul-deactivate-plugins.com/how-to-enable-debugging-in-wordpress-a-step-by-step-guide/">this detailed tutorial</a> on <a href="https://freesoul-deactivate-plugins.com/how-to-enable-debugging-in-wordpress-a-step-by-step-guide/">how to enable debugging in WordPress</a> to learn more.
 
 
 == Changelog ==
 
 
-= 2.3.0 =
-* Fixed: Backend menu items redirecting to documentation also for non-empty settings
+= 2.4.0 =
+* Fixed: Logged users settings not working if testing cookie not set
+* Fixed: theme deactivation not stable when saving the Singles Backend settings (PRO)
+* Added: FDP critical notifications to the Site Health Tests
+
 
 
 

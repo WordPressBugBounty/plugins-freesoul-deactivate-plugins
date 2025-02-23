@@ -260,10 +260,12 @@ class FDP_Backend_Singles_Page extends Eos_Fdp_Matrix_Page {
 									$post_key  = 'post';
 								}
 								if ( $post_type && isset( $post_type->labels ) && isset( $post_type->labels->singular_name ) ) {
+			
+									$last_posts = wp_get_recent_posts( array( 'numberposts' => '1', 'post_type' => sanitize_key( $post_key ) ) );
 									$labels_name             = $title = sprintf( esc_attr__( 'Edit Single %s', 'freesoul-deactivate-plugins' ), $post_type->labels->singular_name );
 									$fdp_admin_menu_item[2]  = $admin_page_key = 'single_' . sanitize_key( $post_key );
 									$is_edit_post            = true;
-									$fdp_admin_menu_item_url = false;
+									$fdp_admin_menu_item_url = get_edit_post_link( $last_posts[0]['ID'] );
 									$values                  = isset( $adminSetts[ $admin_page_key ] ) ? explode( ',', $adminSetts[ $admin_page_key ] ) : array_fill( 0, count( $this->active_plugins ), ',' );
 								} else {
 									continue;
@@ -285,7 +287,7 @@ class FDP_Backend_Singles_Page extends Eos_Fdp_Matrix_Page {
 			  <td class="eos-dp-post-name-wrp">
 				<span class="fdp-row-actions-ico dashicons dashicons-plus" title="<?php esc_attr__( 'Action buttons', 'freesoul-deactivate-plugins' ); ?>"></span>
 				<span class="eos-dp-not-active-wrp"><input title="<?php printf( esc_attr__( 'Activate/deactivate all plugins in %s', 'freesoul-deactivate-plugins' ), esc_attr( $labels_name ) ); ?>" data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
-				<a class="eos-dp-title" href="<?php echo esc_url( $fdp_admin_menu_item_url ); ?>" target="_blank"><?php echo esc_html( $title ); ?></a>
+				<a class="eos-dp-title"<?php echo empty( $fdp_admin_menu_item_url ) ? ' style="pointer-events:none"' : ''; ?> href="<?php echo esc_url( $fdp_admin_menu_item_url ); ?>" target="_blank"><?php echo esc_html( $title ); ?></a>
 				<div class="eos-dp-actions">
 							<?php if ( $fdp_admin_menu_item_url ) { ?>
 				  <a class="eos-dp-view fdp-has-tooltip" href="<?php echo esc_url( $fdp_admin_menu_item_url ); ?>" target="_blank">

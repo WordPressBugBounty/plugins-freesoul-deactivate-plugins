@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.3.0
+  Version: 2.4.0
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -39,9 +39,7 @@ if( isset( $_REQUEST['action'] ) && 'eos_dp_save_firing_order' === $_REQUEST['ac
 }
 $GLOBALS['fdp_all_plugins'] = $active_plugins;
 if( defined( 'FDP_EMERGENCY_ADMIN_THEME_OFF' ) && FDP_EMERGENCY_ADMIN_THEME_OFF ){
-	add_filter( 'theme_root','__return_false',20 );
-	add_filter( 'stylesheet','__return_false',20 );
-	add_filter( 'template','__return_false',20 );
+	eos_dp_disable_theme();
 }
 
 if( ! is_admin() && defined( 'FDP_EXCLUDE_MU' ) && FDP_EXCLUDE_MU && isset( $_GET[FDP_EXCLUDE_MU] ) && 'true' === $_GET[FDP_EXCLUDE_MU] ){
@@ -52,7 +50,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.3.0' );
+define( 'EOS_DP_MU_VERSION','2.4.0' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -144,17 +142,17 @@ if(
 		 *
 		 */
 		static $fdp_rewrite = false;
-		if( !$fdp_rewrite ){
-			$time = microtime(1);
-			$fdp_rewrite = true;
-	 	  if( 'rewrite_rules' === $option && $value !== $old_value ){
+		if( ! $fdp_rewrite ) {
+	 	  if( 'rewrite_rules' === $option && $value !== $old_value ) {
+				$fdp_rewrite = true;
 				$plugindir = defined( PLUGINDIR ) ? PLUGINDIR.'/' : 'wp-content/plugins/';
 				$themedir = str_replace( ABSPATH,'',get_theme_root() );
-		    $trace = debug_backtrace();
-		    $trace1 = $trace[1];
-		    $trace = array_reverse( $trace );
-		    $output = $code = '';
+				$trace = debug_backtrace();
+				$trace1 = $trace[1];
+				$trace = array_reverse( $trace );
+				$output = $code = '';
 				$cause = $line = $file = false;
+				
 		    foreach( $trace as $arr ){
 		      if( isset( $arr['file'] )  ){
 		        if( false !== strpos( $arr['file'],$plugindir  ) ){
@@ -167,7 +165,7 @@ if(
 								break;
 		          }
 		        }
-		        elseif( false !== strpos( $arr['file'],$themedir ) ){
+		        elseif( ! empty( $themedir ) && false !== strpos( $arr['file'],$themedir ) ){
 							$line = $arr['line'];
 							$file = $arr['file'];
 		          $tArr = explode( $themedir,$arr['file'] );
@@ -189,22 +187,25 @@ if(
 		        }
 		      }
 		    }
-				if( $cause && '' !== $output ){
-					$output .= PHP_EOL.PHP_EOL.sprintf( 'The rewrite rules where updated requesting %s',sanitize_text_field( $_SERVER['REQUEST_URI'] ) );
-					if( $line && $file ){
-						$output .= eos_dp_get_code_extract( $line,$file );
-					}
-					$msg = sprintf( 'Be careful! It looks like <strong>%s updates the rewrite rules during the same HTTP request</strong>.',$cause );
-					$msg .= PHP_EOL.sprintf( 'FDP rebuilt again the rewrite rules with all plugins active. You should not have issues due to missing rewrite rules, but you may have more load on your server and FDP has to keep all the plugins active to avoid missing rewrite rules when %s saves them into the database. If %s frequently updates the rewrite rules you will have issues with the performance.',$cause,$cause );
-					$msg .= PHP_EOL.'<strong>'.sprintf( 'If after dismissing this notice, it appears over again and again, please, open a thread on the FDP support forum, and give us the information below.' ).'</strong>';
-					$msg .= PHP_EOL.PHP_EOL.wp_kses_post( $output ).$code;
-					$msg .= PHP_EOL.PHP_EOL.sprintf( 'If it is a recurring issue, we also suggest you to contact the support of %s',$cause );
-					eos_dp_update_admin_notices( 'rewrite_rules',$msg );
-					do_action( 'fdp_flush_rewrite_rules' );
-					eos_dp_update_option( 'rewrite_rules','' );
-
-					wp_remote_get( add_query_arg( array( 'fdp-refilling-rules' => 1,'action' => 'deactivate','plugin' => 'none','t' => time() ),home_url() ),array( 'sslverify' => false ) );
+			if( $cause && '' !== $output ){
+				$output .= PHP_EOL.PHP_EOL.sprintf( 'The rewrite rules where updated requesting %s', '/' === $_SERVER['REQUEST_URI'] ? 'the homepage' : sanitize_text_field( $_SERVER['REQUEST_URI'] ) );
+				if( $line && $file ){
+					$output .= eos_dp_get_code_extract( $line,$file );
 				}
+				
+				$msg = sprintf( 'Be careful! it looks like <strong>%s triggered the update of the rewrite rules during the same HTTP request</strong>.',$cause );
+				$msg .= PHP_EOL.sprintf( "%s may be only the trigger. At the moment we can't say for sure that %s is the only cause. We can only say %s called a function that triggered the flushing of the rewrite rules.",$cause, $cause, $cause );
+				$msg .= PHP_EOL.sprintf( 'FDP rebuilt again the rewrite rules with all plugins active. You should not have issues due to missing rewrite rules, but you may have more load on your server and FDP has to keep all the plugins active to avoid missing rewrite rules when %s saves them into the database. If %s frequently updates the rewrite rules you will have issues with the performance.',$cause,$cause );
+				$msg .= PHP_EOL.'<strong>'.sprintf( 'If after dismissing this notice, it appears over again and again, please, open a thread on the FDP support forum, and give us the information below.' ).'</strong>';
+				$msg .= PHP_EOL.PHP_EOL.wp_kses_post( $output ).$code;
+				$msg .= PHP_EOL.PHP_EOL.sprintf( 'If it is a recurring issue, we also suggest you to contact the support of %s',$cause );
+				$msg .= PHP_EOL.PHP_EOL.sprintf( 'Read %shere%s to learn more about this issue.','<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/rewrite-rules-notice/" target="_blank" rel="noopener">', '</a>' );
+			
+				eos_dp_update_admin_notices( 'rewrite_rules',$msg );
+				do_action( 'fdp_flush_rewrite_rules' );
+				eos_dp_update_option( 'rewrite_rules','' );
+				wp_remote_get( add_query_arg( array( 'fdp-refilling-rules' => 1,'action' => 'deactivate','plugin' => 'none','t' => time() ),home_url() ),array( 'sslverify' => false ) );
+			}
 
 		  }
 	  }
@@ -293,6 +294,7 @@ if(
 	)
 	&& ! ( wp_doing_ajax() || isset( $_REQUEST['wc-ajax'] ) )
 ){
+
 	$opts_by_path = false;
 	$eos_dp_disabled_plugins = array();
 	global $eos_dp_disabled_plugins;
@@ -306,6 +308,7 @@ if(
 				if( !defined( 'FDP_STANDARD_DISABLED' ) ){
 					define( 'FDP_STANDARD_DISABLED', true );
 				}
+				
 				// Don't run FDP on the URLs defined in wp-config.php.
 				return;
 			}
@@ -947,8 +950,11 @@ if( is_admin()
 			$base_url = 'single_'.get_post_type( $base_urlA[0] );
 		}
 	}
-	if( isset( $adminTheme[$base_url] ) && !$adminTheme[$base_url] ){
-		add_action( 'plugins_loaded','eos_dp_replace_theme',99 );
+	if( isset( $adminTheme[$base_url] ) && ! $adminTheme[$base_url] ){
+		eos_dp_disable_theme();
+	}
+	elseif( isset( $_GET['page'] ) && 'admin.php?page=' . sanitize_text_field( $_GET['page'] ) === $base_url && isset( $adminTheme[sanitize_text_field( $_GET['page'] )] ) && ! $adminTheme[sanitize_text_field( $_GET['page'] )] ) {
+		eos_dp_disable_theme();
 	}
 }
 
@@ -2042,7 +2048,7 @@ function eos_dp_disabled_plugins_for_logged_users( $plugins ) {
 	){
 		return $plugins;
 	}
-	if( isset( $_COOKIE['wordpress_test_cookie'] ) && false !== strpos( implode( '',array_keys( $_COOKIE ) ),'wordpress_logged_in' ) ){
+	if( false !== strpos( implode( '',array_keys( $_COOKIE ) ),'wordpress_logged_in' ) ){
 		$opts = eos_dp_get_option( 'eos_dp_pro_main' );
 		
 		if( $opts && isset( $opts['eos_dp_logged_conditions'] ) && is_array( $opts['eos_dp_logged_conditions'] ) && !empty( $opts['eos_dp_logged_conditions'] ) ){
@@ -2916,6 +2922,18 @@ add_action( 'muplugins_loaded',function(){
 		}
 	}
 } );
+
+/**
+ * Disable the theme.
+ *
+ * @since 2.3.1
+ *
+ */
+function eos_dp_disable_theme(){
+	add_filter( 'theme_root','__return_false',20 );
+	add_filter( 'stylesheet','__return_false',20 );
+	add_filter( 'template','__return_false',20 );
+}
 
 /**
  * Get plugin name by slug.

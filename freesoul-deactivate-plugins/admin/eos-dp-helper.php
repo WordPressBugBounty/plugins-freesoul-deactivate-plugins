@@ -288,7 +288,14 @@ function eos_dp_display_admin_notice( $name, $title, $msg, $type, $after_notice 
 			<button class="button fdp-dismiss-notice" onclick="document.getElementById('fdp-<?php echo sanitize_key( $name ); ?>-notice').style.display='none';eos_dp_call_ajax(this);" data-nonce="<?php echo esc_attr( wp_create_nonce( 'eos_dp_dismiss_notice' ) ); ?> " data-action="eos_dp_dismiss_notice" data-data="<?php echo esc_attr( wp_json_encode( array( 'key' => sanitize_key( $name ) ) ) ); ?>"><?php esc_html_e( 'Dismiss' ); ?></button>
 		</div>
 	</div>
-	<script>document.getElementById('fdp-notifications-count').innerText = <?php echo absint( $counter ); ?>;</script>
+	<script>
+	document.getElementById('fdp-notifications-count').innerText = <?php echo absint( $counter ); ?>;
+	<?php
+	if( isset( $_GET['open-notification'] ) && sanitize_text_field( $_GET['open-notification'] ) === esc_attr( $_GET['open-notification'] ) ) {
+		echo 'document.getElementById("' . esc_attr( $_GET['open-notification'] ) . '").className=document.getElementById("' . esc_js( esc_attr( $_GET['open-notification'] ) ) . '").className.replace("eos-hidden","eos-auto-shown");';
+	}
+	?>	
+	</script>
 	<?php
 }
 

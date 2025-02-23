@@ -232,7 +232,12 @@ function eos_dp_save_admin_settings() {
 	}
 	eos_dp_update_option( 'eos_dp_admin_setts', array_map( 'sanitize_text_field', $from_db ) );
 	if ( isset( $_POST['theme_activation'] ) ) {
-		eos_dp_update_option( 'eos_dp_admin_theme', json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['theme_activation'] ) ), true ) );
+		$theme_activation_opts = eos_dp_get_option( 'eos_dp_admin_theme' );
+		$theme_activation_post = json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['theme_activation'] ) ), true );
+		foreach( $theme_activation_post as $key => $value ) {
+			$theme_activation_opts[sanitize_text_field( $key )] = $value ? 1 : false;
+		}
+		eos_dp_update_option( 'eos_dp_admin_theme', $theme_activation_opts );
 	}
 	eos_dp_update_fdp_admin_menu(
 		eos_dp_user_headers(

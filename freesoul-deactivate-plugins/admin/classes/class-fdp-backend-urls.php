@@ -52,7 +52,7 @@ class FDP_Backend_Urls_Page extends FDP_Custom_Rows_Page {
 	<style id="fdp-custom-rows-css">
 	.fdp-exact-filter{margin-left:15pxmargin-top: 3px}
 	.fdp-exact-filter-off{opacity:0.6}
-	#eos-dp-setts .eos-dp-post-name-wrp{padding-top:20px;padding-bottom:12px;border-left:none}
+	#eos-dp-setts .eos-dp-post-name-wrp{padding-top:20px;padding-bottom:12px;border-<?php echo is_rtl() ? 'right' : 'left'; ?>:none}
 	#eos-dp-setts input.eos-dp-row-notes{width:100%}
 	#eos-dp-setts input.eos-dp-row-notes:focus{border-color:transparent;outline:none;box-shadow:none}
 	</style>
