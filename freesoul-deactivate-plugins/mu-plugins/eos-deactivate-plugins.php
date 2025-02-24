@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.4.0
+  Version: 2.4.1
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -50,7 +50,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.4.0' );
+define( 'EOS_DP_MU_VERSION','2.4.1' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -743,7 +743,7 @@ if(
 				unset( $eos_dp_paths[array_search( $plugin_iframe,$eos_dp_paths )] );
 			}
 		}
-		global $eos_dp_paths;
+		$GLOBALS['eos_dp_paths'] = $eos_dp_paths;
 		
 		if( !defined( 'EOS_DEACTIVE_PLUGINS' ) ) define( 'EOS_DEACTIVE_PLUGINS',true );
 		add_action( 'muplugins_loaded',function() {

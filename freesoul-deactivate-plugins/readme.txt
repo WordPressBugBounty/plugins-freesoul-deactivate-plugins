@@ -4,7 +4,7 @@ Contributors:      giuse
 Requires at least: 4.6
 Tested up to:      6.7
 Requires PHP:      7.2
-Stable tag:        2.4.0
+Stable tag:        2.4.1
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -158,8 +158,10 @@ Need a step-by-step guide? Read <a href="https://freesoul-deactivate-plugins.com
 == Changelog ==
 
 
-= 2.4.0 =
+= 2.4.1 =
 * Fixed: Logged users settings not working if testing cookie not set
+
+= 2.4.0 =
 * Fixed: theme deactivation not stable when saving the Singles Backend settings (PRO)
 * Added: FDP critical notifications to the Site Health Tests
 
