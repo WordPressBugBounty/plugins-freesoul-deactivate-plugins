@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.4.2
+  Version: 2.4.3
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -50,7 +50,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.4.2' );
+define( 'EOS_DP_MU_VERSION','2.4.3' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -308,7 +308,6 @@ if(
 				if( !defined( 'FDP_STANDARD_DISABLED' ) ){
 					define( 'FDP_STANDARD_DISABLED', true );
 				}
-				
 				// Don't run FDP on the URLs defined in wp-config.php.
 				return;
 			}
@@ -1694,7 +1693,7 @@ function eos_dp_comment(){
 	global $eos_dp_paths;
 	if( is_array( $eos_dp_paths ) ){
 		if( !empty( $eos_dp_paths ) ){
-			$comment = sprintf( 'Freesoul Deactivate Plugins has disabled %s plugins on this page.',count( array_unique( $eos_dp_paths ) ) );
+			$comment = sprintf( 'Freesoul Deactivate Plugins has disabled %s plugins on this page.',count( array_filter( array_unique( $eos_dp_paths ) ) ) );
 		}
 		else{
 			$comment = 'Freesoul Deactivate Plugins has disabled no plugins on this page.';

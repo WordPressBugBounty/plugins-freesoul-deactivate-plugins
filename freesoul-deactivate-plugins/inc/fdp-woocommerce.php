@@ -37,6 +37,42 @@ if ( ! function_exists( 'get_woocommerce_price_format' ) ) {
 	}
 }
 
+if ( ! function_exists( 'is_shop' ) ) {
+	/**
+	 * Is_shop - Returns true when viewing the product type archive (shop).
+	 *
+	 * @return bool
+	 */
+	function is_shop() {
+		return ( is_post_type_archive( 'product' ) || is_page( wc_get_page_id( 'shop' ) ) );
+	}
+}
+
+if ( ! function_exists( 'is_product_category' ) ) {
+
+	/**
+	 * Is_product_category - Returns true when viewing a product category.
+	 *
+	 * @param  string $term (default: '') The term slug your checking for. Leave blank to return true on any.
+	 * @return bool
+	 */
+	function is_product_category( $term = '' ) {
+		return is_tax( 'product_cat', $term );
+	}
+}
+
+if ( ! function_exists( 'is_product' ) ) {
+
+	/**
+	 * Is_product - Returns true when viewing a single product.
+	 *
+	 * @return bool
+	 */
+	function is_product() {
+		return is_singular( array( 'product' ) );
+	}
+}
+
 if ( ! function_exists( 'wc_get_page_id' ) ) {
 	/**
 	 * Wc_get_page_id - Returns page ID.

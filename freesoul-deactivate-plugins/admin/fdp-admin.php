@@ -585,30 +585,6 @@ function eos_dp_plugin_action_links( $action_links, $plugin ) {
 	return $action_links;
 }
 
-register_activation_hook(
-	EOS_DP_PLUGIN_BASE_NAME,
-	function() {
-		// It sends an ID to the FDP site to update the active number of installations. Thanks to the md5 function the FDP server will not be able to guess the home url, but it understands the plugin was deactivated on an anonymus site.
-		$args     = array(
-			'headers' => array( 'site_id' => md5( get_home_url() ) ),
-			'timeout' => 3,
-		);
-		$response = wp_remote_get( 'https://shop.freesoul-deactivate-plugins.com/stats/activated/', $args );
-	}
-);
-
-register_deactivation_hook(
-	EOS_DP_PLUGIN_BASE_NAME,
-	function() {
-		// It sends an ID to the FDP site to update the active number of installations. Thanks to the md5 function the FDP server will not be able to guess the home url, but it understands the plugin was deactivated on an anonymus site.
-		$args     = array(
-			'headers' => array( 'site_id' => md5( get_home_url() ) ),
-			'timeout' => 3,
-		);
-		$response = wp_remote_get( 'https://shop.freesoul-deactivate-plugins.com/stats/deactivated/', $args );
-	}
-);
-
 add_action(
 	'plugins_loaded',
 	function() {
