@@ -12,12 +12,15 @@ if ( isset( $_GET['page'] ) && 'cp-fdp' === $_GET['page'] ) {
 		}
 	);
 }
-add_action(
-	'admin_menu',
-	function() {
-		add_submenu_page( 'fdp_hidden_menu', esc_html__( 'Plugins', 'freesoul-deactivate-plugins' ), esc_html__( 'Plugins', 'freesoul-deactivate-plugins' ), apply_filters( 'eos_dp_settings_capability', 'activate_plugins' ), 'cp-fdp', 'eos_dp_code_profiler_page', 10 );
-	}
-);
+add_action( 'plugins_loaded', function() {
+	add_action(
+		'admin_menu',
+		function() {
+			// Add a hidden menu for the Code Profiler.
+			add_submenu_page( 'code-profiler', esc_html__( 'Plugins', 'freesoul-deactivate-plugins' ), esc_html__( 'Plugins', 'freesoul-deactivate-plugins' ), apply_filters( 'eos_dp_settings_capabilityi', 'activate_plugins' ), 'cp-fdp', 'eos_dp_code_profiler_page', 10 );
+		}
+	);
+} );
 
 function eos_dp_code_profiler_page() {
 	$active_plugins = eos_dp_active_plugins();
