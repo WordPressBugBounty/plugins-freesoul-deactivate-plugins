@@ -115,3 +115,8 @@ function eos_dp_on_post_transition_status( $post_id, $action ) {
 		// Transition from draft to public.
 	}
 }
+
+add_action( 'plugins_loaded', function() {
+	// Plugins can't be incompatible with the feature by default because they may be disabled by FDP.
+	add_filter( 'woocommerce_plugins_are_incompatible_with_feature_by_default', '__return_false' );
+} );

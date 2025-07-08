@@ -4,7 +4,7 @@ Contributors:      giuse
 Requires at least: 4.6
 Tested up to: 6.8
 Requires PHP:      7.2
-Stable tag:        2.4.5
+Stable tag:        2.4.6
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -158,10 +158,8 @@ Need a step-by-step guide? Read <a href="https://freesoul-deactivate-plugins.com
 == Changelog ==
 
 
-= 2.4.5 =
-* Fixed: False warning in the FDP backend pages
-
-
+= 2.4.6 =
+* Fixed: False warning about the WooCOmmerce compatibility in the admin pages
 
 
 
