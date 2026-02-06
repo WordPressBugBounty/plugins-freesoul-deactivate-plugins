@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Menu Items Fronentd URLs.
+ * Template Menu Items Frontend URLs.
 
  * @package Freesoul Deactivate Plugins
  */

@@ -83,10 +83,16 @@ class FDP_Custom_Rows_Page extends Eos_Fdp_Matrix_Page {
 	<h2><?php esc_html_e( 'Uncheck the plugins you want to disable depending on the URL', 'freesoul-deactivate-plugins' ); ?></h2>
 		<h2><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'It will work only for the FRONTEND', 'freesoul-deactivate-plugins' ); ?></h2>
 		<div class="eos-dp-explanation" style="margin-bottom:48px">
-			<p><?php esc_html_e( 'Use the star "*" as replacement of groups of characters.', 'freesoul-deactivate-plugins' ); ?></p>
-			<p><?php echo wp_kses_post( printf( __( 'E.g. %1$s*example/ will match URLs as %2$s/an-example/, %3$s/another-example/...', 'freesoul-deactivate-plugins' ), esc_url( $this->home_url ), esc_url( $this->home_url ), esc_url( $this->home_url ) ) ); ?></p>
-			<p><?php echo wp_kses_post( sprintf( __( 'You can use these options to disable plugins by URL query arguments. E.g. *?example-paramameter=true* will match URLS as %1$s?example-paramameter=true, %2$s/page-example/?example-paramameter=true...', 'freesoul-deactivate-plugins' ), esc_url( $this->home_url ), esc_url( $this->home_url ) ) ); ?></p>
-			<p><?php printf( esc_html__( 'Use the pattern %s to match the homepage URL with whatever query arguments', 'freesoul-deactivate-plugins' ), '[home]?*' ); ?></p>
+			<p><?php esc_html_e( 'Use the asterisk "*" as a wildcard to represent a string of characters.', 'freesoul-deactivate-plugins' ); ?></p>
+			<p><?php 
+			// translators: 1: Home URL, 2: Home URL, 3: Home URL.
+			echo wp_kses_post( printf( __( 'E.g. %1$s*example/ will match URLs as %2$s/an-example/, %3$s/another-example/...', 'freesoul-deactivate-plugins' ), esc_url( $this->home_url ), esc_url( $this->home_url ), esc_url( $this->home_url ) ) ); ?></p>
+			<p><?php 
+			// translators: 1: Home URL, 2: Home URL.
+			echo wp_kses_post( sprintf( __( 'You can use these options to disable plugins by URL query arguments. E.g. *?example-parameter=true* will match URLs as %1$s?example-parameter=true, %2$s/page-example/?example-parameter=true...', 'freesoul-deactivate-plugins' ), esc_url( $this->home_url ), esc_url( $this->home_url ) ) ); ?></p>
+			<p><?php 
+			// translators: %s is the pattern.
+			printf( esc_html__( 'Use the pattern %s to match the homepage URL with whatever query arguments', 'freesoul-deactivate-plugins' ), '[home]?*' ); ?></p>
 		</div>
 		<?php
 	}
@@ -112,7 +118,7 @@ class FDP_Custom_Rows_Page extends Eos_Fdp_Matrix_Page {
 			?>
 		">
 		<td class="eos-dp-post-name-wrp">
-		  <input type="text" class="eos-dp-row-notes" placeholder="<?php esc_attr_e( 'Write here your notes for this row','freesoul-deactivate-plugins-pro' ); ?>" value="<?php echo esc_attr( $note ); ?>"/>
+		  <input type="text" class="eos-dp-row-notes" placeholder="<?php esc_attr_e( 'Write your notes here for this row','freesoul-deactivate-plugins' ); ?>" value="<?php echo esc_attr( $note ); ?>"/>
 		  <span class="eos-dp-not-active-wrp"><input title="<?php esc_attr_e( 'Activate/deactivate all plugins for this URL', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
 		  <span class="dashicons dashicons-move" title="<?php esc_attr_e( 'Move it up to assign higher priority', 'freesoul-deactivate-plugins' ); ?>"></span>
 			  <?php if ( defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE ) { ?>
@@ -120,15 +126,17 @@ class FDP_Custom_Rows_Page extends Eos_Fdp_Matrix_Page {
 		  <?php } ?>
 		  <input type="text" class="eos-dp-url-input" title="<?php echo isset( $urlA['url'] ) ? esc_attr( $urlA['url'] ) : ''; ?>" placeholder="<?php echo wp_kses_post( sprintf( apply_filters( 'fdp_custom_row_placeholder', __( 'Write here the URL', 'freesoul-deactivate-plugins' ) ), esc_url( $this->home_url ) ) ); ?>" value="<?php echo isset( $urlA['url'] ) ? esc_attr( $urlA['url'] ) : ''; ?>" />
 			  <?php if ( isset( $urlA['needs_url'] ) && absint( $urlA['needs_url'] ) > 0 ) { ?>
-		  <span class="eos-dp-ncu-wrn dashicons dashicons-warning" title="<?php echo wp_kses_post( sprintf( __( 'This URL covers the post ID %s. It was not possibe to manage it with the Singles settings.', 'freesoul-deactivate-plugins' ), esc_html( $urlA['needs_url'] ) ) ); ?>"></span>
+		  <span class="eos-dp-ncu-wrn dashicons dashicons-warning" title="<?php echo 
+		  // translators: %s is the post ID.
+		  wp_kses_post( sprintf( __( 'This URL applies to post ID %s. It could not be managed via the "Singles" settings.', 'freesoul-deactivate-plugins' ), esc_html( $urlA['needs_url'] ) ) ); ?>"></span>
 		  <?php } ?>
 		  <span class="eos-dp-delete-url dashicons dashicons-trash hover fdp-has-tooltip" title="<?php esc_attr_e( 'Delete', 'freesoul-deactivate-plugins' ); ?>">
 		  <div class="fdp-tooltip"><?php esc_html_e( 'Delete this row', 'freesoul-deactivate-plugins' ); ?></div>
 		</span>
 		  &nbsp;&nbsp;<a class="eos-dp-copy fdp-has-tooltip" href="#"><span class="dashicons dashicons-admin-page" style="font-size:30px"></span>
-		  <div class="fdp-tooltip"><?php esc_html_e( 'Copy this row settings', 'freesoul-deactivate-plugins' ); ?></div></a>
+		  <div class="fdp-tooltip"><?php esc_html_e( 'Copy settings for this row', 'freesoul-deactivate-plugins' ); ?></div></a>
 		  &nbsp;&nbsp;<a class="eos-dp-paste fdp-has-tooltip" href="#"><span class="dashicons dashicons-category" style="font-size:30px"></span>
-		  <div class="fdp-tooltip"><?php esc_html_e( 'Paste last copied row settings', 'freesoul-deactivate-plugins' ); ?></div></a>
+		  <div class="fdp-tooltip"><?php esc_html_e( 'Paste previously copied row settings', 'freesoul-deactivate-plugins' ); ?></div></a>
 		  <span class="eos-dp-x-space"></span>
 		</td>
 			  <?php

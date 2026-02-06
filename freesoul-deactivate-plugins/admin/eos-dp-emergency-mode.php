@@ -113,7 +113,7 @@ if ( ! $called ) {
 			'A plugin',
 			'The theme',
 			'WordPress Core',
-			'An mu-plugin (a file included in wp-content/mu-plugiins)',
+			'An mu-plugin (a file included in wp-content/mu-plugins)',
 			'A dropin plugin (a file included in wp-content)',
 		);
 		if ( file_exists( ABSPATH . '/.htaccess' ) ) {

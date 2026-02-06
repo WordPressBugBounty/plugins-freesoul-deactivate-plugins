@@ -25,7 +25,7 @@ class FDP_Site_Health {
         $rewrite_rules_warning = get_site_transient( 'fdp_admin_notice_rewrite_rules' );
         if ( $rewrite_rules_warning ) {
             $tests['direct']['fdp_rewrite_rules'] = array(
-                'label' => esc_html__( 'One of your plugins or the theme is flushing the rewrite rules in a not proper way.', 'freesoul-deactivate-plugins' ),
+                'label' => esc_html__( 'One of your plugins or your theme is flushing rewrite rules incorrectly.', 'freesoul-deactivate-plugins' ),
                 'test'  => array( $this, 'get_rewrite_rules_test' )
             );
         }
@@ -34,7 +34,8 @@ class FDP_Site_Health {
             foreach ( $GLOBALS['fdp_all_plugins'] as $active_plugin ) {
                 if ( file_exists( EOS_DP_PLUGIN_DIR . '/inc/plugin-conflicts/' . dirname( $active_plugin ) . '.php' ) ) {
                     require_once EOS_DP_PLUGIN_DIR . '/inc/plugin-conflicts/' . dirname( $active_plugin ) . '.php';
-                    $conflicts   .= sprintf( __( 'Another user had an issue with the plugin %1$s. Read this %2$ssupport thread%3$s for more details. It may help you to avoid the same issue on your website.', 'freesoul-deactivate-plugins' ), esc_attr( strtoupper( str_replace( '-', ' ', dirname( $active_plugin ) ) ) ), '<a title="' . __( 'Link to support thread', 'freesoul-deactivate-plugins' ) . '" href="' . esc_url( $support_thread_url ) . '" target="_blank" rel="noopener">', '</a>' );
+                    // translators: %1$s is the plugin name, %2$s is the support thread link.
+                    $conflicts   .= sprintf( __( 'Another user had an issue with the plugin %1$s. Read this %2$ssupport thread%3$s for more details. This may help you avoid the same issue on your website.', 'freesoul-deactivate-plugins' ), esc_attr( strtoupper( str_replace( '-', ' ', dirname( $active_plugin ) ) ) ), '<a title="' . __( 'Link to support thread', 'freesoul-deactivate-plugins' ) . '" href="' . esc_url( $support_thread_url ) . '" target="_blank" rel="noopener">', '</a>' );
                 }
             }
             if( ! empty( $conflicts ) ) {
@@ -51,12 +52,13 @@ class FDP_Site_Health {
 
     public function get_rewrite_rules_test() {
         return array(     
-            'label'			=> esc_html__( 'One of your plugins or the theme is flushing the rewrite rules in a not proper way.', 'freesoul-deactivate-plugins' ),
+            'label'			=> esc_html__( 'One of your plugins or your theme is flushing rewrite rules incorrectly.', 'freesoul-deactivate-plugins' ),
             'status'		=> 'critical',
+            // translators: %s is the link to the notification page.
             'description'		=> sprintf( '<p><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></p>', esc_url( admin_url( 'admin.php?page=eos_dp_menu&open-notification=fdp-rewrite_rules-notice' ) ), esc_html__( 'Read the FDP notification for more details', 'freesoul-deactivate-plugins' ) ),
             'test'			=> 'fdp_rewrite_rules',
             'badge'			=> array(
-                  'label'	=> esc_html__( 'Performance' ),
+                  'label'	=> esc_html__( 'Performance', 'freesoul-deactivate-plugins' ),
                   'color'	=> 'blue'
                 )
             );

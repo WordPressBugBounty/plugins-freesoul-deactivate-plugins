@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-// Callback for deactivate by archive settings page.
+// Callback for the deactivate by archive settings page.
 function eos_dp_by_archive_callback() {
 	wp_nonce_field( 'eos_dp_key', 'eos_dp_key' );
 	wp_nonce_field( 'eos_dp_pro_gpsi_test', 'eos_dp_pro_gpsi_test' );

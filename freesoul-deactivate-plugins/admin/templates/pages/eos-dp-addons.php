@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-// Calback function for the FDP Add-ons page.
+// Callback function for the FDP Add-ons page.
 function eos_dp_addons_callback() {
 	$addons = array(
 		'freesoul-deactivate-plugins-pro' => array(

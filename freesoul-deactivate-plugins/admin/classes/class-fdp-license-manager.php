@@ -1,6 +1,6 @@
 <?php
 /**
- * License manager .
+ * License manager.
 
  * @package Freesoul Deactivate Plugins
  */
@@ -198,13 +198,14 @@ if ( ! class_exists( 'FDPProLicenseManager' ) ) {
 		}
 		function PluginUpdate( $transient ) {
 			$response = $this->__plugin_updateInfo();
-			if ( ! empty( $response->plugin ) ) {
+			if ( $response && isset( $response->plugin ) && ! empty( $response->plugin ) && $transient ) {
 				if ( $this->isTheme ) {
 					$theme_data = wp_get_theme();
 					$index_name = '' . $theme_data->get_stylesheet();
 				} else {
 					$index_name = $response->plugin;
 				}
+
 				if ( ! empty( $response ) && version_compare( $this->version, $response->new_version, '<' ) ) {
 					unset( $response->download_link );
 					unset( $response->IsStoppedUpdate );
@@ -218,6 +219,7 @@ if ( ! class_exists( 'FDPProLicenseManager' ) ) {
 						unset( $transient->response[ $index_name ] );
 					}
 				}
+
 			}
 			return $transient;
 		}

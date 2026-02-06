@@ -36,7 +36,7 @@ function eos_dp_add_meta_box() {
 }
 
 add_action( 'add_meta_boxes', 'eos_dp_add_meta_box' );
-// Add metabox to deactivate external plugins on specific pages.
+// Adds metabox to deactivate external plugins on specific pages.
 function eos_dp_meta_box_callback( $post ) {
 	$params = array(
 		'post_id'    => $post->ID,
@@ -44,7 +44,7 @@ function eos_dp_meta_box_callback( $post ) {
 		'html_url'   => EOS_DP_PLUGIN_URL . '/inc/html/',
 		'is_metabox' => 'true',
 	);
-	wp_enqueue_script( 'eos-dp-backend-single', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-metaboxes-5.0.2.js', array( 'jquery' ), null, true );
+	wp_enqueue_script( 'eos-dp-backend-single', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-metaboxes-5.0.2.js', array( 'jquery' ), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Version is set to null to avoid caching.
 	wp_localize_script( 'eos-dp-backend-single', 'eos_dp_js', $params );
 	wp_nonce_field( 'eos_dp_meta_boxes', 'eos_dp_meta_boxes_nonce' );
 	wp_nonce_field( 'eos_dp_setts', 'eos_dp_setts' );
@@ -148,10 +148,16 @@ function eos_dp_meta_box_callback( $post ) {
 			<input class="eos-dp-lock-post" type="checkbox" />
 		</span>
 		<input type="hidden" id="eos_dp_single_locked" name="eos_dp_single_locked" value="<?php echo ' eos-post-locked' === $locked ? 'locked' : 'unlocked'; ?>" />
-		<p class="fdp-single-inactive-msg right"><?php echo wp_kses_post( sprintf( __( 'Plugins deactivated based on the %1$sPost Types settings%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'admin.php?page=eos_dp_by_post_type' ) ) . '" target="_fdp_post_types">', '</a>' ) ); ?></p>
-		<p class="fdp-single-active-msg right"><?php wp_kses_post( sprintf( __( 'Plugins deactivated based on the %1$sSingles settings%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'admin.php?page=eos_dp_menu' ) ) . '" target="_fdp_singles">', '</a>' ) ); ?></p>
+		<p class="fdp-single-inactive-msg right"><?php 
+		// translators: 1: open anchor tag, 2: close anchor tag.
+		echo wp_kses_post( sprintf( __( 'Plugins deactivated based on the %1$sPost Types settings%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'admin.php?page=eos_dp_by_post_type' ) ) . '" target="_fdp_post_types">', '</a>' ) ); ?></p>
+		<p class="fdp-single-active-msg right"><?php 
+		// translators: 1: open anchor tag, 2: close anchor tag.
+		echo wp_kses_post( sprintf( __( 'Plugins are deactivated based on the %1$sSingles settings%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'admin.php?page=eos_dp_menu' ) ) . '" target="_fdp_singles">', '</a>' ) ); ?></p>
 		<?php } else { ?>
-		<p class="fdp-single-active-msg right"><?php wp_kses_post( sprintf( __( 'Plugins deactivated based on the %1$sCustom URLs settings%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'admin.php?page=eos_dp_url&pattern=' . urlencode( $query_pattern ) ) ) . '" target="_fdp_urls">', '</a>' ) ); ?></p>
+		<p class="fdp-single-active-msg right"><?php 
+		// translators: 1: open anchor tag, 2: close anchor tag.
+		echo wp_kses_post( sprintf( __( 'Plugins are deactivated based on the %1$sCustom URLs settings%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'admin.php?page=eos_dp_url&pattern=' . urlencode( $query_pattern ) ) ) . '" target="_fdp_urls">', '</a>' ) ); ?></p>
 		<?php } ?>
 	</div>
 	<div  class="eos-dp-before-metabox-actions"><?php do_action( 'eos_dp_metabox_before_action_buttons' ); ?></div>
@@ -160,10 +166,10 @@ function eos_dp_meta_box_callback( $post ) {
 		$themes_list = eos_dp_active_themes_list( false );
 		if ( $themes_list ) {
 			?>
-		<a title="<?php esc_attr_e( 'Select a different Theme ONLY FOR PREVIEW', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-theme-sel" style="border:1px solid #253042 !important"><span class="dashicons dashicons-admin-appearance" style="color:#253042"></span><?php echo $themes_list; //phpcs:ignore WordPress.Security.EscapeOutput -- The escaping was already applied before returning the output of eos_dp_active_themes_list(). ?></a>
+		<a title="<?php esc_attr_e( 'Select a different theme (PREVIEW ONLY)', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-theme-sel" style="border:1px solid #253042 !important"><span class="dashicons dashicons-admin-appearance" style="color:#253042"></span><?php echo $themes_list; //phpcs:ignore WordPress.Security.EscapeOutput -- The escaping was already applied before returning the output of eos_dp_active_themes_list(). ?></a>
 		<?php } ?>
-		<a data-page_speed_insights="false" title="<?php esc_attr_e( 'Preview the page loading plugins according the settings you see here', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-preview" oncontextmenu="return false;" href="<?php echo esc_url( wp_nonce_url( add_query_arg( $args, get_permalink( $post->ID ) ), 'eos_dp_preview', 'eos_dp_preview' ) ); ?>" target="_blank"><span class="dashicons dashicons-search"></span>
-		<a data-page_speed_insights="false" title="<?php esc_attr_e( 'Preview the page loading plugins and the theme according the settings you see here and disable JavaScript esecution', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-preview" oncontextmenu="return false;" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array_merge( $args, array( 'js' => 'off' ) ), get_permalink( $post->ID ) ), 'eos_dp_preview', 'eos_dp_preview' ) ); ?>" target="_blank">
+		<a data-page_speed_insights="false" title="<?php esc_attr_e( 'Preview the page using the plugin settings shown here', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-preview" oncontextmenu="return false;" href="<?php echo esc_url( wp_nonce_url( add_query_arg( $args, get_permalink( $post->ID ) ), 'eos_dp_preview', 'eos_dp_preview' ) ); ?>" target="_blank"><span class="dashicons dashicons-search"></span>
+		<a data-page_speed_insights="false" title="<?php esc_attr_e( 'Preview the page, loading plugins and the theme according to the settings you see here, and disable JavaScript execution', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-preview" oncontextmenu="return false;" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array_merge( $args, array( 'js' => 'off' ) ), get_permalink( $post->ID ) ), 'eos_dp_preview', 'eos_dp_preview' ) ); ?>" target="_blank">
 			<span class="dashicons dashicons-search">
 				<span class="eos-dp-no-js">JS</span>
 			</span>

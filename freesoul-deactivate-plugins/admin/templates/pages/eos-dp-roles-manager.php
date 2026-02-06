@@ -7,16 +7,20 @@
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-// Roles manager settings callback.
+/**
+ * Roles Manager Callback
+ *
+ * @return void
+ */
 function eos_dp_pro_roles_manager_callback() {
 	if ( ! current_user_can( 'activate_plugins' ) && function_exists( 'eos_dp_active_plugins' ) ) {
 		?>
-		<h2><?php esc_html_e( 'Sorry, you have not the right for this page', 'freesoul-deactivate-plugins' ); ?></h2>
+		<h2><?php esc_html_e( 'Sorry, you do not have permission to access this page.', 'freesoul-deactivate-plugins' ); ?></h2>
 		<?php
 		return;
 	}
-	wp_enqueue_script( 'fdp-pro-settings', EOS_DP_SETTINGS_JS_URL, array( 'eos-dp-backend' ), null, true );
-	wp_enqueue_script( 'fdp-pro-roles-manager', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-roles-manager.js', array( 'eos-dp-backend' ),null, true );
+	wp_enqueue_script( 'fdp-pro-settings', EOS_DP_SETTINGS_JS_URL, array( 'eos-dp-backend' ), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Version is set to null to avoid caching.
+	wp_enqueue_script( 'fdp-pro-roles-manager', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-roles-manager.js', array( 'eos-dp-backend' ),null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Version is set to null to avoid caching.
 	wp_localize_script(
 		'fdp-pro-settings',
 		'fdp_setts_js',
@@ -64,21 +68,21 @@ function eos_dp_pro_roles_manager_callback() {
 	</style>
 	<section id="eos-dp-roles-manager">
 		<div class="eos-dp-margin-top-32">
-			<h2><?php esc_html_e( 'Decide who can see Freesoul Deactivate Plugins.', 'eos-dp-pro' ); ?></h2>
+			<h2><?php esc_html_e( 'Decide who can see Freesoul Deactivate Plugins.', 'freesoul-deactivate-plugins' ); ?></h2>
 			<div id="eos-dp-wrp">
 				<div class="eos-dp-margin-top-32">
 				<table id="fdp-roles" class="wp-list-table widefat fixed striped table-view-list" data-opt_name="roles">
 				<thead>
 					<tr>
-						<th><span class="dashicons dashicons-hammer"></span><?php esc_html_e( 'Role', 'eos-dp-pro' ); ?></th>
-						<th><span class="dashicons dashicons-admin-generic"></span><?php esc_html_e( 'FDP Settings', 'eos-dp-pro' ); ?></th>
-						<th><span class="dashicons dashicons-admin-post"></span><?php esc_html_e( 'Single Post Settings', 'eos-dp-pro' ); ?></th>
+						<th><span class="dashicons dashicons-hammer"></span><?php esc_html_e( 'Role', 'freesoul-deactivate-plugins' ); ?></th>
+						<th><span class="dashicons dashicons-admin-generic"></span><?php esc_html_e( 'FDP Settings', 'freesoul-deactivate-plugins' ); ?></th>
+						<th><span class="dashicons dashicons-admin-post"></span><?php esc_html_e( 'Single Post Settings', 'freesoul-deactivate-plugins' ); ?></th>
 						<th>
 							<span class="eos-dp-plugin-visibility dashicons dashicons-admin-plugins">
 								<span class="dashicons dashicons-visibility"></span>
 								<span class="dashicons dashicons-hidden"></span>
 							</span>
-							<?php esc_html_e( 'Visibility in the page of plugins', 'eos-dp-pro' ); ?>
+							<?php esc_html_e( 'Visibility in the plugins page', 'freesoul-deactivate-plugins' ); ?>
 						</th>
 					</tr>
 				</thead>
@@ -105,15 +109,15 @@ function eos_dp_pro_roles_manager_callback() {
 					<table id="fdp-administrators" class="wp-list-table widefat fixed striped table-view-list" data-opt_name="other_admins">
 			  <thead>
 							<tr>
-				  <th><span class="dashicons dashicons-admin-users"></span><?php esc_html_e( 'Administrators', 'eos-dp-pro' ); ?></th>
-				  <th><span class="dashicons dashicons-admin-generic"></span><?php esc_html_e( 'FDP Settings', 'eos-dp-pro' ); ?></th>
-				  <th><span class="dashicons dashicons-admin-post"></span><?php esc_html_e( 'Single Post Settings', 'eos-dp-pro' ); ?></th>
+				  <th><span class="dashicons dashicons-admin-users"></span><?php esc_html_e( 'Administrators', 'freesoul-deactivate-plugins' ); ?></th>
+				  <th><span class="dashicons dashicons-admin-generic"></span><?php esc_html_e( 'FDP Settings', 'freesoul-deactivate-plugins' ); ?></th>
+				  <th><span class="dashicons dashicons-admin-post"></span><?php esc_html_e( 'Single Post Settings', 'freesoul-deactivate-plugins' ); ?></th>
 								<th>
 									<span class="eos-dp-plugin-visibility dashicons dashicons-admin-plugins">
 										<span class="dashicons dashicons-visibility"></span>
 										<span class="dashicons dashicons-hidden"></span>
 									</span>
-									<?php esc_html_e( 'Visibility in the page of plugins', 'eos-dp-pro' ); ?></th>
+									<?php esc_html_e( 'Visibility in the plugins page', 'freesoul-deactivate-plugins' ); ?></th>
 				</tr>
 			  </thead>
 			  <tbody>
@@ -124,9 +128,10 @@ function eos_dp_pro_roles_manager_callback() {
 						continue;
 					}
 					$main_admin  = $user->user_email === $admin_email;
-					$switch_url  = $admin_email !== $userObj->user_email && $current_user->user_login !== $userObj->user_login && class_exists( 'user_switching' ) ? ' <a href="' . esc_url( add_query_arg( array( 'redirect_to' => urlencode( user_switching::current_url() ) ), user_switching::switch_to_url( $userObj ) ) ) . '">' . sprintf( esc_html__( 'Switch to %s', 'eos-dp-pro' ), $user->user_login ) . '</a>' : '';
+					// translators: %s is the user login.
+					$switch_url  = $admin_email !== $userObj->user_email && $current_user->user_login !== $userObj->user_login && class_exists( 'user_switching' ) ? ' <a href="' . esc_url( add_query_arg( array( 'redirect_to' => urlencode( user_switching::current_url() ) ), user_switching::switch_to_url( $userObj ) ) ) . '">' . sprintf( esc_html__( 'Switch to %s', 'freesoul-deactivate-plugins' ), $user->user_login ) . '</a>' : '';
 					$chks_values = ! $main_admin && isset( $other_admins[ strtolower( $user->user_login ) ] ) ? $other_admins[ sanitize_key( strtolower( $user->user_login ) ) ] : array( true, true, true );
-					$you         = $current_user->user_email === $user->user_email ? ' ' . esc_html__( '(You)', 'eos-dp-pro ' ) : '';
+					$you         = $current_user->user_email === $user->user_email ? ' ' . esc_html__( '(You)', 'freesoul-deactivate-plugins' ) : '';
 					if ( '' !== $you ) {
 						$chks_values[0] = true;
 					}
@@ -135,7 +140,7 @@ function eos_dp_pro_roles_manager_callback() {
 				  <td id="fdp-role-<?php echo esc_attr( $role_slug ); ?>" class="fdp-role"><span><?php echo get_avatar( $user->user_email, 32 ); ?></span><span>
 											  <?php
 												echo esc_html( $user->user_login );
-												echo $main_admin ? ' ' . esc_html__( '(Main Administrator)', 'eos-dp-pro' ) : '';
+												echo $main_admin ? ' ' . esc_html__( '(Main Administrator)', 'freesoul-deactivate-plugins' ) : '';
 												echo esc_html( $you );
 												echo wp_kses_post( $switch_url );
 												?>
@@ -148,7 +153,9 @@ function eos_dp_pro_roles_manager_callback() {
 			  </tbody>
 					</table>
 					<?php if ( ! class_exists( 'user_switching' ) ) { ?>
-					<p><?php printf( esc_html__( 'If you want to check what other users see in the backend, try the plugin %s' ), '<a href="' . esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=user-switching' ) ) . '" target="_blank">Switching User</a>' ); ?></p>
+					<p><?php 
+					// translators: %s is the plugin name.
+					printf( esc_html__( 'If you want to check what other users see in the backend, try the plugin %s', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=user-switching' ) ) . '" target="_blank">User Switching</a>' ); ?></p>
 					<?php } ?>
 				</div>
 			</div>

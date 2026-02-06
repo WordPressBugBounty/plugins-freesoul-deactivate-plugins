@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Menu Items Miscellaneus.
+ * Template Menu Items Miscellaneous.
 
  * @package Freesoul Deactivate Plugins
  */

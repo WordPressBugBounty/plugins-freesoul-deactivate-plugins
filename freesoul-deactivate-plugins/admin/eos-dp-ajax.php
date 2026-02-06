@@ -138,7 +138,7 @@ function eos_dp_save_post_type_settings() {
 		if ( ! is_array( $opts ) ) {
 			$opts = array();
 		}
-		$eos_dp_pt_setts = json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['eos_dp_pt_setts'] ) ), true );
+		$eos_dp_pt_setts = json_decode( str_replace( '\\', '', sanitize_text_field( wp_unslash( $_POST['eos_dp_pt_setts'] ) ) ), true );
 
 		foreach ( $eos_dp_pt_setts as $post_type => $data ) {
 			$opts_post_type                     = isset( $opts[ sanitize_key( $post_type ) ] ) ? $opts[ sanitize_key( $post_type ) ] : false;
@@ -159,7 +159,7 @@ add_action( 'wp_ajax_eos_dp_save_url_settings', 'eos_dp_save_url_settings' );
 function eos_dp_save_url_settings() {
 	if ( isset( $_POST['page_slug'] ) && isset( $_POST['setts'] ) && ! empty( $_POST['setts'] ) ) {
 		eos_dp_check_intentions_and_rights( sanitize_key( $_POST['page_slug'] ) . '_setts' );
-		$rows  = json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['setts'] ) ), true );
+		$rows  = json_decode( str_replace( '\\', '', sanitize_text_field( wp_unslash( $_POST['setts'] ) ) ), true );
 		$n     = 0;
 		$urls  = array();
 		$setts = array();
@@ -185,13 +185,13 @@ function eos_dp_save_url_settings() {
 				)
 			);
 		}
-		eos_dp_update_option( sanitize_key( str_replace( 'eos_dp_', 'eos_dp_by_', sanitize_text_field( $_POST['page_slug'] ) ) ), $setts );
+		eos_dp_update_option( sanitize_key( str_replace( 'eos_dp_', 'eos_dp_by_', sanitize_text_field( wp_unslash( $_POST['page_slug'] ) ) ) ), $setts );
 		if ( isset( $_POST['theme_activation'] ) ) {
-			eos_dp_update_option( 'eos_dp_by_rest_api_theme', json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['theme_activation'] ) ), true ) );
+			eos_dp_update_option( 'eos_dp_by_rest_api_theme', json_decode( str_replace( '\\', '', sanitize_text_field( wp_unslash( $_POST['theme_activation'] ) ) ), true ) );
 		}
 		eos_dp_update_option( 'eos_dp_new_plugin_activated', false );
 		if( isset( $_POST['notes'] ) ) {
-			$notes = json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['notes'] ) ), true );
+			$notes = json_decode( str_replace( '\\', '', sanitize_text_field( wp_unslash( $_POST['notes'] ) ) ), true );
 			$notes_md5 = array();
 			foreach( $notes as $key => $value ) {
 				$notes_md5[md5( $key )] = str_replace( get_home_url(), '[home]', sanitize_text_field( $value ) );
@@ -210,7 +210,7 @@ function eos_dp_save_one_col_settings() {
 	if ( isset( $_POST['opt_name'] ) ) {
 		eos_dp_check_intentions_and_rights( 'eos_dp_' . sanitize_key( $_POST['opt_name'] ) . '_setts' );
 		if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
-			$opts = array_filter( explode( ',', sanitize_text_field( $_POST['data'] ) ) );
+			$opts = array_filter( explode( ',', sanitize_text_field( wp_unslash( $_POST['data'] ) ) ) );
 			eos_dp_update_option( 'eos_dp_' . sanitize_key( $_POST['opt_name'] ), $opts );
 			echo 1;
 			die();
@@ -224,7 +224,7 @@ add_action( 'wp_ajax_eos_dp_save_admin_settings', 'eos_dp_save_admin_settings' )
 // Saves admin options.
 function eos_dp_save_admin_settings() {
 	eos_dp_check_intentions_and_rights( 'eos_dp_admin_setts' );
-	$opts = json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['eos_dp_admin_setts'] ) ), true );
+	$opts = json_decode( str_replace( '\\', '', sanitize_text_field( wp_unslash( $_POST['eos_dp_admin_setts'] ) ) ), true );
 	eos_dp_update_option( 'eos_dp_new_plugin_activated', false );
 	$from_db = eos_dp_get_option( 'eos_dp_admin_setts' );
 	foreach ( $opts as $k => $v ) {
@@ -233,7 +233,7 @@ function eos_dp_save_admin_settings() {
 	eos_dp_update_option( 'eos_dp_admin_setts', array_map( 'sanitize_text_field', $from_db ) );
 	if ( isset( $_POST['theme_activation'] ) ) {
 		$theme_activation_opts = eos_dp_get_option( 'eos_dp_admin_theme' );
-		$theme_activation_post = json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['theme_activation'] ) ), true );
+		$theme_activation_post = json_decode( str_replace( '\\', '', sanitize_text_field( wp_unslash( $_POST['theme_activation'] ) ) ), true );
 		foreach( $theme_activation_post as $key => $value ) {
 			$theme_activation_opts[sanitize_text_field( $key )] = $value ? 1 : false;
 		}
@@ -261,7 +261,7 @@ function eos_dp_one_place_save() {
 		exit;
 	}
 	eos_dp_check_intentions_and_rights( sanitize_key( $_POST['page_slug'] ) . '_nonce' );
-	eos_dp_update_option( sanitize_key( $_POST['page_slug'] ), stripslashes( str_replace( get_home_url(), '[home]', sanitize_text_field( $_POST['data'] ) ) ) );
+	eos_dp_update_option( sanitize_key( $_POST['page_slug'] ), stripslashes( str_replace( get_home_url(), '[home]', sanitize_text_field( wp_unslash( $_POST['data'] ) ) ) ) );
 	echo 1;
 	die();
 	exit;
@@ -271,7 +271,7 @@ add_action( 'wp_ajax_eos_dp_save_integration_actions_settings', 'eos_dp_save_int
 // Saves integration actions options.
 function eos_dp_save_integration_actions_settings() {
 	eos_dp_check_intentions_and_rights( 'eos_dp_integration_actions_setts' );
-	$opts = json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['integration_plugins'] ) ), true );
+	$opts = json_decode( str_replace( '\\', '', sanitize_text_field( wp_unslash( $_POST['integration_plugins'] ) ) ), true );
 	eos_dp_update_option( 'eos_dp_new_plugin_activated', false );
 	$integration_actions = eos_dp_get_option( 'eos_dp_integration_actions' );
 	if ( ! is_array( $integration_actions ) ) {
@@ -286,7 +286,7 @@ function eos_dp_save_integration_actions_settings() {
 		if ( ! is_array( $integration_actions_theme ) ) {
 			$integration_actions_theme = array();
 		}
-		$opts = json_decode( str_replace( '\\', '', sanitize_text_field( $_POST['integration_theme'] ) ), true );
+		$opts = json_decode( str_replace( '\\', '', sanitize_text_field( wp_unslash( $_POST['integration_theme'] ) ) ), true );
 		foreach ( $opts as $action => $value ) {
 			$integration_actions_theme[ $action ] = sanitize_text_field( $value );
 		}
@@ -321,8 +321,8 @@ function eos_dp_preview() {
 	$nonceStr = isset( $_POST['admin_page'] ) ? 'eos_dp_admin_setts' : $nonceStr;
 	eos_dp_check_intentions_and_rights( $nonceStr );
 	if ( isset( $_POST['plugin_path'] ) && isset( $_POST['microtime'] ) ) {
-		$microtime = sanitize_text_field( $_POST['microtime'] );
-		if ( isset( $_POST['admin_page'] ) && esc_url( sanitize_text_field( $_POST['admin_page'] ) ) === $_POST['admin_page'] ) {
+		$microtime = sanitize_text_field( wp_unslash( $_POST['microtime'] ) );
+		if ( isset( $_POST['admin_page'] ) && esc_url( sanitize_text_field( wp_unslash( $_POST['admin_page'] ) ) ) === sanitize_text_field( wp_unslash( $_POST['admin_page'] ) ) ) {
 			$admin_page_key = sanitize_key(
 				str_replace(
 					'.',
@@ -330,23 +330,23 @@ function eos_dp_preview() {
 					str_replace(
 						'admin.php?page=',
 						'eos_dp_tlp-',
-						str_replace( admin_url(), '', sanitize_text_field( $_POST['admin_page'] ) )
+						str_replace( admin_url(), '', sanitize_text_field( wp_unslash( $_POST['admin_page'] ) ) )
 					)
 				)
 			);
-			set_transient( 'fdp_test_' . $admin_page_key . '_' . $microtime, sanitize_text_field( $_POST['plugin_path'] ), 60 );
+			set_transient( 'fdp_test_' . $admin_page_key . '_' . $microtime, sanitize_text_field( wp_unslash( $_POST['plugin_path'] ) ), 60 );
 		}
 		if ( isset( $_POST['post_id'] ) && absint( $_POST['post_id'] ) > 0 ) {
-			set_transient( 'fdp_test_' . sanitize_key( $_POST['post_id'] ) . '_' . $microtime, sanitize_text_field( $_POST['plugin_path'] ), 60 );
+			set_transient( 'fdp_test_' . sanitize_key( $_POST['post_id'] ) . '_' . $microtime, sanitize_text_field( wp_unslash( $_POST['plugin_path'] ) ), 60 );
 		}
 		if ( isset( $_POST['post_type'] ) && '' !== $_POST['post_type'] ) {
-			set_transient( 'fdp_test_' . sanitize_key( $_POST['post_type'] ) . '_' . $microtime, sanitize_text_field( $_POST['plugin_path'] ), 60 );
+			set_transient( 'fdp_test_' . sanitize_key( $_POST['post_type'] ) . '_' . $microtime, sanitize_text_field( wp_unslash( $_POST['plugin_path'] ) ), 60 );
 		}
 		if ( isset( $_POST['tax'] ) && '' !== $_POST['tax'] ) {
-			set_transient( 'fdp_test_' . sanitize_key( $_POST['tax'] ) . '_' . $microtime, sanitize_text_field( $_POST['plugin_path'] ), 60 );
+			set_transient( 'fdp_test_' . sanitize_key( $_POST['tax'] ) . '_' . $microtime, sanitize_text_field( wp_unslash( $_POST['plugin_path'] ) ), 60 );
 		}
-		if ( isset( $_POST['page_speed_insights'] ) && 'true' === $_POST['page_speed_insights'] ) {
-			set_transient( 'fdp_testing_nonce_' . sanitize_key( $_POST['post_id'] ), 1000 * ( absint( time() / 1000 ) ), 60 );
+		if ( isset( $_POST['page_speed_insights'] ) && 'true' === sanitize_text_field( wp_unslash( $_POST['page_speed_insights'] ) ) ) {
+			set_transient( 'fdp_testing_nonce_' . sanitize_key( wp_unslash( $_POST['post_id'] ) ), 1000 * ( absint( time() / 1000 ) ), 60 );
 		}
 	}
 	echo 1;
@@ -370,7 +370,7 @@ function eos_dp_check_single_padlock() {
 }
 
 add_action( 'wp_ajax_eos_dp_pro_auto_settings', 'eos_dp_pro_auto_settings' );
-// Auto settings. It will be deprecated and replaced with eos_dp_auto_settings.
+// Auto settings. Will be deprecated and replaced with eos_dp_auto_settings.
 function eos_dp_pro_auto_settings( $post_args = false, $plugins = false ) {
 	$opts = function_exists( 'eos_dp_pro_get_option' ) ? eos_dp_pro_get_option( 'eos_dp_pro_main' ) : false;
 	$sleep_time = 300000;
@@ -564,7 +564,7 @@ add_action( 'wp_ajax_eos_dp_auto_settings', 'eos_dp_auto_settings' );
 // Auto settings New.
 function eos_dp_auto_settings( $post_args = false, $plugins = false ) {
 	if ( ! $post_args ) {
-		$post_args = json_decode( stripslashes( sanitize_text_field( $_POST['data'] ) ), true );
+		$post_args = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_POST['data'] ) ) ), true );
 	}
 	$internal_call = isset( $post_args['internal_call'] ) && true === $post_args['internal_call'];
 	$cron          = $internal_call ? 'cron_' : '';
@@ -844,7 +844,7 @@ function eos_dp_pro_auto_settings_admin( $post_args = false, $plugins = false ) 
 	die();
 }
 
-// It retrieves the body html given the url.
+// Retrieves the body HTML given the URL.
 function eos_dp_pro_count_by_url( $url, $plugin, $admin = false, $headers = false, $sleep_time = 300000 ) {
 	$url      = add_query_arg(
 		array(
@@ -987,7 +987,7 @@ function eos_dp_pro_count_by_url( $url, $plugin, $admin = false, $headers = fals
 }
 
 add_action( 'wp_ajax_eos_dp_debug_options', 'eos_dp_debug_options' );
-// It returns the disabled plugins.
+// Returns the disabled plugins.
 function eos_dp_debug_options() {
 	eos_dp_check_intentions_and_rights( 'eos_dp_debug_options' );
 	if ( ! isset( $_POST['url'] ) || ! class_exists( 'DOMDocument' ) ) {
@@ -995,7 +995,7 @@ function eos_dp_debug_options() {
 		die();
 		exit;
 	}
-	$url      = add_query_arg( 'eos_dp_debug_options', 'true', str_replace( '%', '', sanitize_text_field( $_POST['url'] ) ) );
+	$url      = add_query_arg( 'eos_dp_debug_options', 'true', str_replace( '%', '', sanitize_text_field( wp_unslash( $_POST['url'] ) ) ) );
 	$response = wp_remote_get( esc_url( $url ), eos_dp_user_headers( array( 'sslverify' => false ), true ) );
 	if ( ! is_wp_error( $response ) ) {
 		$html = wp_remote_retrieve_body( $response );
@@ -1018,11 +1018,12 @@ function eos_dp_debug_options() {
 				$plugins = eos_dp_active_plugins();
 				require_once EOS_DP_PLUGIN_DIR . '/admin/eos-dp-plugins-info.php';
 				$active_plugins = eos_dp_active_plugins();
-				$msg            = 'error-' . esc_html__( 'It was not possible to get the disabled plugins. Maybe this page redirects to another page or something went wrong.', 'freesoul-deactivate-plugins' );
+				$msg            = 'error-' . esc_html__( 'Could not retrieve the list of disabled plugins. This page may be redirecting, or an error occurred.', 'freesoul-deactivate-plugins' );
 				foreach ( $maintenance_plugins as $plugin ) {
 					if ( in_array( $plugin, $active_plugins ) ) {
 						$plugin = strtoupper( str_replace( '-', ' ', dirname( $plugin ) ) );
-						$msg   .= '<br /><br />' . sprintf( esc_html__( 'Maybe the plugin %s is preventing seeing this page to non-logged users.', 'freesoul-deactivate-plugins' ), esc_html( $plugin ) );
+						// translators: %s is the plugin name.
+						$msg   .= '<br /><br />' . sprintf( esc_html__( 'The plugin %s may be preventing non-logged-in users from viewing this page.', 'freesoul-deactivate-plugins' ), esc_html( $plugin ) );
 						break;
 					}
 				}
@@ -1036,7 +1037,7 @@ function eos_dp_debug_options() {
 	exit;
 }
 add_action( 'wp_ajax_eos_dp_msg_never_again', 'eos_dp_msg_never_again' );
-// It prevents future notifications to the same user.
+// Prevents future notifications to the same user.
 function eos_dp_msg_never_again() {
 	eos_dp_check_intentions_and_rights( 'eos_dp_never_again_msg_user' );
 	if ( ! isset( $_POST['msg'] ) ) {
@@ -1060,14 +1061,14 @@ function eos_dp_msg_never_again() {
 // Check for intentions and rights.
 function eos_dp_check_intentions_and_rights( $nonce_action ) {
 	if ( isset( $_REQUEST['eos_dp_advanced_setup'] ) || isset( $GLOBALS['eos_dp_advanced_setup'] ) ) {
-		$eos_dp_advanced_setup = isset( $GLOBALS['eos_dp_advanced_setup'] ) ? $GLOBALS['eos_dp_advanced_setup'] : sanitize_text_field( $_REQUEST['eos_dp_advanced_setup'] );
+		$eos_dp_advanced_setup = isset( $GLOBALS['eos_dp_advanced_setup'] ) ? $GLOBALS['eos_dp_advanced_setup'] : sanitize_text_field( wp_unslash( $_REQUEST['eos_dp_advanced_setup'] ) );
 		$opts                  = eos_dp_get_option( 'eos_dp_opts' );
 		$password              = isset( $opts['advanced_help_password'] ) ? esc_attr( $opts['advanced_help_password'] ) : '';
 		if ( '' !== $password && strlen( $password ) > 9 && $password === $eos_dp_advanced_setup ) {
 			return;
 		}
 	}
-	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : false;
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : false;
 	if (
 		false === $nonce
 		|| ! wp_verify_nonce( $nonce, $nonce_action ) // check for intentions.
@@ -1098,29 +1099,29 @@ function eos_let_to_num( $size ) {
 	return $ret;
 }
 add_action( 'wp_ajax_eos_dp_create_plugin', 'eos_dp_create_plugin' );
-// It creates a new plugin.
+// Creates a new plugin.
 function eos_dp_create_plugin() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 	eos_dp_check_intentions_and_rights( 'fdp_create_plugin' );
 	if ( ! is_writable( WP_PLUGIN_DIR ) ) {
-		echo json_encode( array( 'error' => esc_html__( 'No writing rights', 'freesoul-deactivate-plugins' ) ) );
+		echo json_encode( array( 'error' => esc_html__( 'No write permissions', 'freesoul-deactivate-plugins' ) ) );
 		die();
 		exit;
 	}
 	$user        = wp_get_current_user();
-	$plugin_name = isset( $_REQUEST['plugin_name'] ) && '' !== $_REQUEST['plugin_name'] ? sanitize_text_field( $_REQUEST['plugin_name'] ) : esc_html__( 'My custom plugin', 'freesoul-deactivate-plugins' );
+	$plugin_name = isset( $_REQUEST['plugin_name'] ) && '' !== $_REQUEST['plugin_name'] ? sanitize_text_field( wp_unslash( $_REQUEST['plugin_name'] ) ) : esc_html__( 'My custom plugin', 'freesoul-deactivate-plugins' );
 	$plugin_name = strtolower( str_replace( ' ', '-', $plugin_name ) );
-	$description = isset( $_REQUEST['plugin_description'] ) && '' !== $_REQUEST['plugin_description'] ? sanitize_text_field( $_REQUEST['plugin_description'] ) : esc_html__( 'My custom code.', 'freesoul-deactivate-plugins' );
-	$author      = isset( $_REQUEST['plugin_author'] ) && '' !== $_REQUEST['plugin_author'] ? sanitize_text_field( $_REQUEST['plugin_author'] ) : $user->user_login;
+	$description = isset( $_REQUEST['plugin_description'] ) && '' !== $_REQUEST['plugin_description'] ? sanitize_text_field( wp_unslash( $_REQUEST['plugin_description'] ) ) : esc_html__( 'My custom code.', 'freesoul-deactivate-plugins' );
+	$author      = isset( $_REQUEST['plugin_author'] ) && '' !== $_REQUEST['plugin_author'] ? sanitize_text_field( wp_unslash( $_REQUEST['plugin_author'] ) ) : $user->user_login;
 	$txt         = '<?php';
 	$txt        .= PHP_EOL . '/*';
 	$txt        .= PHP_EOL . 'Plugin Name: ' . str_replace( '-', ' ', sanitize_text_field( ucwords( $plugin_name ) ) );
 	$txt        .= PHP_EOL . 'Description: ' . sanitize_text_field( $description );
 	$txt        .= PHP_EOL . 'Author: ' . sanitize_text_field( ucfirst( $author ) );
-	if ( isset( $_REQUEST['plugin_author_uri'] ) && '' !== $_REQUEST['plugin_author_uri'] && esc_url( sanitize_text_field( $_REQUEST['plugin_author_uri'] ) ) === $_REQUEST['plugin_author_uri'] ) {
-		$txt .= PHP_EOL . 'Author URI: ' . esc_url( sanitize_text_field( $_REQUEST['plugin_author_uri'] ) );
+	if ( isset( $_REQUEST['plugin_author_uri'] ) && '' !== $_REQUEST['plugin_author_uri'] && esc_url( sanitize_text_field( wp_unslash( $_REQUEST['plugin_author_uri'] ) ) ) === $_REQUEST['plugin_author_uri'] ) {
+		$txt .= PHP_EOL . 'Author URI: ' . esc_url( sanitize_text_field( wp_unslash( $_REQUEST['plugin_author_uri'] ) ) );
 	}
 	$txt        .= PHP_EOL . 'Domain Path: /languages/';
 	$txt        .= PHP_EOL . 'Text Domain: ' . sanitize_key( $plugin_name );
@@ -1140,6 +1141,7 @@ function eos_dp_create_plugin() {
 	$txt        .= PHP_EOL . "define( '" . str_replace( '-', '_', strtoupper( sanitize_key( $plugin_name ) ) ) . "_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) );";
 	$txt        .= PHP_EOL . "define( '" . str_replace( '-', '_', strtoupper( sanitize_key( $plugin_name ) ) ) . "_PLUGIN_URL', untrailingslashit( plugins_url( '', __FILE__ ) ) );";
 	$readme_txt  = '=== ' . sanitize_text_field( ucwords( $plugin_name ) ) . ' ===';
+	// translators: 1 is the WP version.
 	$readme_txt .= PHP_EOL . sprintf( 'Tested up to: %s', get_bloginfo( 'version' ) );
 	$readme_txt .= PHP_EOL . 'Stable tag: 0.0.1';
 	$readme_txt .= PHP_EOL . 'License: GPLv2 or later';
@@ -1174,9 +1176,12 @@ function eos_dp_create_plugin() {
 			$readme_txt,
 			FS_CHMOD_FILE
 		);
+		do_action( 'eos_dp_after_create_plugin', $plugin_name . $suff, $wp_filesystem );
+		// translators: %s is the plugin slug.
 		$url      = sprintf( admin_url( 'plugins.php?action=activate&plugin=%s&plugin_status=all&paged=1&s' ), $plugin_name . $suff . '/' . $plugin_name . $suff . '.php' );
 		$url      = current_user_can( 'activate_plugins' ) ? wp_nonce_url( $url, 'activate-plugin_' . $plugin_name . $suff . '/' . $plugin_name . $suff . '.php' ) : false;
-		$edit_url = current_user_can( 'edit_plugins' ) && ( ! defined( 'DISALLOW_FILE_EDIT' ) || true !== DISALLOW_FILE_EDIT ) ? admin_url( 'plugin-editor.php?plugin=' . urlencode( $plugin_name . $suff . '/' . $plugin_name . $suff . '.php' ) ) : false;
+		$edit_url = current_user_can( 'edit_plugins' ) && ( ! defined( 'DISALLOW_FILE_EDIT' ) || true !== DISALLOW_FILE_EDIT ) ? admin_url( 'plugin-editor.php?plugin=' . urlencode( $plugin_name . $suff . '/' . $plugin_name . $suff . '.php' ) . apply_filters( 'fdp_new_plugin_file', '', $plugin_name, $suff ) ) : false;
+		
 		if ( file_exists( WP_PLUGIN_DIR . '/' . $plugin_name . $suff . '/' . $plugin_name . $suff . '.php' ) ) {
 			echo wp_json_encode(
 				array(
@@ -1196,11 +1201,11 @@ function eos_dp_create_plugin() {
 add_action( 'wp_ajax_eos_dp_install_plugin', 'eos_dp_install_plugin' );
 // Install plugin.
 function eos_dp_install_plugin() {
-	if ( ! isset( $_REQUEST['plugin'] ) || ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_REQUEST['nonce'] ), 'fdp_install_plugin' ) ) {
+	if ( ! isset( $_REQUEST['plugin'] ) || ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'fdp_install_plugin' ) ) {
 		die();
 		exit;
 	}
-	$plugin_slug = sanitize_text_field( $_REQUEST['plugin'] );
+	$plugin_slug = sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) );
 	if ( ! is_dir( WP_PLUGIN_DIR . '/' . $plugin_slug ) ) {
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		wp_cache_flush();
@@ -1208,8 +1213,10 @@ function eos_dp_install_plugin() {
 		$plugin_zip = 'https://downloads.wordpress.org/plugin/' . $plugin_slug . '.zip';
 		$installed  = $upgrader->install( $plugin_zip );
 		if ( $installed ) {
+			// translators: %s is the plugin slug.
 			printf( esc_html__( 'Installed %s', 'freesoul-deactivate-plugins' ), esc_attr( strtoupper( str_replace( '-', ' ', $plugin_slug ) ) ) );
 		} else {
+			// translators: %s is the plugin slug.
 			printf( esc_html__( 'Something went wrong during the installation of %s', 'freesoul-deactivate-plugins' ), esc_attr( strtoupper( str_replace( '-', ' ', $plugin_slug ) ) ) );
 		}
 		die();
@@ -1219,7 +1226,7 @@ function eos_dp_install_plugin() {
 add_action( 'wp_ajax_eos_dp_import_plugins_list', 'eos_dp_import_plugins_list' );
 // Import list of plugins.
 function eos_dp_import_plugins_list() {
-	if ( ! isset( $_REQUEST['id'] ) || ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_REQUEST['nonce'] ), 'fdp_import_plugins_list' ) ) {
+	if ( ! isset( $_REQUEST['id'] ) || ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'fdp_import_plugins_list' ) ) {
 		die();
 		exit;
 	}
@@ -1382,17 +1389,17 @@ function eos_dp_save_addon_settings() {
 add_action( 'wp_ajax_eos_dp_code_profiler_save', 'eos_dp_code_profiler_save' );
 // Save Code Profiler preferences.
 function eos_dp_code_profiler_save() {
-	if ( ! isset( $_POST['plugins'] ) || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'fdp-cp-nonce' ) ) {
+	if ( ! isset( $_POST['plugins'] ) || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'fdp-cp-nonce' ) ) {
 		die();
 		exit;
 	}
-	$plugins = '' !== $_POST['plugins'] && false !== strpos( $_POST['plugins'], ',' ) ? array_values( array_filter( explode( ',', sanitize_text_field( $_POST['plugins'] ) ) ) ) : array(); // @codingStandardsIgnoreLine.
+	$plugins = '' !== $_POST['plugins'] && false !== strpos( $_POST['plugins'], ',' ) ? array_values( array_filter( explode( ',', sanitize_text_field( wp_unslash( $_POST['plugins'] ) ) ) ) ) : array(); // @codingStandardsIgnoreLine.
 	$opts    = eos_dp_get_option( 'fdp_code_profiler' );
 	echo esc_attr(
 		( $opts['fdp_cp'] === $_POST['fdp_cp'] && $opts['plugins'] === $plugins ) || eos_dp_update_option(
 			'fdp_code_profiler',
 			array(
-				'fdp_cp'  => sanitize_text_field( $_POST['fdp_cp'] ),
+				'fdp_cp'  => sanitize_text_field( wp_unslash( $_POST['fdp_cp'] ) ),
 				'plugins' => $plugins,
 			)
 		)
@@ -1404,11 +1411,11 @@ function eos_dp_code_profiler_save() {
 add_action( 'wp_ajax_eos_dp_generate_critical_css', 'eos_dp_generate_critical_css' );
 // Generate critical CSS from CriticalCSS.com.
 function eos_dp_generate_critical_css() {
-	if ( ! isset( $_REQUEST['url'] ) || ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_REQUEST['nonce'] ), 'fdp_generate_critical_css' ) ) {
+	if ( ! isset( $_REQUEST['url'] ) || ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'fdp_generate_critical_css' ) ) {
 		die();
 		exit;
 	}
-	$page_url = sanitize_text_field( $_REQUEST['url'] );
+	$page_url = sanitize_text_field( wp_unslash( $_REQUEST['url'] ) );
 	$opts     = eos_dp_get_option( 'eos_dp_critical_css' );
 	$valueArr = json_decode( stripslashes( $opts['fdp-opt-api_key'] ), true );
 	if ( $valueArr && ! empty( $valueArr ) && isset( $valueArr['value'] ) ) {
@@ -1457,13 +1464,13 @@ function eos_dp_check_license_status() {
 	}
 	$response = array();
 	if ( sanitize_email( $data->license_email ) !== $data->license_email ) {
-		$response['error'] = esc_html__( 'Email not valid', 'eos-dp-pro' );
+		$response['error'] = esc_html__( 'Email not valid', 'freesoul-deactivate-plugins' );
 		echo wp_json_encode( $response );
 		die();
 		exit;
 	}
 	if ( esc_attr( $data->license_code ) !== $data->license_code ) {
-		$response['error'] = esc_html__( 'License not valid', 'eos-dp-pro' );
+		$response['error'] = esc_html__( 'License not valid', 'freesoul-deactivate-plugins' );
 		echo wp_json_encode( $response );
 		die();
 		exit;
@@ -1474,9 +1481,11 @@ function eos_dp_check_license_status() {
 	if ( FDPProLicenseManager::CheckWPPlugin( $licenseCode, $licenseEmail, $error, $responseObj, EOS_DP_PRO_PLUGIN_FILE ) ) {
 		$expire_date          = isset( $responseObj->expire_date ) && $responseObj->expire_date ? $responseObj->expire_date : false;
 		$support_date         = isset( $responseObj->support_end ) && $responseObj->support_end ? $responseObj->support_end : false;
-		$response['is_valid'] = isset( $responseObj->is_valid ) && $responseObj->is_valid ? esc_html__( 'License successfully verified', 'eos-dp-pro' ) : esc_html__( 'License not valid', 'eos-dp-pro' );
-		$response['updates']  = $expire_date ? sprintf( esc_html__( 'This license will expire on %s.' ), $expire_date ) : sprintf( esc_html__( 'The access to updates was expired on %s', 'eos-dp-pro' ), $expire_date );
-		$response['support']  = $support_date ? sprintf( esc_html__( 'The access to premium support will expire on %s.' ), $support_date ) : sprintf( esc_html__( 'The access to premium support was expired on %s', 'eos-dp-pro' ), $support_date );
+		$response['is_valid'] = isset( $responseObj->is_valid ) && $responseObj->is_valid ? esc_html__( 'License successfully verified', 'freesoul-deactivate-plugins' ) : esc_html__( 'License not valid', 'freesoul-deactivate-plugins' );
+		// translators: %s is the expiration date.
+		$response['updates']  = $expire_date ? sprintf( esc_html__( 'This license expires on %s.', 'freesoul-deactivate-plugins' ), $expire_date ) : sprintf( esc_html__( 'Access to updates expired on %s.', 'freesoul-deactivate-plugins' ), $expire_date );
+		// translators: %s is the support expiration date.
+		$response['support']  = $support_date ? sprintf( esc_html__( 'Premium support expires on %s.', 'freesoul-deactivate-plugins' ), $support_date ) : sprintf( esc_html__( 'Premium support expired on %s.', 'freesoul-deactivate-plugins' ), $support_date );
 		echo wp_json_encode( $response );
 		die();
 		exit;
@@ -1486,14 +1495,14 @@ function eos_dp_check_license_status() {
 add_action( 'wp_ajax_eos_dp_dismiss_fatal_error_notice', 'eos_dp_dismiss_fatal_error_notice' );
 // Dismiss fatal errror notice.
 function eos_dp_dismiss_fatal_error_notice() {
-	if ( isset( $_POST['nonce'] ) && current_user_can( 'activate_plugins' ) && wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'eos_dp_dismiss_fatal_error_notice' ) ) {
+	if ( isset( $_POST['nonce'] ) && current_user_can( 'activate_plugins' ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'eos_dp_dismiss_fatal_error_notice' ) ) {
 		delete_site_transient( 'fdp_plugin_disabledd_fatal_error' );
 	}
 }
 add_action( 'wp_ajax_eos_dp_dismiss_notice', 'eos_dp_dismiss_notice' );
 // Dismiss notice.
 function eos_dp_dismiss_notice() {
-	if ( ! isset( $_POST['data'] ) || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'eos_dp_dismiss_notice' ) ) {
+	if ( ! isset( $_POST['data'] ) || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'eos_dp_dismiss_notice' ) ) {
 		die();
 		exit;
 	}
@@ -1533,7 +1542,7 @@ add_action( 'wp_ajax_eos_dp_reset_fdp', 'eos_dp_reset_fdp' );
 // Reset all the settings of FDP.
 function eos_dp_reset_fdp() {
 	eos_dp_check_intentions_and_rights( 'eos_dp_reset_fdp' );
-	if ( isset( $_REQUEST['data'] ) && 'reset' === sanitize_text_field( $_REQUEST['data'] ) ) {
+	if ( isset( $_REQUEST['data'] ) && 'reset' === sanitize_text_field( wp_unslash( $_REQUEST['data'] ) ) ) {
 		define( 'FDP_RESET_SETTINGS', true );
 		require_once EOS_DP_PLUGIN_DIR . '/uninstall.php';
 		if ( file_exists( EOS_DP_PLUGIN_DIR . '-pro/uninstall.php' ) ) {

@@ -173,13 +173,13 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 			$this->posts_per_page = $default_posts_per_page;
 		}
 		$this->post_type        = isset( $_GET['eos_dp_post_type'] ) ? esc_attr( sanitize_text_field( $_GET['eos_dp_post_type'] ) ) : 'page';
-		$this->title            = isset( $_GET['eos_dp_relevant_pages'] ) && 'true' === $_GET['eos_dp_relevant_pages'] ? esc_html__( 'Relevant pages', 'freesoul-deactivate-plugins' ) : $this->active_label;
+		$this->title            = isset( $_GET['eos_dp_relevant_pages'] ) && 'true' === $_GET['eos_dp_relevant_pages'] ? esc_html__( 'Relevant Pages', 'freesoul-deactivate-plugins' ) : $this->active_label;
 		$this->dataset          = ' data-post_type="' . esc_attr( $this->post_type ) . '"';
 		$this->title            = isset( $_GET['eos_dp_home'] ) && 'true' === $_GET['eos_dp_home'] ? esc_html__( 'Homepage', 'freesoul-deactivate-plugins' ) : $this->title;
 		$labsObj                = get_post_type_object( $this->post_type );
 		if ( isset( $labsObj->labels ) ) {
 			$labs               = $labsObj->labels;
-			$this->active_label = isset( $labs->name ) ? $labs->name : esc_html__( 'posts', 'freesoul-deactivate-plugins' );
+			$this->active_label = isset( $labs->name ) ? $labs->name : esc_html__( 'Posts', 'freesoul-deactivate-plugins' );
 		}
 		$eos_dp_need_custom_url     = eos_dp_get_option( 'eos_dp_need_custom_url' );
 		$this->post_types_matrix    = eos_dp_get_option( 'eos_post_types_plugins' );
@@ -222,21 +222,26 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 			$args['post__in'] = explode( '-', esc_attr( sanitize_text_field( $_GET['eos_dp_post_in'] ) ) );
 		}
 		if ( isset( $_GET['eos_post_title'] ) ) {
-			?><h2><?php printf( esc_html__( 'Results for %s', 'freesoul-deactivate-plugins' ), esc_html( sanitize_text_field( $_GET['eos_post_title'] ) ) ); ?></h2>
+			?><h2><?php 
+			// translators: %s is the post title.
+			printf( esc_html__( 'Results for %s', 'freesoul-deactivate-plugins' ), esc_html( sanitize_text_field( $_GET['eos_post_title'] ) ) ); ?></h2>
 			<?php
 			$args['s'] = esc_attr( urldecode( $_GET['eos_post_title'] ) ); //@codingStandardsIgnoreLine.
 			// No need for sanitization, esc_attr used after urldecode.
 		}
 		if ( isset( $_GET['eos_cat'] ) ) {
 			$cat = get_term( (int) $_GET['eos_cat'] );
-			$cat = $cat && ! is_wp_error( $cat ) ? sprintf( esc_html__( 'the category "%s"', 'freesoul-deactivate-plugins' ), $cat->name ) : sprintf( esc_html__( 'Category id %s', 'freesoul-deactivate-plugins' ), (int) $_GET['eos_cat'] );
+			// translators: %s is the category name or ID.
+			$cat = $cat && ! is_wp_error( $cat ) ? sprintf( esc_html__( 'The category "%s"', 'freesoul-deactivate-plugins' ), $cat->name ) : sprintf( esc_html__( 'Category ID %s', 'freesoul-deactivate-plugins' ), (int) $_GET['eos_cat'] );
 			?>
-		<h2><?php printf( esc_html__( 'Results for %s', 'freesoul-deactivate-plugins' ), esc_html( $cat ) ); ?></h2>
+		<h2><?php 
+		// translators: %s is the category name or ID.
+		printf( esc_html__( 'Results for %s', 'freesoul-deactivate-plugins' ), esc_html( $cat ) ); ?></h2>
 			<?php
 			$args['category'] = sanitize_title( $_GET['eos_cat'] );
 		}
 		if ( isset( $_GET['tax_name'] ) && isset( $_GET['term_slug'] ) ) {
-			$args['tax_query'] = array(
+			$args['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery -- This query is absolutely needed and it's the faster way.
 				array(
 					'taxonomy' => esc_attr( sanitize_text_field( $_GET['tax_name'] ) ),
 					'field'    => 'slug',
@@ -249,7 +254,7 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 				if ( isset( $_GET['device'] ) && 'mobile' === $_GET['device'] ) {
 					$args['post__in'] = eos_scfm_get_mobile_ids();
 				} elseif ( isset( $_GET['device'] ) && 'desktop' === $_GET['device'] ) {
-					$args['post__not_in'] = eos_scfm_get_mobile_ids();
+					$args['post__not_in'] = eos_scfm_get_mobile_ids(); // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams -- This query is absolutely needed and it's the faster way.
 				}
 			}
 		}
@@ -331,10 +336,10 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 					<h4 style="margin-bottom:0"><?php esc_html_e( 'Order by', 'freesoul-deactivate-plugins' ); ?></h4>
 					<select id="eos-dp-orderby-sel">
 						<option value="title"<?php echo $this->orderby === 'title' ? ' selected' : ''; ?>><?php esc_html_e( 'Title', 'freesoul-deactivate-plugins' ); ?></option>
-						<option value="ID"<?php echo $this->orderby === 'ID' ? ' selected' : ''; ?>><?php esc_html_e( 'Post id', 'freesoul-deactivate-plugins' ); ?></option>
+						<option value="ID"<?php echo $this->orderby === 'ID' ? ' selected' : ''; ?>><?php esc_html_e( 'Post ID', 'freesoul-deactivate-plugins' ); ?></option>
 						<option value="author"<?php echo $this->orderby === 'author' ? ' selected' : ''; ?>><?php esc_html_e( 'Author', 'freesoul-deactivate-plugins' ); ?></option>
 						<option value="date"<?php echo $this->orderby === 'date' ? ' selected' : ''; ?>><?php esc_html_e( 'Date', 'freesoul-deactivate-plugins' ); ?></option>
-						<option value="modified"<?php echo $this->orderby === 'modified' ? ' selected' : ''; ?>><?php esc_html_e( 'Last modified date', 'freesoul-deactivate-plugins' ); ?></option>
+						<option value="modified"<?php echo $this->orderby === 'modified' ? ' selected' : ''; ?>><?php esc_html_e( 'Last Modified Date', 'freesoul-deactivate-plugins' ); ?></option>
 						<option value="menu_order"<?php echo $this->orderby === 'menu_order' ? ' selected' : ''; ?>><?php esc_html_e( 'Menu order', 'freesoul-deactivate-plugins' ); ?></option>
 						<option value="custom_order"<?php echo $this->orderby === 'custom_order' ? ' selected' : ''; ?>><?php esc_html_e( 'Custom order', 'freesoul-deactivate-plugins' ); ?></option>
 					</select>
@@ -411,21 +416,25 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 		<div>
 		<?php if ( $this->is_home ) { ?>
 			<span id="eos-dp-autosuggest-all" class="button" title="<?php esc_attr_e( 'Suggest plugins', 'freesoul-deactivate-plugins' ); ?>"><?php esc_html_e( 'Suggest plugins', 'freesoul-deactivate-plugins' ); ?></span>
-			<p><?php echo wp_kses_post( sprintf( __( 'Pressing the button above, FDP will suggest you the needed plugins. However, check the page preview with the lens icon %s before to save the options.', 'freesoul-deactivate-plugins' ), '<span class="dashicons dashicons-search"></span>' ) ); ?></p>
-			<p><?php echo wp_kses_post( sprintf( __( 'With the %s you can have the auto-suggestion also on other pages.', 'freesoul-deactivate-plugins' ), '<a style="color:inherit" href="https://freesoul-deactivate-plugins.com/" target="_blank">' . esc_attr__( 'PRO version', 'freesoul-deactivate-plugins' ) . '</a>' ) ); ?></p>
+			<p><?php 
+			// translators: %s is a dashicon.
+			echo wp_kses_post( sprintf( __( 'By clicking the button above, FDP will suggest the required plugins. However, please preview the page using the lens icon %s before saving your changes.', 'freesoul-deactivate-plugins' ), '<span class="dashicons dashicons-search"></span>' ) ); ?></p>
+			<p><?php 
+			// translators: %s is a link to the PRO version.
+			echo wp_kses_post( sprintf( __( 'With the %s, you can also have the auto-suggestion on other pages.', 'freesoul-deactivate-plugins' ), '<a style="color:inherit" href="https://freesoul-deactivate-plugins.com/" target="_blank">' . esc_attr__( 'PRO version', 'freesoul-deactivate-plugins' ) . '</a>' ) ); ?></p>
 
 			<?php
 			if ( eos_dp_get_option( 'eos_dp_critical_css' ) ) {
 				wp_nonce_field( 'fdp_generate_critical_css', 'fdp_generate_critical_css' );
 				$onclick = 'eos_dp_send_ajax(jQuery(this),{"nonce" : document.getElementById("fdp_generate_critical_css").value,"url" : this.dataset.url,"action" : "eos_dp_generate_critical_css"});return false;';
 				?>
-	  <p><span id="fdp-generate-critical-css" class="button" title="<?php esc_attr__( 'Generate Critical CSS', 'freesoul-deactivate-plugins' ); ?>" data-url="<?php echo esc_url( get_home_url() ); ?>" onclick="<?php echo esc_js( $onclick ); ?>"><?php esc_html_e( 'Generate Critical CSS', 'freesoul-deactivate-plugins' ); ?></span></p>
+	  <p><span id="fdp-generate-critical-css" class="button" title="<?php esc_attr_e( 'Generate Critical CSS', 'freesoul-deactivate-plugins' ); ?>" data-url="<?php echo esc_url( get_home_url() ); ?>" onclick="<?php echo esc_js( $onclick ); ?>"><?php esc_html_e( 'Generate Critical CSS', 'freesoul-deactivate-plugins' ); ?></span></p>
 				<?php
 			}
 		}
 		?>
-			<p id="eos-dp-autosuggest-msg" class="eos-hidden notice notice-warning"><?php esc_html_e( 'It may take a couple of minutes, drink a coffee while we try to understand which plugins you need on this page', 'freesoul-deactivate-plugins' ); ?></p>
-			<p id="eos-dp-autosuggest-msg-error" class="notice notice-error eos-hidden"><?php esc_html_e( 'Unable to finish the tests to suggest the unused plugins. Probably the server is too busy.', 'freesoul-deactivate-plugins' ); ?></p>
+			<p id="eos-dp-autosuggest-msg" class="eos-hidden notice notice-warning"><?php esc_html_e( 'This may take a few minutes; feel free to grab a coffee while we analyze which plugins are needed for this page.', 'freesoul-deactivate-plugins' ); ?></p>
+			<p id="eos-dp-autosuggest-msg-error" class="notice notice-error eos-hidden"><?php esc_html_e( 'Unable to complete the tests for plugin suggestions. The server may be too busy.', 'freesoul-deactivate-plugins' ); ?></p>
 		</div>
 		<?php do_action( 'eos_dp_after_singles_title' ); ?>
 		<div id="eos-dp-table-head-actions"><?php do_action( 'eos_dp_pre_table_head' ); ?></div>
@@ -539,15 +548,18 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 					if ( isset( $post->post_title ) ) {
 						?>
 			  <td class="eos-dp-post-name-wrp">
-				<span class="fdp-row-actions-ico dashicons dashicons-plus" title="<?php esc_attr__( 'Action buttons', 'freesoul-deactivate-plugins' ); ?>"></span>
+				<span class="fdp-row-actions-ico dashicons dashicons-plus" title="<?php esc_attr_e( 'Action buttons', 'freesoul-deactivate-plugins' ); ?>"></span>
 				<span class="eos-dp-lock-post-wrp"><input data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-lock-post" type="checkbox" /></span>
-				<span class="eos-dp-not-active-wrp"><input title="<?php printf( esc_attr__( 'Activate/deactivate all plugins in %s', 'freesoul-deactivate-plugins' ), esc_attr( $post->post_title ) ); ?>" data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
+				<span class="eos-dp-not-active-wrp"><input title="<?php 
+				// translators: %s is the post title.
+				printf( esc_attr__( 'Activate/deactivate all plugins for %s', 'freesoul-deactivate-plugins' ), esc_attr( $post->post_title ) ); ?>" data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
 				<span class="eos-dp-title">
 						<?php
 						if ( 1 === $row ) {
 							$this->resize_col();
 						}
 						echo '<span class="fdp-title-text">';
+						// translators: %s is the post ID.
 						echo '' !== $post->post_title ? esc_html( $post->post_title ) : sprintf( esc_html__( 'Untitled (post id:%s)', 'freesoul-deactivate-plugins' ), esc_html( $post->ID ) );
 						echo '</span>';
 						echo isset( $status_icons[ $post->post_status ] ) ? $status_icons[ $post->post_status ] : ''; //phpcs:ignore WordPress.Security.EscapeOutput -- The escaping was already applied while building $status_icons.
@@ -613,7 +625,9 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 	  <span class="eos-dp-locked-wrp eos-dp-icon-wrp" style="position:relative"><span class="eos-post-locked-icon" style="width:40px;height:21px"></span>
 	  <span class="eos-dp-no-decoration fdp-has-tooltip">
 		<span class="dashicons dashicons-editor-help" style="font-size:24px"></span>
-		<p class="fdp-tooltip" style="width:auto;white-space:inherit"><?php echo wp_kses_post( sprintf( __( 'The row settings will override the %1$sPost Types settings%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( '?page=eos_dp_by_post_type' ) ) . '" target="_fdp_post_types">', '</a>' ) ); ?></p>
+		<p class="fdp-tooltip" style="width:auto;white-space:inherit"><?php 
+		// translators: %1$s and %2$s are links.
+		echo wp_kses_post( sprintf( __( 'The row settings will override the %1$sPost Types settings%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( '?page=eos_dp_by_post_type' ) ) . '" target="_fdp_post_types">', '</a>' ) ); ?></p>
 	  </span>
 	</span>
 	<span>&nbsp;&nbsp;&nbsp;</span>
@@ -621,16 +635,18 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 	  <span class="eos-dp-unlocked-wrp eos-dp-icon-wrp" style="position:relative"><span class="eos-post-unlocked-icon" style="width:40px;height:19px"></span>
 	  <span class="eos-dp-no-decoration fdp-has-tooltip">
 		<span class="dashicons dashicons-editor-help" style="font-size:24px"></span>
-		<p class="fdp-tooltip" style="width:auto;white-space:inherit"><?php echo wp_kses_post( sprintf( __( 'The %1$sPost Types settings%2$s will override the row settings.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( '?page=eos_dp_by_post_type' ) ) . '" target="_fdp_post_types">', '</a>' ) ); ?></p>
+		<p class="fdp-tooltip" style="width:auto;white-space:inherit"><?php 
+		// translators: %1$s and %2$s are links.
+		echo wp_kses_post( sprintf( __( 'The %1$sPost Types settings%2$s will override the row settings.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( '?page=eos_dp_by_post_type' ) ) . '" target="_fdp_post_types">', '</a>' ) ); ?></p>
 	  </span>
 	</span>
 		<?php if ( ! $this->fdp_is_single_post ) { ?>
 	<div style="margin-top:16px">
 	  <span id="eos-dp-lock-all" class="button<?php echo $this->is_home ? ' eos-hidden' : ''; ?>">
-			<?php esc_html_e( 'Activate all rows', 'eos-dp-pro' ); ?>
+			<?php esc_html_e( 'Activate all rows', 'freesoul-deactivate-plugins' ); ?>
 	  </span>
 	  <span id="eos-dp-unlock-all" class="button<?php echo $this->is_home ? ' eos-hidden' : ''; ?>">
-			<?php esc_html_e( 'Disable all rows', 'eos-dp-pro' ); ?>
+			<?php esc_html_e( 'Disable all rows', 'freesoul-deactivate-plugins' ); ?>
 	  </span>
 	</div>
 			<?php do_action( 'fdp_before_row_filters' ); ?>
@@ -642,7 +658,7 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 	  <div>
 		<span title="<?php esc_attr_e( 'Homepage', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover dashicons dashicons-admin-home" data-class=".fdp-row-is-home"></span>
 		<span title="<?php esc_attr_e( 'Active rows', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover dashicons dashicons-yes" data-class=".eos-post-locked"></span>
-		<span title="<?php esc_attr_e( 'Not active rows', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover dashicons dashicons-no-alt" data-class=".eos-dp-post-row:not(.eos-post-locked)"></span>
+		<span title="<?php esc_attr_e( 'Inactive rows', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover dashicons dashicons-no-alt" data-class=".eos-dp-post-row:not(.eos-post-locked)"></span>
 		<span title="<?php esc_attr_e( 'Included in the navigation', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover dashicons dashicons-menu-alt2" data-class=".fdp-in-nav"></span>
 		<span title="<?php esc_attr_e( 'Private', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover dashicons dashicons-privacy" data-class=".fdp-row-private"></span>
 		<br/>
@@ -650,8 +666,8 @@ class FDP_Frontend_Singles extends Eos_Fdp_Matrix_Page {
 		<span title="<?php esc_attr_e( 'Child page', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover fdp-child-page dashicons dashicons-networking" data-class=".fdp-row-is-child"></span>
 		<span title="<?php esc_attr_e( 'Top level page', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover fdp-parent-page dashicons dashicons-networking" data-class=".fdp-top-level-page"></span>
 		<?php } ?>
-		<span title="<?php esc_attr_e( 'Plugins all active', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover fdp-all-active dashicons dashicons-plugins-checked" data-class="[data-disabled-plugins='0']"></span>
-		<span title="<?php esc_attr_e( 'Plugins all disabled', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover fdp-all-disabled dashicons dashicons-admin-plugins" data-class="[data-active-plugins='0']"></span>
+		<span title="<?php esc_attr_e( 'All plugins active', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover fdp-all-active dashicons dashicons-plugins-checked" data-class="[data-disabled-plugins='0']"></span>
+		<span title="<?php esc_attr_e( 'All plugins disabled', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-active hover fdp-all-disabled dashicons dashicons-admin-plugins" data-class="[data-active-plugins='0']"></span>
 			<?php
 			if ( function_exists( 'eos_scfm_post_types' ) ) {
 				?>

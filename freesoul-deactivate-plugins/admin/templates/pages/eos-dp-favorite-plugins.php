@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-// It adds the section for favorite plugins.
+// Adds the section for favorite plugins.
 function eos_dp_favorite_plugins_callback() {
 	if ( apply_filters( 'fdp_hide_favorite_plugins_page', ( ! current_user_can( 'activate_plugins' ) && ! current_user_can( 'fdp_plugins_viewer' ) && ! defined( 'FDP_EMERGENCY_LOG_ADMIN' ) ) ) ) {
 		eos_dp_navigation();
 		?>
-		<h2><?php esc_html_e( 'Sorry, you have not the right for this page', 'freesoul-deactivate-plugins' ); ?></h2>
+		<h2><?php esc_html_e( 'Sorry, you do not have permission to access this page.', 'freesoul-deactivate-plugins' ); ?></h2>
 		<?php
 		return;
 	}
@@ -73,13 +73,13 @@ function eos_dp_favorite_plugins_callback() {
 				</div>
 			</div>
 		</div>
-		<div id="fdp-fail" class="notice notice-error eos-hidden" style="padding:10px" data-default_msg="<?php esc_attr_e( 'Something went wrong!', 'eos-dp-pro' ); ?>"></div>
+		<div id="fdp-fail" class="notice notice-error eos-hidden" style="padding:10px" data-default_msg="<?php esc_attr_e( 'Something went wrong!', 'freesoul-deactivate-plugins' ); ?>"></div>
 	</section>
 	<?php
 	eos_dp_favorite_plugins_inline();
 }
 
-// Disaplay popup to search plugins.
+// Displays popup to search plugins.
 function eos_dp_search_plugins_popup() {
 	$dir = is_rtl() ? 'left' : 'right';
 	?>

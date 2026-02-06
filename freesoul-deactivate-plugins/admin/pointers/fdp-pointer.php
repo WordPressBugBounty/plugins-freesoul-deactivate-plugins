@@ -1,6 +1,6 @@
 <?php
 /**
- * It includes the code for the pointers.
+ * Includes the code for the pointers.
 
  * @package Freesoul Deactivate Plugins
  */
@@ -13,7 +13,8 @@ function eos_dp_register_pointers_singles( $p ) {
 	$pointers = array(
 		'fdp_getting_start'      => array(
 			esc_html__( 'Getting started', 'freesoul-deactivate-plugins' ),
-			sprintf( wp_kses_post( __( "Uncheck the plugins wich you don't need on specific pages. %1\$sThe Post Types settings will override the inactive rows.%2\$s%3\$sIf many pages need the same set of active plugins, better disable the related rows by using the switches, and use the Post Types settings for those pages.%4\$s", 'freesoul-deactivate-plugins' ) ), '<p>', '</p>', '<p>', '</p>' ),
+			// translators: %1$s is the opening paragraph tag, %2$s is the closing paragraph tag, %3$s is the opening paragraph tag, %4$s is the closing paragraph tag.
+			sprintf( wp_kses_post( __( "Uncheck the plugins which you don't need on specific pages. %1\$sThe Post Types settings will override the inactive rows.%2\$s%3\$sIf many pages need the same set of active plugins, better disable the related rows by using the switches, and use the Post Types settings for those pages.%4\$s", 'freesoul-deactivate-plugins' ) ), '<p>', '</p>', '<p>', '</p>' ),
 			'#eos-dp-setts-nav',
 			'',
 			'',
@@ -24,7 +25,7 @@ function eos_dp_register_pointers_singles( $p ) {
 		),
 		'fdp_uncheck_plugins'    => array(
 			esc_html__( 'Uncheck unused plugins', 'freesoul-deactivate-plugins' ),
-			esc_html__( 'Activate/deactivate the plugins by clicking on the cells.', 'freesoul-deactivate-plugins' ),
+			esc_html__( 'Activate or deactivate plugins by clicking the cells.', 'freesoul-deactivate-plugins' ),
 			'.eos-dp-post-name-wrp+td',
 			'',
 			'',
@@ -34,8 +35,8 @@ function eos_dp_register_pointers_singles( $p ) {
 			'',
 		),
 		'fdp_global_row_uncheck' => array(
-			esc_html__( 'How activate/deactivate entire rows', 'freesoul-deactivate-plugins' ),
-			esc_html__( 'If you need to activate/deactivate all the plugins in a row, click on the square next to the switch.', 'freesoul-deactivate-plugins' ),
+			esc_html__( 'How to activate or deactivate entire rows', 'freesoul-deactivate-plugins' ),
+			esc_html__( 'To activate/deactivate all the plugins in a row, click on the square next to the switch.', 'freesoul-deactivate-plugins' ),
 			'.eos-dp-global-chk-row',
 			'',
 			'',
@@ -45,8 +46,8 @@ function eos_dp_register_pointers_singles( $p ) {
 			'',
 		),
 		'fdp_global_col_uncheck' => array(
-			esc_html__( 'How activate/deactivate entire columns', 'freesoul-deactivate-plugins' ),
-			esc_html__( 'If you need to activate/deactivate all the plugins in a column, click on the plugin icon below the plugin name.', 'freesoul-deactivate-plugins' ),
+			esc_html__( 'How to activate or deactivate entire columns', 'freesoul-deactivate-plugins' ),
+			esc_html__( 'To activate/deactivate all the plugins in a column, click on the plugin icon below the plugin name.', 'freesoul-deactivate-plugins' ),
 			'.eos-dp-global-chk-col-wrp',
 			'',
 			'',
@@ -68,7 +69,8 @@ function eos_dp_register_pointers_singles( $p ) {
 		),
 		'fdp_action_buttons'     => array(
 			esc_html__( 'Action buttons', 'freesoul-deactivate-plugins' ),
-			sprintf( wp_kses_post( __( "Click on the plus icon before the switch to open the action buttons panel.%1\$sClick on the lens icon to see the preview of the page loading the plugins that remain active.%2\$s%3\$sDon't care about all the other icons, now focus only on what you need to get started.", 'freesoul-deactivate-plugins' ) ), '<p>', '</p>', '<p>', '</p>' ),
+			// translators: %1$s is the opening paragraph tag, %2$s is the closing paragraph tag, %3$s is the opening paragraph tag, %4$s is the closing paragraph tag.
+			sprintf( wp_kses_post( __( "Click on the plus icon before the switch to open the action buttons panel.%1\$sClick on the lens icon to see the preview of the page loading the plugins that remain active.%2\$s%3\$sIgnore the other icons for now and focus on what you need to get started.", 'freesoul-deactivate-plugins' ) ), '<p>', '</p>', '<p>', '</p>' ),
 			'.fdp-row-actions-ico',
 			'.fdp-row-actions-ico',
 			40,
@@ -79,7 +81,7 @@ function eos_dp_register_pointers_singles( $p ) {
 		),
 		'fdp_save'               => array(
 			esc_html__( 'Save after check', 'freesoul-deactivate-plugins' ),
-			esc_html__( "If after checking the preview you don't see anything strange save the settings clicking on \"Save all chagnes\".", 'freesoul-deactivate-plugins' ),
+			esc_html__( "If after checking the preview you don't see anything strange, save the settings by clicking on \"Save all changes\".", 'freesoul-deactivate-plugins' ),
 			'.eos-dp-btn-wrp', // element.
 			'', // click.
 			'-60', // offset.
@@ -89,7 +91,7 @@ function eos_dp_register_pointers_singles( $p ) {
 			'',
 		),
 		'fdp_other_singles'      => array(
-			esc_html__( 'Other kind of single pages', 'freesoul-deactivate-plugins' ),
+			esc_html__( 'Other kinds of single pages', 'freesoul-deactivate-plugins' ),
 			esc_html__( 'You will find the settings for the other kind of single pages under the menu item "Singles".', 'freesoul-deactivate-plugins' ),
 			'#fdp-menu-singles', // element.
 			'', // click.
@@ -97,24 +99,24 @@ function eos_dp_register_pointers_singles( $p ) {
 			'#fdp-menu-singles', // indicated.
 			'top',  // edge.
 			esc_html__( 'Next', 'freesoul-deactivate-plugins' ), // button text.
-			'fdp-hover', // CSS class added to elemeent.
+			'fdp-hover', // CSS class added to element.
 		),
 		'fdp_post_types'         => array(
 			esc_html__( 'Continue on post types', 'freesoul-deactivate-plugins' ),
-			esc_html__( 'After having disabled plugins on specific pages, assign the used plugins by post type to cover the rest of the pages.', 'freesoul-deactivate-plugins' ),
+			esc_html__( 'After disabling plugins on specific pages, assign the used plugins by post type to cover the rest of the pages.', 'freesoul-deactivate-plugins' ),
 			'#fdp-menu-post-types a', // element.
 			'', // click.
 			'20', // offset.
 			'#fdp-menu-post-types', // indicated.
 			'top',  // edge.
 			esc_html__( 'Close', 'freesoul-deactivate-plugins' ), // button text.
-			'', // CSS class added to elemeent.
+			'', // CSS class added to element.
 		),
 	);
 	return eos_dp_build_pointers( $p, $pointers, 'fdp_pointers_singles' );
 }
 
-// Chcek if pointers are dismissed
+// Checks if pointers are dismissed.
 function eos_dp_is_dismissed( $pointers ) {
 	if ( ! isset( $_GET['reopen_pointer'] ) ) {
 		$user_meta = get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true );

@@ -27,7 +27,7 @@ class FDP_Load_Addons {
 	private $titles;
 
     /**
-	 * User capabiity.
+	 * User capability.
 	 *
 	 * @var array $capability
 	 * @since  2.8.0
@@ -35,7 +35,7 @@ class FDP_Load_Addons {
 	private $capability;
 
     /**
-	 * Array of FDP json.
+	 * Array of FDP JSON data.
 	 *
 	 * @var array $fdp_jsones
 	 * @since  2.8.0

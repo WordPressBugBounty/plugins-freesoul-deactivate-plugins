@@ -14,6 +14,14 @@ if ( ! class_exists( 'Fdp_One_Column_Page' ) ) {
 	require_once EOS_DP_PLUGIN_DIR . '/admin/classes/class-fdp-one-column-page.php';
 }
 
+/**
+ * Class FDP One Place
+ *
+ * Implemented by One Place Plugin functionality.
+ *
+ * @version  2.5.0
+ * @package  Freesoul Deactivate Plugins\Classes
+ */
 class FDP_One_Place extends Eos_Fdp_One_Column_Page {
 	
 	/**
@@ -118,17 +126,21 @@ class FDP_One_Place extends Eos_Fdp_One_Column_Page {
 	public function after_section( $page_slug ) {
 		?>
 		<div id="fdp-one-place-popup" style="display:none">
-			<p><?php echo wp_kses_post( sprintf( apply_filters( 'fdp_one_place_popup_title', __( 'Write the only URLs where %s has to be active. Separate them by a return line.', 'freesoul-deactivate-plugins' ) ), '<span id="fdp-one-place-plugin-in-popup"></span>' ) ); ?></p>
-			<p><?php echo esc_html( sprintf( __( 'Use the star * to replace any groups of characters. E.g. %s', 'freesoul-deactivate-plugins' ), '*about/' ) ); ?></p>
+			<p><?php 
+			// translators: %s is the plugin name.
+			echo wp_kses_post( sprintf( apply_filters( 'fdp_one_place_popup_title', __( 'Write the only URLs where %s has to be active. Separate them by a return line.', 'freesoul-deactivate-plugins' ) ), '<span id="fdp-one-place-plugin-in-popup"></span>' ) ); ?></p>
+			<p><?php 
+			// translators: %s is an example URL.
+			echo esc_html( sprintf( __( 'Use the star * to replace any groups of characters. E.g. %s', 'freesoul-deactivate-plugins' ), '*about/' ) ); ?></p>
 			<textarea id="fdp-one-place-textarea"></textarea>
 			<div class="right" style="position:absolute;bottom:0;left:0;right:0;padding:10px">
-				<button id="fdp-one-place-close-popup" class="button"><?php esc_html_e( 'Close' ); ?></button>
-				<button id="fdp-one-place-save-popup" class="button"><?php esc_html_e( 'Save' ); ?></button>
+				<button id="fdp-one-place-close-popup" class="button"><?php esc_html_e( 'Close', 'freesoul-deactivate-plugins' ); ?></button>
+				<button id="fdp-one-place-save-popup" class="button"><?php esc_html_e( 'Save', 'freesoul-deactivate-plugins' ); ?></button>
 			</div>
 		</div>
 		<input type="hidden" id="fdp-one-place-options" value="<?php echo esc_attr( stripslashes( $this->options ) ); ?>" />
 		<?php
-		wp_enqueue_script( 'fdp-one-place', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-one-place.js', array(), null, true );
+		wp_enqueue_script( 'fdp-one-place', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-one-place.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Version is set to null to avoid caching.
 		wp_localize_script( 
 			'fdp-one-place',
 			'fdp_one_place_params',

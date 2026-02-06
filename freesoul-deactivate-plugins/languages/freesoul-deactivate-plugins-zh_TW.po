@@ -172,7 +172,7 @@ msgid "Too many custom plugins"
 msgstr ""
 
 #: admin/eos-dp-ajax.php:1054 eos-dp-ajax.php:1054
-msgid "No writing rights"
+msgid "No write permissions"
 msgstr ""
 
 #: admin/templates/partials/eos-dp-navigation.php:221
@@ -301,7 +301,7 @@ msgstr ""
 
 #: admin/templates/pages/eos-dp-create-plugin.php:18
 #: templates/pages/eos-dp-create-plugin.php:18
-msgid "It looks you have no rights to write in the plugins folder. It will not be possible to create any plugin until the plugins folder is not writable."
+msgid "It looks like you do not have write permissions for the plugins folder. It will not be possible to create any plugin until the plugins folder is not writable."
 msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:359
@@ -431,11 +431,11 @@ msgid "Click on the buttons above to see less plugins on the screen."
 msgstr ""
 
 #: inc/fdp-metaboxes.php:95
-msgid "Preview the page loading plugins and the theme according the settings you see here and disable JavaScript esecution"
+msgid "Preview the page loading plugins and the theme according the settings you see here and disable JavaScript execution"
 msgstr ""
 
 #: inc/fdp-metaboxes.php:94
-msgid "Preview the page loading plugins according the settings you see here"
+msgid "Preview the page using the plugin settings shown here"
 msgstr ""
 
 #: admin/eos-dp-ajax.php:977 eos-dp-ajax.php:977
@@ -459,7 +459,7 @@ msgid "Search on the support forum"
 msgstr ""
 
 #: admin/templates/pages/eos-dp-url.php:51 templates/pages/eos-dp-url.php:51
-msgid "This URL covers the post ID %s. It was not possibe to manage it with the Singles settings."
+msgid "This URL applies to post ID %s. It could not be managed via the "Singles" settings."
 msgstr ""
 
 #: admin/templates/partials/eos-dp-action-buttons.php:52
@@ -468,7 +468,7 @@ msgstr ""
 #: templates/partials/eos-dp-action-buttons.php:52
 #: templates/pages/eos-dp-terms-archive.php:103
 #: templates/pages/eos-dp-archive.php:95
-msgid "Preview the page loading plugins according the settings you see now on this row and show the files that are called"
+msgid "Preview the page loading plugins according the settings you see now on this row and show the files being called"
 msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:299
@@ -611,7 +611,7 @@ msgid "get variation"
 msgstr ""
 
 #: admin/eos-dp-helper.php:764 eos-dp-helper.php:764
-msgid "get refreshed fragments"
+msgid "Get refreshed fragments"
 msgstr ""
 
 #: admin/eos-dp-helper.php:763 eos-dp-helper.php:763
@@ -623,7 +623,7 @@ msgid "get cart totals"
 msgstr ""
 
 #: admin/eos-dp-helper.php:761 eos-dp-helper.php:761
-msgid "checkout ajax refresh"
+msgid "Checkout AJAX refresh"
 msgstr ""
 
 #: admin/eos-dp-helper.php:760 eos-dp-helper.php:760
@@ -643,19 +643,19 @@ msgid "add to cart"
 msgstr ""
 
 #: admin/eos-dp-helper.php:751 eos-dp-helper.php:751
-msgid "checking status"
+msgid "Check status"
 msgstr ""
 
 #: admin/eos-dp-helper.php:750 eos-dp-helper.php:750
-msgid "installation exporting"
+msgid "Export installation"
 msgstr ""
 
 #: admin/eos-dp-helper.php:749 eos-dp-helper.php:749
-msgid "Be careful, you should disable the unwanted plugins both on the source before the exporting and on the destination installation"
+msgid "Note: You should disable unwanted plugins on both the source site before exporting and on the destination site."
 msgstr ""
 
 #: admin/eos-dp-helper.php:749 eos-dp-helper.php:749
-msgid "installation importing"
+msgid "Import installation"
 msgstr ""
 
 #: admin/eos-dp-helper.php:743 eos-dp-helper.php:743
@@ -731,7 +731,7 @@ msgid "Actions"
 msgstr ""
 
 #: admin/eos-dp-helper.php:186 eos-dp-helper.php:186
-msgid "Deactivate depending on third party plugin action"
+msgid "Deactivate based on third-party plugin actions"
 msgstr ""
 
 #: admin/eos-dp-helper.php:180 eos-dp-helper.php:180
@@ -766,7 +766,7 @@ msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:257
 #: templates/pages/eos-dp-singles.php:257
-msgid "Pressing the button above, FDP will suggest you the needed plugins. However, check the page preview with the lens icon %s before to save the options."
+msgid "By clicking the button above, FDP will suggest the required plugins. However, please preview the page using the lens icon %s before saving your changes."
 msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:241 admin/fdp-admin.php:135
@@ -795,7 +795,7 @@ msgid "Issue detected. Disable Freesoul Deactivate Plugins and then activate it 
 msgstr ""
 
 #: admin/eos-dp-helper.php:157 eos-dp-helper.php:157
-msgid "Issue detected. It looks the file %s has been modified."
+msgid "Issue detected. It looks like the file %s has been modified."
 msgstr ""
 
 #: admin/eos-dp-helper.php:153 eos-dp-helper.php:153
@@ -901,14 +901,14 @@ msgstr ""
 #: admin/templates/pages/eos-dp-archive.php:118
 #: templates/partials/eos-dp-action-buttons.php:75
 #: templates/pages/eos-dp-archive.php:118
-msgid "Check the page with Google PageSpeed Insights loading plugins and the theme according the settings you see now on this row"
+msgid "Run Google PageSpeed Insights on this page using the plugin and theme settings shown in this row"
 msgstr ""
 
 #: admin/templates/partials/eos-dp-action-buttons.php:57
 #: admin/templates/pages/eos-dp-backend.php:127
 #: templates/partials/eos-dp-action-buttons.php:57
 #: templates/pages/eos-dp-backend.php:127
-msgid "Preview the page loading plugins and the theme according the settings you see now on this row and disable JavaScript esecution"
+msgid "Preview the page loading plugins and the theme according the settings you see now on this row and disable JavaScript execution"
 msgstr ""
 
 #: admin/templates/partials/eos-dp-action-buttons.php:51
@@ -920,7 +920,7 @@ msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:260
 #: templates/pages/eos-dp-singles.php:260
-msgid "Unable to finish the tests to suggest the unused plugins. Probably the server is too busy."
+msgid "Unable to complete the tests for plugin suggestions. The server may be too busy."
 msgstr ""
 
 #: admin/templates/pages/eos-dp-archive.php:100
@@ -955,12 +955,12 @@ msgstr ""
 
 #: admin/templates/partials/eos-dp-home-actions.php:27
 #: templates/partials/eos-dp-home-actions.php:27
-msgid "Check mobile usability loading plugins and the theme according the settings you see now on this row"
+msgid "Check mobile usability while loading plugins and the theme based on the current row settings"
 msgstr ""
 
 #: admin/templates/partials/eos-dp-home-actions.php:13
 #: templates/partials/eos-dp-home-actions.php:13
-msgid "Check the TTFB loading plugins andd the theme according the settings you see now on this row (beta)"
+msgid "Check the TTFB while loading plugins and the theme according the settings you see now on this row (beta)"
 msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:250
@@ -975,7 +975,7 @@ msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:259
 #: templates/pages/eos-dp-singles.php:259
-msgid "It may take a couple of minutes, drink a coffee while we try to understand which plugins you need on this page"
+msgid "This may take a few minutes; feel free to grab a coffee while we analyze which plugins are needed for this page."
 msgstr ""
 
 #: admin/templates/pages/eos-dp-backend.php:133
@@ -1000,11 +1000,11 @@ msgid "Admin Menu"
 msgstr ""
 
 #: admin/eos-dp-helper.php:185 eos-dp-helper.php:185
-msgid "Deactivate in Administration Pages"
+msgid "Deactivate in admin pages"
 msgstr ""
 
 #: admin/eos-dp-helper.php:184 eos-dp-helper.php:184
-msgid "Deactivate in Administration Pages by custom URLs"
+msgid "Deactivate in admin pages by custom URLs"
 msgstr ""
 
 #: admin/templates/pages/eos-dp-backend.php:45
@@ -1078,7 +1078,7 @@ msgid "posts"
 msgstr ""
 
 #: admin/eos-dp-helper.php:521 eos-dp-helper.php:521
-msgid "Go to the last plugin test results"
+msgid "View the latest plugin test results"
 msgstr ""
 
 #: admin/templates/pages/eos-dp-smoke-tests.php:184
@@ -1186,7 +1186,7 @@ msgstr ""
 #: admin/templates/pages/eos-dp-singles.php:228
 #: templates/partials/eos-dp-navigation.php:127
 #: templates/pages/eos-dp-singles.php:228
-msgid "Relevant pages"
+msgid "Relevant Pages"
 msgstr ""
 
 #: admin/templates/partials/eos-dp-table-head.php:50
@@ -1321,7 +1321,7 @@ msgstr ""
 #: templates/pages/eos-dp-post-type.php:54
 #: templates/pages/eos-dp-backend.php:136
 #: templates/pages/eos-dp-integration.php:77
-msgid "Paste last copied row settings"
+msgid "Paste previously copied row settings"
 msgstr ""
 
 #: admin/templates/partials/eos-dp-action-buttons.php:93
@@ -1336,7 +1336,7 @@ msgstr ""
 #: templates/pages/eos-dp-post-type.php:53
 #: templates/pages/eos-dp-backend.php:135
 #: templates/pages/eos-dp-integration.php:76
-msgid "Copy this row settings"
+msgid "Copy settings for this row"
 msgstr ""
 
 #: admin/templates/pages/eos-dp-terms-archive.php:102
@@ -1350,12 +1350,12 @@ msgstr ""
 #: templates/partials/eos-dp-action-buttons.php:49
 #: templates/pages/eos-dp-terms-archive.php:100
 #: templates/pages/eos-dp-archive.php:92
-msgid "Select a different Theme ONLY FOR PREVIEW"
+msgid "Select a different theme (PREVIEW ONLY)"
 msgstr ""
 
 #: admin/templates/pages/eos-dp-backend.php:125 admin/eos-dp-helper.php:789
 #: templates/pages/eos-dp-backend.php:125 eos-dp-helper.php:789
-msgid "View page loading plugins according the saved options"
+msgid "View page with plugins loaded according to the saved options."
 msgstr ""
 
 #: admin/templates/pages/eos-dp-mobile.php:60
@@ -1486,7 +1486,7 @@ msgid "%sInstall Specific Content For Mobile%s"
 msgstr ""
 
 #: admin/eos-dp-helper.php:182 eos-dp-helper.php:182
-msgid "Deactivate on search resutls page"
+msgid "Deactivate on Search results page"
 msgstr ""
 
 #: admin/templates/partials/eos-dp-navigation.php:182
@@ -1579,7 +1579,7 @@ msgid "Back to plugins"
 msgstr ""
 
 #: freesoul-deactivate-plugins.php:38
-msgid "Freesoul Deactivate Plugins can't be activated networkwide, but only on each single site. %s%s%s"
+msgid "Freesoul Deactivate Plugins cannot be activated network-wide; it must be activated on each individual site. %s%s%s"
 msgstr ""
 
 #: admin/eos-dp-helper.php:215 eos-dp-helper.php:215
@@ -1587,7 +1587,7 @@ msgid "Only the permalinks structures \"Day and name\", \"Month and name\", \"Po
 msgstr ""
 
 #: admin/eos-dp-helper.php:214 eos-dp-helper.php:214
-msgid "No plugins will be permanently deactivated because %s."
+msgid "No plugins will be permanently deactivated because of: %s."
 msgstr ""
 
 #: admin/templates/partials/eos-dp-navigation.php:94
@@ -1608,17 +1608,17 @@ msgstr ""
 
 #: admin/templates/partials/eos-dp-footer.php:15 admin/eos-dp-helper.php:209
 #: templates/partials/eos-dp-footer.php:15 eos-dp-helper.php:209
-msgid "the permalinks are set as numeric"
+msgid "Permalinks are set to "Numeric""
 msgstr ""
 
 #: admin/templates/partials/eos-dp-footer.php:12 admin/eos-dp-helper.php:206
 #: templates/partials/eos-dp-footer.php:12 eos-dp-helper.php:206
-msgid "the permalinks are set as plain"
+msgid "Permalinks are set to "Plain""
 msgstr ""
 
 #: admin/templates/partials/eos-dp-footer.php:10 admin/eos-dp-helper.php:204
 #: templates/partials/eos-dp-footer.php:10 eos-dp-helper.php:204
-msgid "the actual permalinks structure is not supported"
+msgid "the current permalink structure is not supported"
 msgstr ""
 
 #: inc/fdp-metaboxes.php:104
@@ -1675,12 +1675,12 @@ msgstr ""
 
 #: admin/templates/pages/eos-dp-post-type.php:47
 #: templates/pages/eos-dp-post-type.php:47
-msgid "If activated the Single %s Settings will have this row settings as default."
+msgid "If activated, the Single %s settings will use these row settings as the default."
 msgstr ""
 
 #: admin/templates/pages/eos-dp-post-type.php:43
 #: templates/pages/eos-dp-post-type.php:43
-msgid "If activated the Single %s Settings will be ignored."
+msgid "If activated, the Single %s settings will be ignored."
 msgstr ""
 
 #: admin/templates/partials/eos-dp-post-types-legend.php:40
@@ -1751,7 +1751,7 @@ msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:159
 #: templates/pages/eos-dp-singles.php:159
-msgid "Last modified date"
+msgid "Last Modified Date"
 msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:158
@@ -1766,7 +1766,7 @@ msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:156
 #: templates/pages/eos-dp-singles.php:156
-msgid "Post id"
+msgid "Post ID"
 msgstr ""
 
 #: admin/templates/pages/eos-dp-singles.php:155
@@ -1850,7 +1850,7 @@ msgstr ""
 #: templates/pages/eos-dp-smoke-tests.php:9 templates/pages/eos-dp-help.php:9
 #: templates/pages/eos-dp-advanced-support.php:9
 #: templates/pages/eos-dp-integration.php:10
-msgid "Sorry, you have not the right for this page"
+msgid "Sorry, you do not have permission to access this page."
 msgstr ""
 
 #. Description of the plugin
@@ -1894,7 +1894,7 @@ msgstr ""
 #: templates/pages/eos-dp-singles.php:423 templates/pages/eos-dp-archive.php:82
 #: templates/pages/eos-dp-post-type.php:42
 #: templates/pages/eos-dp-backend.php:122
-msgid "Activate/deactivate all plugins in %s"
+msgid "Activate/deactivate all plugins for %s"
 msgstr ""
 
 #: admin/templates/partials/eos-dp-navigation.php:247
@@ -1965,7 +1965,7 @@ msgid "Freesoul Deactivate Plugins"
 msgstr ""
 
 #: admin/eos-dp-helper.php:144 eos-dp-helper.php:144
-msgid "You have no direct write access, Freesoul Deactivate Plugins was not able to create the necessary mu-plugin and will not work."
+msgid "You do not have direct write access. Freesoul Deactivate Plugins could not create the necessary MU-plugin and will not function.."
 msgstr ""
 
 #: admin/templates/partials/eos-dp-navigation.php:30 admin/eos-dp-helper.php:90

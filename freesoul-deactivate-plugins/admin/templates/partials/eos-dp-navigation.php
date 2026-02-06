@@ -33,7 +33,7 @@ function eos_dp_navigation() {
 	?>
 	<noscript>
 		<div class="eos-dp-notice notice notice-error">
-			<p><?php esc_html_e( 'Without JavaScript FDP cannot work. Please, activate JavaScript in your browser if you want to use FDP!', 'freesoul-deactivate-plugins' ); ?></p>
+			<p><?php esc_html_e( 'FDP requires JavaScript to function. Please enable JavaScript in your browser to use FDP.', 'freesoul-deactivate-plugins' ); ?></p>
 		</div>
 	</noscript>
 	<nav id="eos-dp-setts-nav-wrp" class="<?php echo defined( 'EOS_DP_PRO_VERSION' ) ? 'fdp-pro-nav-wrp' : 'fdp-free-nav-wrp'; ?>" style="width:100vw">
@@ -95,7 +95,7 @@ function eos_dp_navigation() {
 			<li></li>
 		</ul>
 		<div id="fdp-topbar-icons" style="float:<?php echo is_rtl() ? 'left' : 'right'; ?>;display:inline-block;z-index:9999999;position:relative">
-			<span id="fdp-notifications-icon" class="dashicons dashicons-bell" style="position:relative;color:inherit;top:2px" title="<?php esc_html_e( 'Notifications' ); ?>"><span id="fdp-notifications-count"></span>
+			<span id="fdp-notifications-icon" class="dashicons dashicons-bell" style="position:relative;color:inherit;top:2px" title="<?php esc_html_e( 'Notifications', 'freesoul-deactivate-plugins' ); ?>"><span id="fdp-notifications-count"></span>
 				<div id="fdp-notifications">
 						<div id="fdp-notifications-list" style="position:absolute;width:300px;width:max-content;padding:0 10px;background:#fff;<?php echo is_rtl() ? 'left' : 'right'; ?>:-100%">
 						<?php
@@ -103,7 +103,7 @@ function eos_dp_navigation() {
 						if ( ! $user_meta || ! isset( $user_meta['rewrite_rules'] ) || 'dismissed' !== $user_meta['rewrite_rules'] ) {
 							$rewrite_notice = get_site_transient( 'fdp_admin_notice_rewrite_rules' );
 							if ( $rewrite_notice ) {
-								eos_dp_display_admin_notice( 'rewrite_rules', __( 'Issue with the rewrite rules.', 'freesoul-deactivate-plugins' ), wp_kses_post( wpautop( $rewrite_notice ) ), 'warning', __( 'If you dismiss this notice and it still appears over again and again, it means the rewrite rules are being flushed again and again. This is not good for performance.', 'freesoul-deactivate-plugins' ) );
+								eos_dp_display_admin_notice( 'rewrite_rules', __( 'Issue with the rewrite rules.', 'freesoul-deactivate-plugins' ), wp_kses_post( wpautop( $rewrite_notice ) ), 'warning', __( 'If you dismiss this notice and it reappears, your rewrite rules are being flushed repeatedly. This negatively impacts performance.', 'freesoul-deactivate-plugins' ) );
 							}
 						}
 						if ( isset( $GLOBALS['fdp_all_plugins'] ) && is_array( $GLOBALS['fdp_all_plugins'] ) ) {
@@ -112,7 +112,9 @@ function eos_dp_navigation() {
 									if ( file_exists( EOS_DP_PLUGIN_DIR . '/inc/plugin-conflicts/' . dirname( $active_plugin ) . '.php' ) ) {
 										require_once EOS_DP_PLUGIN_DIR . '/inc/plugin-conflicts/' . dirname( $active_plugin ) . '.php';
 										$plugin_name = strtoupper( str_replace( '-', ' ', dirname( $active_plugin ) ) );
-										$conflicts   = sprintf( __( 'Another user had an issue with the plugin %1$s. Read this %2$ssupport thread%3$s for more details. It may help you to avoid the same issue on your website.', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ), '<a title="' . __( 'Link to support thread', 'freesoul-deactivate-plugins' ) . '" href="' . esc_url( $support_thread_url ) . '" target="_blank" rel="noopener">', '</a>' );
+										// translators: the first %s is the plugin name, the second and third %s are link tags for the thread URL.
+										$conflicts   = sprintf( __( 'Another user had an issue with the plugin %1$s. Read this %2$ssupport thread%3$s for more details. This may help you avoid the same issue on your website.', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ), '<a title="' . __( 'Link to support thread', 'freesoul-deactivate-plugins' ) . '" href="' . esc_url( $support_thread_url ) . '" target="_blank" rel="noopener">', '</a>' );
+										// translators: %s is the plugin name.
 										eos_dp_display_admin_notice( 'conflicts_' . sanitize_key( dirname( $active_plugin ) ), sprintf( __( 'Potential conflict with %s.', 'freesoul-deactivate-plugins' ), $plugin_name ), wp_kses_post( wpautop( $conflicts ) ), 'warning' );
 									}
 								}
@@ -124,7 +126,8 @@ function eos_dp_navigation() {
 				</div>
 			</span>
 			<script>if('' === document.getElementById('fdp-notifications-count').innerText) document.getElementById('fdp-notifications-count').className = 'eos-hidden';</script>
-			<a id="fdp-visit-site" class="dashicons dashicons-admin-home" style="margin-<?php echo is_rtl() ? 'right' : 'left'; ?>:10px;color:inherit" title="<?php esc_html_e( 'Visit Site' ); ?>" href="<?php echo esc_url( get_home_url() ); ?>" target="fdp_home_url"></a>
+			<a id="fdp-visit-site" class="dashicons dashicons-admin-home" style="margin-<?php echo is_rtl() ? 'right' : 'left'; ?>:10px;color:inherit" title="<?php esc_html_e( 'Visit Site', 'freesoul-deactivate-plugins' ); ?>" href="<?php echo esc_url( get_home_url() ); ?>" target="fdp_home_url"></a>
+			<a id="fdp-doc" class="dashicons dashicons-book" style="margin-<?php echo is_rtl() ? 'right' : 'left'; ?>:10px;color:inherit" title="<?php esc_html_e( 'Documentation', 'freesoul-deactivate-plugins' ); ?>" href="<?php echo esc_url( FDP_DOC_URL ); ?>" target="fdp_doc"></a>
 			<span id="fdp-toggle-top-bar" class="hover dashicons dashicons-arrow-down" style="font-size:35px;line-height:22px"></span>
 		</div>
 	</nav>
@@ -177,7 +180,9 @@ function eos_dp_navigation() {
 				</span>
 				<?php for ( $n = 1;$n < $k + 1;++$n ) { ?>
 				<span class="fdp-plug-filter button" data-min="<?php echo esc_attr( max( 1, ( $l * $g ) ) ); ?>" data-max="<?php echo esc_attr( min( $active_plugins, ( ( $n * $g ) - 1 ) ) ); ?>">
-					<span class="dashicons dashicons-admin-plugins"  style="padding:4px 0"></span><?php printf( '%s - %s', esc_html( max( 1, ( $l * $g ) ) ), esc_html( min( $active_plugins - 1, ( ( $n * $g ) - 1 ) ) ) ); ?>
+					<span class="dashicons dashicons-admin-plugins"  style="padding:4px 0"></span><?php 
+					// translators: first %s is the starting number, second %s is the ending number.
+					printf( '%s - %s', esc_html( max( 1, ( $l * $g ) ) ), esc_html( min( $active_plugins - 1, ( ( $n * $g ) - 1 ) ) ) ); ?>
 					<ul class="fdp-plugins-filter-list">
 						<li><?php esc_html_e( 'Filter the following plugins:', 'freesoul-deactivate-plugins' ); ?></li>
 						<li><br /></li>
@@ -189,7 +194,9 @@ function eos_dp_navigation() {
 							&& ( ! isset( $_GET['int_plugin'] ) || sanitize_text_field( $_GET['int_plugin'] ) !== dirname( $globally_active[ $lin - 1 ] ) ) 
 						) {
 							?>
-						<li><?php echo sprintf( '%s - %s', esc_html( $lin ), esc_html( strtoupper( eos_dp_get_plugin_name_by_slug( $globally_active[ $lin - 1 ] ) ) ) ); ?></li>
+						<li><?php 
+						// translators: first %s is the plugin number, second %s is the plugin name.
+						echo sprintf( '%s - %s', esc_html( $lin ), esc_html( strtoupper( eos_dp_get_plugin_name_by_slug( $globally_active[ $lin - 1 ] ) ) ) ); ?></li>
 							<?php
 
 						}

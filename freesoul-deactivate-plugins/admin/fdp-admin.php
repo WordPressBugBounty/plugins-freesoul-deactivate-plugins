@@ -1,6 +1,6 @@
 <?php
 /**
- * It includes the code for the backend.
+ * Includes the code for the backend.
 
  * @package Freesoul Deactivate Plugins
  */
@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 $plugin = EOS_DP_PLUGIN_BASE_NAME;
-define( 'EOS_DP_DOCUMENTATION_URL', 'https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/' );
+define( 'EOS_DP_DOCUMENTATION_URL', 'https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/' );
 define( 'FDP_STORE_URL', 'https://shop.freesoul-deactivate-plugins.com/' );
 
 if ( isset( $_REQUEST['action'] ) && in_array( sanitize_text_field( $_REQUEST['action'] ), array( 'edit', 'editpost' ) ) ) {
@@ -137,17 +137,17 @@ function eos_dp_remove_help_tabs() {
 	$screen = get_current_screen();
 	$screen->remove_help_tabs();
 }
-// It adds a settings link to the action links in the plugins page.
+// Adds a settings link to the action links on the plugins page.
 add_filter( "plugin_action_links_$plugin", 'eos_dp_plugin_add_settings_link' );
 
-// It redirects to the plugin settings page on successfully plugin activation.
+// Redirects to the plugin settings page on successful plugin activation.
 add_action( 'admin_init', 'eos_dp_redirect_to_settings' );
 
-// It displays the admin notices.
+// Displays the admin notices.
 add_action( 'admin_notices', 'eos_dp_admin_notices', 999999 );
 
 add_filter( 'admin_title', 'eos_dp_admin_page_title', 99, 2 );
-// It set the browser tab title depending the options page.
+// Sets the browser tab title depending on the options page.
 function eos_dp_admin_page_title( $title, $sep ) {
 	$labels = array(
 		'scripts' => esc_html__( 'Scripts', 'freesoul-deactivate-plugins' ),
@@ -160,7 +160,7 @@ function eos_dp_admin_page_title( $title, $sep ) {
 		'eos_dp_admin'              => esc_attr__( 'Backend Singles', 'freesoul-deactivate-plugins' ),
 		'eos_dp_ajax'               => esc_attr__( 'Custom Ajax Actions', 'freesoul-deactivate-plugins' ),
 		'eos_dp_cron'               => esc_attr__( 'Cron Jobs', 'freesoul-deactivate-plugins' ),
-		'eos_dp_rest_api'           => esc_attr__( 'Rest API', 'freesoul-deactivate-plugins' ),
+		'eos_dp_rest_api'           => esc_attr__( 'REST API', 'freesoul-deactivate-plugins' ),
 		'eos_dp_by_post_requests'   => esc_attr__( 'Post Requests', 'freesoul-deactivate-plugins' ),
 		'eos_dp_translation_urls'   => esc_attr__( 'Translation URLs', 'freesoul-deactivate-plugins' ),
 		'eos_dp_by_archive'         => esc_attr__( 'Archives', 'freesoul-deactivate-plugins' ),
@@ -181,7 +181,7 @@ function eos_dp_admin_page_title( $title, $sep ) {
 		'eos_dp_pro_import_export'  => esc_attr__( 'Settings Import/Export', 'freesoul-deactivate-plugins' ),
 		'eos_dp_pro_hooks_recorder' => esc_attr__( 'Hooks Recorder', 'freesoul-deactivate-plugins' ),
 		'eos_dp_pro_plugins'        => esc_attr__( 'Plugin Settings', 'freesoul-deactivate-plugins' ),
-		'eos_dp_pro_settings'       => esc_attr__( 'Events', 'freesoul-deactivate-plugins' ),
+		'eos_dp_pro_settings'       => esc_attr__( 'Main Settings', 'freesoul-deactivate-plugins' ),
 		'eos_dp_report'             => esc_attr__( 'Reports', 'freesoul-deactivate-plugins' ),
 		'eos_dp_roles_manager'      => esc_attr__( 'Role Manager', 'freesoul-deactivate-plugins' ),
 		'eos_dp_search'             => esc_attr__( 'Search', 'freesoul-deactivate-plugins' ),
@@ -210,6 +210,7 @@ function eos_dp_admin_page_title( $title, $sep ) {
 		}
 	}
 	if ( isset( $_GET['asset_type'] ) && in_array( $_GET['asset_type'], array_keys( $labels ) ) ) {
+		// translators: %s is the asset type label.
 		$titles['eos_dp_pro_assets'] = sprintf( esc_attr__( 'Assets | %s', 'freesoul-deactivate-plugins' ), esc_html( $labels[ sanitize_text_field( $_GET['asset_type'] ) ] ) );
 	}
 	if ( isset( $_GET['page'] ) && in_array( $_GET['page'], array_keys( $titles ) ) ) {
@@ -217,6 +218,7 @@ function eos_dp_admin_page_title( $title, $sep ) {
 			return '&#128268; ' . esc_attr__( 'Homepage', 'freesoul-deactivate-plugins' ) . esc_attr( apply_filters( 'fdp_after_admin_title', $label ) );
 		}
 		if ( isset( $_GET['tab'] ) ) {
+			// translators: %1$s is the page title, %2$s is the tab title.
 			return '&#128268; ' . esc_html( sprintf( esc_attr__( '%1$s | %2$s', 'freesoul-deactivate-plugins' ), $titles[ sanitize_text_field( $_GET['page'] ) ], $titles[ sanitize_text_field( $_GET['tab'] ) ] ) . apply_filters( 'fdp_after_admin_title', $label ) );
 		}
 		return '&#128268; ' . esc_html( $titles[ sanitize_text_field( $_GET['page'] ) ] . apply_filters( 'fdp_after_admin_title', $label ) );
@@ -241,7 +243,7 @@ function eos_dp_remove_other_admin_notices() {
 if ( isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'eos_dp_admin', 'eos_dp_ajax', 'eos_dp_by_post_requests', 'eos_dp_rest_api', 'eos_dp_integration' ) ) ) {
 	add_action( 'eos_dp_after_table_head_columns', 'eos_dp_add_theme_to_table_head' );
 }
-// It adds the theme column in the table header.
+// Adds the theme column in the table header.
 function eos_dp_add_theme_to_table_head() {
 	$theme = wp_get_theme();
 	if ( ! is_object( $theme ) ) {
@@ -257,7 +259,9 @@ function eos_dp_add_theme_to_table_head() {
 				<span><?php echo esc_html( $theme_name_short ); ?></span>
 			</div>
 			<div id="eos-dp-global-chk-col-wrp" class="eos-dp-global-chk-col-wrp">
-				<div class="eos-dp-not-active-wrp"><input title="<?php printf( esc_attr__( 'Activate/deactivate %s everywhere', 'freesoul-deactivate-plugins' ), esc_attr( $theme_name ) ); ?>" data-col="theme" class="eos-dp-global-chk-col" type="checkbox" /></div>
+				<div class="eos-dp-not-active-wrp"><input title="<?php 
+				// translators: %s is the theme name.
+				printf( esc_attr__( 'Activate/deactivate %s everywhere', 'freesoul-deactivate-plugins' ), esc_attr( $theme_name ) ); ?>" data-col="theme" class="eos-dp-global-chk-col" type="checkbox" /></div>
 			</div>
 			<div class="fdp-p-n">1</div>
 		</div>
@@ -266,7 +270,7 @@ function eos_dp_add_theme_to_table_head() {
 }
 
 add_action( 'eos_dp_pre_table_head', 'eos_dp_pro_nonces' );
-// It displays the auto settings button and related messages.
+// Displays the auto settings button and related messages.
 function eos_dp_pro_nonces() {
 	wp_nonce_field( 'eos_dp_pro_auto_settings', 'eos_dp_pro_auto_settings' );
 	wp_nonce_field( 'eos_dp_plugins_contributions', 'eos_dp_plugins_contributions' );
@@ -278,7 +282,7 @@ function eos_dp_pro_nonces() {
 
 add_action( 'eos_dp_action_buttons', 'eos_dp_home_autosuggest_action_buttons', 10 );
 
-// It adds premium action buttons.
+// Adds premium action buttons.
 function eos_dp_home_autosuggest_action_buttons() {
 	if ( isset( $_GET['eos_dp_home'] ) ) :
 		?>
@@ -288,7 +292,7 @@ function eos_dp_home_autosuggest_action_buttons() {
 }
 
 add_filter( 'admin_body_class', 'eos_dp_admin_body_class' );
-// Adds the class to the body tag in the dashboard according the options page.
+// Adds the class to the body tag in the dashboard according to the options page.
 function eos_dp_admin_body_class( $classes ) {
 	if ( isset( $_GET['page'] ) && eos_dp_is_fdp_page() || isset( $_GET['fdp_add_favorites'] ) || ( isset( $_GET['page'] ) && 'eos_dp_code_browser' === $_GET['page'] ) ) {
 		global $fdp_plugins_count;
@@ -392,7 +396,7 @@ function eos_dp_pro_can_metabox( $can ) {
 }
 
 add_action( 'admin_menu', 'eos_dp_pro_admin_menu_filters' );
-// Fire filters in admmin_menu actions.
+// Fire filters in admin_menu actions.
 function eos_dp_pro_admin_menu_filters() {
 	add_filter( 'eos_dp_user_can_settings', 'eos_dp_pro_can_settings' );
 }
@@ -407,7 +411,7 @@ function eos_dp_pro_can_settings( $can ) {
 }
 
 add_filter( 'all_plugins', 'eos_dp_plugins_in_list' );
-// Remove plugins from plugins table in the page wp-admin/plugins.php according to the FDP Settings.
+// Remove plugins from plugins table on the page wp-admin/plugins.php according to the FDP Settings.
 function eos_dp_plugins_in_list( $plugins ) {
 	$fdp_caps = eos_dp_user_capabilities();
 	if ( $fdp_caps && is_array( $fdp_caps ) && in_array( 'see_plugin', $fdp_caps ) && ! $fdp_caps['see_plugin'] ) {
@@ -647,7 +651,7 @@ add_action(
 	100
 );
 
-// Noice about the incoming PRO version.
+// Notice about the incoming PRO version.
 function eos_dp_pro_version_notice( $position = 'fixed' ) {
 	if ( ! defined( 'FDP_PRO_ACTIVE' ) ) {
 		$user_meta = get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true );
@@ -676,7 +680,7 @@ function eos_dp_pro_version_notice( $position = 'fixed' ) {
 						<a class="button" style="background-color:#a28754;color:#fff;border-color:transparent;font-size:14px;text-transform:uppercase" href="https://shop.freesoul-deactivate-plugins.com" rel="noopener" target="_blank">Get the PRO version</a>
 					</p>
 					<p style="color:#fff !important" class="right">
-						<a class="fdp-dismiss-pro-notice" title="Close and don't show it again" style="color:#fff" href="#" data-pointer-id="fdp-pro-ready">Don't show again</a>
+						<a class="fdp-dismiss-pro-notice" title="Close and don't show it again" style="color:#fff" href="#" data-pointer-id="fdp-pro-ready">Don't show this again</a>
 					</p>
 				</div>
 					<?php if ( 'fixed' === $position ) { ?>
@@ -752,7 +756,7 @@ function eos_dp_check_license_on_update_plugins( $transient ) {
 	}
 }
 
-// License not valid notifice.
+// License not valid notice.
 function eos_dp_license_not_valid() {
 	$main_opts     = eos_dp_get_option( 'eos_dp_pro_main' );
 	$licenseA      = isset( $main_opts['eos_dp_license'] ) ? $main_opts['eos_dp_license'] : false;
@@ -771,11 +775,15 @@ function eos_dp_license_not_valid() {
 	?>
 	<div class="notice notice-error">
 		<?php if ( $licenseCode && '' !== $licenseCode ) { ?>
-		<p><?php esc_html_e( 'The license of Freesoul Deactivate Plugins PRO is not valid.', 'eos-dp-pro' ); ?></p>
-		<p><a href="<?php echo esc_url( $lic_setts_url ); ?>"><?php esc_html_e( 'Check license settings', 'eos-dp-pro' ); ?></a></p>
+		<p><?php esc_html_e( 'The license of Freesoul Deactivate Plugins PRO is not valid.', 'freesoul-deactivate-plugins' ); ?></p>
+		<p><a href="<?php echo esc_url( $lic_setts_url ); ?>"><?php esc_html_e( 'Check license settings', 'freesoul-deactivate-plugins' ); ?></a></p>
 		<?php } else { ?>
-			<p><?php echo wp_kses( sprintf( __( 'To get full access to the premium features and updates of Freesoul Deactivate Plugins PRO you should %1$sactivate the license%2$s.', 'eos-dp-pro' ), '<a href="' . esc_url( $lic_setts_url ) . '">', '</a>' ), $ksesArgs ); ?></p>
-			<p><?php echo wp_kses( sprintf( __( 'If you have lost it, have a look at %1$syour orders%2$s.', 'eos-dp-pro' ), '<a href="' . esc_url( $orders_link ) . '" target="_blank" rel="noopener">', '</a>' ), $ksesArgs ); ?></p>
+			<p><?php 
+			// Translators: 1: open anchor tag, 2: close anchor tag.
+			echo wp_kses( sprintf( __( 'To get full access to the premium features and updates of Freesoul Deactivate Plugins PRO you should %1$sactivate the license%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( $lic_setts_url ) . '">', '</a>' ), $ksesArgs ); ?></p>
+			<p><?php 
+			// Translators: 1: open anchor tag, 2: close anchor tag.
+			echo wp_kses( sprintf( __( 'If you have lost it, have a look at %1$syour orders%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( $orders_link ) . '" target="_blank" rel="noopener">', '</a>' ), $ksesArgs ); ?></p>
 			<?php
 			$main_opts                                = eos_dp_get_option( 'eos_dp_pro_main' );
 			$suff                                     = substr( sanitize_key( md5( ABSPATH ) ), 0, 4 );
@@ -787,7 +795,7 @@ function eos_dp_license_not_valid() {
 	<?php
 }
 
-// License not valid notifice.
+// License expired notice.
 function eos_dp_license_expired() {
 	$main_opts   = eos_dp_get_option( 'eos_dp_pro_main' );
 	$licenseA    = $main_opts['eos_dp_license'];
@@ -802,8 +810,10 @@ function eos_dp_license_expired() {
 	);
 	?>
 	<div class="notice notice-error">
-		<p><?php esc_html_e( 'The license of Freesoul Deactivate Plugins PRO is expired.', 'eos-dp-pro' ); ?></p>
-		<p><?php printf( esc_html__( 'For having access to the plugin updates you would need to renew the license. %1$sRenew now%2$s', 'eos-dp-pro' ), '<a class="button" href="' . esc_url( $renew_link ) . '" target="_blank" rel="noopener">', '</a>' ); ?></p>
+		<p><?php esc_html_e( 'The license of Freesoul Deactivate Plugins PRO is expired.', 'freesoul-deactivate-plugins' ); ?></p>
+		<p><?php 
+		// Translators: 1: open anchor tag, 2: close anchor tag.
+		printf( esc_html__( 'To have access to the plugin updates, you would need to renew the license. %1$sRenew now%2$s', 'freesoul-deactivate-plugins' ), '<a class="button" href="' . esc_url( $renew_link ) . '" target="_blank" rel="noopener">', '</a>' ); ?></p>
 	</div>
 	<?php
 }
@@ -886,7 +896,7 @@ add_action(
 			if ( defined( 'FDP_SHOW_ADMIN_MENU_DISABLED_PLUGINS' ) && false === FDP_SHOW_ADMIN_MENU_DISABLED_PLUGINS ) {
 				return;
 			}
-			if ( isset( $GLOBALS['fdp_disabled_plugins_for_user'] ) && ! empty( $GLOBALS['fdp_disabled_plugins_for_user'] ) ) {
+			if ( isset( $GLOBALS['fdp_disabled_plugins_for_user'] ) && ! empty( $GLOBALS['fdp_disabled_plugins_for_user'] ) && ! current_user_can( 'manage_options' ) ) {
 				return;
 			}
 			global $eos_dp_paths;
@@ -908,21 +918,26 @@ add_action(
 							$update_data['counts']['plugins'],
 							$update_data['counts']['plugins']
 						);
-						$nums['menu-plugins'] = sprintf( esc_html__( 'Plugins %s' ), $count );
+						// Translators: Plugins menu item with number of updates.
+						$nums['menu-plugins'] = sprintf( esc_html__( 'Plugins %s', 'freesoul-deactivate-plugins' ), $count );
 					}
 					if ( $current_user->has_cap( 'edit_posts' ) ) {
 						$awaiting_mod          = wp_count_comments();
 						$awaiting_mod          = $awaiting_mod->moderated;
 						$awaiting_mod_i18n     = number_format_i18n( $awaiting_mod );
-						$awaiting_mod_text     = sprintf( _n( '%s Comment in moderation', '%s Comments in moderation', $awaiting_mod ), $awaiting_mod_i18n );
-						$nums['menu-comments'] = sprintf( esc_html__( 'Comments %s' ), '<span class="awaiting-mod count-' . absint( $awaiting_mod ) . '"><span class="pending-count" aria-hidden="true">' . $awaiting_mod_i18n . '</span><span class="comments-in-moderation-text screen-reader-text">' . $awaiting_mod_text . '</span></span>' );
+						// Translators: 1: Number of comments in moderation.
+						$awaiting_mod_text     = sprintf( _n( '%s Comment in moderation', '%s Comments in moderation', $awaiting_mod, 'freesoul-deactivate-plugins' ), $awaiting_mod_i18n );
+						// Translators: Comments menu item with number of comments in moderation.
+						$nums['menu-comments'] = sprintf( esc_html__( 'Comments %s', 'freesoul-deactivate-plugins' ), '<span class="awaiting-mod count-' . absint( $awaiting_mod ) . '"><span class="pending-count" aria-hidden="true">' . $awaiting_mod_i18n . '</span><span class="comments-in-moderation-text screen-reader-text">' . $awaiting_mod_text . '</span></span>' );
 						unset( $awaiting_mod );
 					}
 					if ( ! is_multisite() && current_user_can( 'update_core' ) ) {
 						$update_data            = isset( $update_data ) ? $update_data : wp_get_update_data();
 						if( isset( $nums['menu-dashboard'] ) && false !== strpos( $nums['menu-dashboard'], 'update' ) ) {
 							$nums['menu-dashboard'] = sprintf(
-								__( 'Updates %s' ),
+								// Translators: Dashboard menu item with number of total updates (plugins, themes, WordPress core).
+								__( 'Updates %s', 'freesoul-deactivate-plugins' ),
+								// Translators: Number of total updates (plugins, themes, WordPress core).
 								sprintf(
 									'<span class="update-plugins count-%s"><span class="update-count">%s</span></span>',
 									$update_data['counts']['total'],
@@ -987,7 +1002,8 @@ add_action(
 									$notifications = get_user_option( 'yoast_notifications', $current_user->ID );
 									if ( $notifications && is_array( $notifications ) ) {
 										$notification_count      = count( array_keys( $notifications ) );
-										$fdp_admin_menu[ $n ][0] = sprintf( '%s <span class="update-plugins count-%s"><span class="plugin-count" aria-hidden="true">%s</span></span>', esc_html__( 'Yoast SEO', 'wordpress-seo' ), apply_filters( 'fdp_yoast_notification_count',$notification_count ), apply_filters( 'fdp_yoast_notification_count', $notification_count ) );
+										// Translators: 1: Number of Yoast SEO notifications.
+										$fdp_admin_menu[ $n ][0] = sprintf( '%s <span class="update-plugins count-%s"><span class="plugin-count" aria-hidden="true">%s</span></span>', esc_html__( 'Yoast SEO', 'freesoul-deactivate-plugins' ), apply_filters( 'fdp_yoast_notification_count',$notification_count ), apply_filters( 'fdp_yoast_notification_count', $notification_count ) );
 									}
 								}
 							}
@@ -998,7 +1014,7 @@ add_action(
 								if ( 'woocommerce' === $nfs && apply_filters( 'woocommerce_include_processing_order_count_in_menu', true ) ) {
 									global $wpdb;
 									$status      = 'wc-processing';
-									$order_count = $wpdb->get_var( "SELECT count(ID)  FROM {$wpdb->prefix}posts WHERE post_status LIKE '$status' AND `post_type` LIKE 'shop_order'" );
+									$order_count = $wpdb->get_var( "SELECT count(ID)  FROM {$wpdb->prefix}posts WHERE post_status LIKE '$status' AND `post_type` LIKE 'shop_order'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 									foreach ( $arrfs as $fsN => $wooSubs ) {
 										if ( isset( $wooSubs[2] ) && $arrfs[ $fsN ][0] ) {
 											$arrfs[ $fsN ][0] = explode( ' <span', $arrfs[ $fsN ][0] )[0];
@@ -1020,7 +1036,7 @@ add_action(
 							}
 							$menu = $fdp_admin_menu;
 							if ( isset( $menu[0][2] ) && 'index.php' === $menu[0][2] ) {
-								$menu[0][0] = esc_html__( 'Dashboard' );
+								$menu[0][0] = esc_html__( 'Dashboard', 'freesoul-deactivate-plugins' );
 							}
 							$submenu          = $fdp_admin_submenu;
 							$admin_page_hooks = $fdp_admin_page_hooks;
@@ -1084,9 +1100,9 @@ add_action(
 		if ( eos_dp_is_fdp_page() ) {
 			$output  = '<style>#collapse-menu{display:none}</style>';
 			$output .= '<li id="fdp-collapse-menu" class="hide-if-no-js" onclick="fdp_collapse_admin_menu();">';
-			$output .= '<button type="button" id="collapse-button" aria-label="' . esc_attr__( 'Collapse Main menu' ) . '" aria-expanded="true">';
+			$output .= '<button type="button" id="collapse-button" aria-label="' . esc_attr__( 'Collapse Main menu', 'freesoul-deactivate-plugins' ) . '" aria-expanded="true">';
 			$output .= '<span class="collapse-button-icon" aria-hidden="true"></span>';
-			$output .= '<span class="collapse-button-label">' . esc_html__( 'Collapse menu' ) . '</span>';
+			$output .= '<span class="collapse-button-label">' . esc_html__( 'Collapse menu', 'freesoul-deactivate-plugins' ) . '</span>';
 			$output .= '</button></li>';
 			$output .= '<script>';
 			$output .= 'function fdp_collapse_admin_menu(){';
@@ -1113,28 +1129,29 @@ add_action(
 	'admin_page_access_denied',
 	function() {
 		if( isset( $_GET['page'] ) && false !== strpos( sanitize_text_field( $_GET['page'] ), 'eos_dp_' ) ) {
-			$die  = '<p>' . esc_html__( 'Sorry, you are not allowed to access this page.' ) . '</p>';
+			$die  = '<p>' . esc_html__( 'Sorry, you are not allowed to access this page.', 'freesoul-deactivate-plugins' ) . '</p>';
 			if( defined( 'EOS_DP_PRO_FDP_MIN_VERSION' ) && version_compare( EOS_DP_PRO_FDP_MIN_VERSION, EOS_DP_MU_VERSION ) > 0 ){
-				$die .= '<p>' . esc_html__( 'Please, update Freesoul Deactivate Plugins to the last version.', 'freesoul-deactivate-plugins' ) . '</p>';
+				$die .= '<p>' . esc_html__( 'Please, update Freesoul Deactivate Plugins to the latest version.', 'freesoul-deactivate-plugins' ) . '</p>';
 			}
 			elseif ( ! defined( 'EOS_DP_PRO_VERSION' ) ) {
 				$fatal_error_handler = get_site_transient( 'fdp_plugin_disabledd_fatal_error' );
 				if( $fatal_error_handler && isset( $fatal_error_handler['plugin'] ) && in_array( $fatal_error_handler['plugin'],$GLOBALS['fdp_all_plugins'] ) && 'freesoul-deactivate-plugins-pro/freesoul-deactivate-plugins-pro.php' === $fatal_error_handler['plugin'] ){
-					$die .= '<p>' . esc_html__( 'It looks liike Freesoul Deactivate Plugins PRO triggered a fatal error, and it was disabled on the FDP settings pages.', 'freesoul-deactivate-plugins' ) . '</p>';
-					$die .= '<p>' . esc_html__( 'Try to do the following steps:', 'freesoul-deactivate-plugins' ) . '</p>';
+					$die .= '<p>' . esc_html__( 'It looks like Freesoul Deactivate Plugins PRO triggered a fatal error, and it was disabled on the FDP settings pages.', 'freesoul-deactivate-plugins' ) . '</p>';
+					$die .= '<p>' . esc_html__( 'Try the following steps:', 'freesoul-deactivate-plugins' ) . '</p>';
 					$die .= '<ul>';
 					$die .= '<li>' . esc_html__( 'First, try to update both the free and PRO versions.', 'freesoul-deactivate-plugins' ) . '</li>';
-					$die .= '<li>' . wp_kses( sprintf( __( 'If you still have the same issue, go to a working %sFDP settings page%s.', 'freesoul-deactivate-plugins' ), '<a href="' . admin_url( 'admin.php?page=eos_dp_menu' ) . '" target="_FDP_Singles">', '</a>' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ) . '</li>';
-					$die .= '<li>' . esc_html__( 'Show the warnings by going with your mouse over the notification icon in the FDP admin top navigation.', 'freesoul-deactivate-plugins' ) . '</li>';
+					// Translators: 1: open anchor tag, 2: close anchor tag.
+					$die .= '<li>' . wp_kses( sprintf( __( 'If you still have the same issue, go to a working %1$sFDP settings page%2$s.', 'freesoul-deactivate-plugins' ), '<a href="' . admin_url( 'admin.php?page=eos_dp_menu' ) . '" target="_FDP_Singles">', '</a>' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ) . '</li>';
+					$die .= '<li>' . esc_html__( 'Show the warnings by hovering your mouse over the notification icon in the FDP admin top navigation.', 'freesoul-deactivate-plugins' ) . '</li>';
 					$die .= '<li>' . esc_html__( 'If you see a warning that mentions a fatal error caused by FDP PRO, then click on "Show details".', 'freesoul-deactivate-plugins' ) . '</li>';
 					$die .= '<li>' . esc_html__( 'Read the details, and then click on "Dismiss".', 'freesoul-deactivate-plugins' ) . '</li>';
 					$die .= '</ul>';
 				}
 				else{
-					$die .= '<p>' . esc_html__( 'It looks a page added by Freesoul Deactivate Plugins PRO. Try to activate FDP PRO.', 'freesoul-deactivate-plugins' ) . '</p>';
+					$die .= '<p>' . esc_html__( 'It looks like a page added by Freesoul Deactivate Plugins PRO. Try to activate FDP PRO.', 'freesoul-deactivate-plugins' ) . '</p>';
 				}
 			} elseif ( defined( 'EOS_DP_PRO_VERSION' ) ) {
-				$die .= '<p>' . esc_html__( 'Try to update both Freesoul Deactivate Plugins and Freesoul Deactivate Plugins PRO to the last version.', 'freesoul-deactivate-plugins' ) . '</p>';
+				$die .= '<p>' . esc_html__( 'Try to update both Freesoul Deactivate Plugins and Freesoul Deactivate Plugins PRO to the latest version.', 'freesoul-deactivate-plugins' ) . '</p>';
 			}
 			wp_die( wp_kses_post( apply_filters(  'fdp_admin_page_access_denied', $die ) ), 403 );
 		}
@@ -1164,7 +1181,7 @@ function eos_dp_user_preferences( $user ) {
 		  <td>
 			 <label for="fdp_admin_menu">
 				 <input id="fdp_admin_menu" name="fdp_admin_menu" type="checkbox" value="true"<?php echo $toplevel_menu ? ' checked' : ''; ?> />
-				 <?php esc_html_e( 'Show the FDP top level admin menu. If unchecked you will still see Plugins Manager under Plugins. ', 'freesoul-deactivate-plugins' ); ?>
+				 <?php esc_html_e( 'Show the FDP top level admin menu. If unchecked you will still see Plugins Manager under Plugins.', 'freesoul-deactivate-plugins' ); ?>
 			 </label>
 		  </td>
 	  </tr>
@@ -1173,7 +1190,7 @@ function eos_dp_user_preferences( $user ) {
 		  <td>
 			 <label for="fdp_metabox">
 				 <input id="fdp_metabox" name="fdp_metabox" type="checkbox" value="true"<?php echo $fdp_metabox ? ' checked' : ''; ?> />
-				 <?php esc_html_e( "Uncheck it to don't show the FDP metabox in the single page/post. ", 'freesoul-deactivate-plugins' ); ?>
+				 <?php esc_html_e( "Uncheck this to hide the FDP metabox on single pages/posts.", 'freesoul-deactivate-plugins' ); ?>
 			 </label>
 		  </td>
 	  </tr>
@@ -1182,7 +1199,7 @@ function eos_dp_user_preferences( $user ) {
 		  <td>
 			 <label for="fdp_csp">
 				 <input id="fdp_csp" name="fdp_csp" type="checkbox" value="true"<?php echo $fdp_csp ? ' checked' : ''; ?> />
-				 <?php esc_html_e( "Uncheck it if you have issues on the FDP backend pages. ", 'freesoul-deactivate-plugins' ); ?>
+				 <?php esc_html_e( "Uncheck it if you have issues on the FDP backend pages.", 'freesoul-deactivate-plugins' ); ?>
 			 </label>
 		  </td>
 	  </tr>
@@ -1232,8 +1249,9 @@ add_action(
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG && file_exists( WP_CONTENT_DIR . '/debug.log' ) ) {
 			$filesize = round( filesize( WP_CONTENT_DIR . '/debug.log' ) / 1024, 1 );
 			if ( $filesize > 200 ) {
-				$msg = sprintf( esc_html__( 'The size of the file wp-content/debug.log is %s kB. Such a large file may degrade the performance every time WordPress writes into that file.', 'freesoul-deactivate-plugins' ), $filesize );
-				eos_dp_display_admin_notice( 'eos_dp_debug_big', esc_html__( 'File wp-content/debug.log too big.', 'freesoul-deactivate-plugins' ), esc_html( $msg ), 'warning' );
+				// Translators: 1: Size of the debug.log file in kB.
+				$msg = sprintf( esc_html__( 'The size of the file wp-content/debug.log is %s kB. Such a large file may degrade performance every time WordPress writes to that file.', 'freesoul-deactivate-plugins' ), $filesize );
+				eos_dp_display_admin_notice( 'eos_dp_debug_big', esc_html__( 'File wp-content/debug.log is too large', 'freesoul-deactivate-plugins' ), esc_html( $msg ), 'warning' );
 			}
 		}
 	}
@@ -1256,7 +1274,7 @@ add_action( 'admin_notices', function() {
 		if( ! $fdp_pro_integrity ) {
 		?>
 		<div id="fdp-pro-compromised" class="notice notice-error" style="display:block !important;opacity:1 !important;width:100% !important;font-size:14px !important;position:static !important;left:auto !important;right:auto !important;transform:none !important;padding:10px !important;font-family:inherit !important">
-			<?php esc_html_e( 'It seems the code of Freesoul Deactivate Plugins PRO was modified. Update Freesoul Deactivate Plugins PRO to the last official version, in another case it will not work properly.', 'freesoul-deactivate-plugins' ); ?>
+			<?php esc_html_e( 'It seems the code of Freesoul Deactivate Plugins PRO was modified. Update Freesoul Deactivate Plugins PRO to the latest official version, otherwise it will not work properly.', 'freesoul-deactivate-plugins' ); ?>
 		</div>
 		<?php
 		// deactivate_plugins( 'freesoul-deactivate-plugins-pro/freesoul-deactivate-plugins-pro.php' );
@@ -1285,7 +1303,7 @@ add_action(
 );
 
 add_action( 'plugins_loaded', 'eos_dp_redirect_to_fdp_page' );
-// Redirect to settings page if it's a FDP page.
+// Redirects to settings page if it's an FDP page.
 function eos_dp_redirect_to_fdp_page() {
 	if ( eos_dp_is_fdp_page() && isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( sanitize_text_field( $_SERVER['REQUEST_URI'] ), '/wp-admin/plugins.php' ) ) {
 		wp_safe_redirect( esc_url( add_query_arg( $_GET, admin_url( 'admin.php' ) ) ) );

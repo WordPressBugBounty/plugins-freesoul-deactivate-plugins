@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 function eos_dp_smoke_tests_callback() {
 	if ( ! current_user_can( 'activate_plugins' ) ) {
 		?>
-		<h2><?php esc_html_e( 'Sorry, you have not the right for this page', 'freesoul-deactivate-plugins' ); ?></h2>
+		<h2><?php esc_html_e( 'Sorry, you do not have permission to access this page.', 'freesoul-deactivate-plugins' ); ?></h2>
 		<?php
 		return;
 	}
@@ -22,7 +22,7 @@ function eos_dp_smoke_tests_callback() {
 	?>
 	<style id="fdp-tests-css">#eos-dp-plugins-comparison img{width:130px;height:20px;margin:0 10px}</style>
 	<div id="eos-dp-plugin-info">
-		<h2><?php esc_html_e( 'Smoke Tests on the last plugin versions', 'freesoul-deactivate-plugins' ); ?></h2>
+		<h2><?php esc_html_e( 'Smoke Tests on the latest plugin versions', 'freesoul-deactivate-plugins' ); ?></h2>
 		<div id="eos-dp-plugins-comparison" style="clear:both">
 			<table class="table table-striped">
 				<tbody>
@@ -48,7 +48,9 @@ function eos_dp_smoke_tests_callback() {
 				</tbody>
 			</table>
 		</div>
-		<p><?php echo wp_kses_post( sprintf( __( 'Tests performed by %1$s%2$s%3$s', 'freesoul-deactivate-plugins' ), '<a href="https://plugintests.com/" target="_blank" rel="noopener" >', 'https://plugintests.com/', '</a>' ) ); ?></p>
+		<p><?php 
+		// translators: %1$s is the opening anchor tag, %2$s is the URL, %3$s is the closing anchor tag.
+		echo wp_kses_post( sprintf( __( 'Tests performed by %1$s%2$s%3$s', 'freesoul-deactivate-plugins' ), '<a href="https://plugintests.com/" target="_blank" rel="noopener" >', 'https://plugintests.com/', '</a>' ) ); ?></p>
 		<div id="eos-dp-go-to-top" class="hover right" style="margin:48px 6px 0 6px;z-index:999"><span title="<?php esc_attr_e( 'Go to top', 'freesoul-deactivate-plugins' ); ?>" style="background:#fff;padding:10px" class="dashicons dashicons-arrow-up-alt"></span></div>
 	</div>
 	<?php

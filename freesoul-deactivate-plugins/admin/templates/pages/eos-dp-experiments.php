@@ -29,13 +29,14 @@ function eos_dp_experiments_callback() {
 			'type'        => 'checkbox',
 			'attribute'   => $skip_db,
 			'wrapper_id'  => 'db_filesystem_chk_wrp',
-			'description' => __( 'Check this if you want to save the Archives and Terms Archives settings in the filesystem. Uncheck it if you want to save it in the database.', 'freesoul-deactivate-plugins' ),
+			'description' => __( 'Check this to save the Archives and Terms Archives settings in the filesystem. Uncheck it to save them in the database.', 'freesoul-deactivate-plugins' ),
 		),
 		'move_db_confirmation'         => array(
 			'type'          => 'text',
 			'style'         => 'text-transform:uppercase',
 			'wrapper_id'    => 'fdp-move_db-confirmation-wrp',
 			'wrapper_class' => 'eos-hidden',
+			// translators: %s is the confirmation text.
 			'description'   => sprintf( __( 'Write %s to confirm that you want to move the Archives and Terms Archives settings from the filesystem to the database.', 'freesoul-deactivate-plugins' ), 'DATABASE' ),
 		),
 		'move_filesystem_confirmation' => array(
@@ -43,6 +44,7 @@ function eos_dp_experiments_callback() {
 			'style'         => 'text-transform:uppercase',
 			'wrapper_id'    => 'fdp-move_filesystem-confirmation-wrp',
 			'wrapper_class' => 'eos-hidden',
+			// translators: %s is the confirmation text.
 			'description'   => sprintf( __( 'Write %s to confirm that you want to move the Archives and Terms Archives settings from the database to the filesystem.', 'freesoul-deactivate-plugins' ), 'FILESYSTEM' ),
 		),
 		'move_db_submit'               => array(
@@ -54,7 +56,7 @@ function eos_dp_experiments_callback() {
 			'description'   => __( 'Click on the button if you are really sure.', 'freesoul-deactivate-plugins' ),
 		),
 	);
-	$description = '<strong>' . __( 'Important! Make always a full backup before to try any experiment.', 'freesoul-deactivate-plugins' ) . '</strong>';
+	$description = '<strong>' . __( 'Important! Always make a full backup before trying any experiment.', 'freesoul-deactivate-plugins' ) . '</strong>';
 	fdp_add_settings_page( 'eos_dp_move_db', $args, 'tools', __( 'Save settings in the Filesystem', 'freesoul-deactivate-plugins' ), $description, false, false, false, false );
 	?>
   <div id="fdp-move_db-submit-wrp" class="eos-hidden" style="position:relative;bottom:0"><button id="fdp-move_db-settings-submit" class="button"><?php esc_html_e( 'Reset all the settings', 'freesoul-deactivate-plugins' ); ?></button></div>

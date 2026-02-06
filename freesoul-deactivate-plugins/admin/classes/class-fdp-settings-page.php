@@ -11,6 +11,14 @@ if ( ! class_exists( 'Eos_Fdp_Plugins_Manager_Page' ) ) {
 	require_once EOS_DP_PLUGIN_DIR . '/admin/classes/abstracts/class-eos-fdp-plugins-manager-page.php';
 }
 
+/**
+ * Class FDP Settings Page
+ *
+ * Implemented by Settings Page templates.
+ *
+ * @version  1.0.0
+ * @package  Freesoul Deactivate Plugins\Classes
+ */
 class FDP_Settings_Page extends Eos_Fdp_Plugins_Manager_Page {
 
 	public $page_slug;
@@ -24,6 +32,19 @@ class FDP_Settings_Page extends Eos_Fdp_Plugins_Manager_Page {
 	public $args;
 	public $save_button;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param string       $page_slug          Page slug.
+	 * @param array        $args               Arguments.
+	 * @param string       $parent_menu_slug   Parent menu slug.
+	 * @param string|false $title              Title.
+	 * @param string       $description        Description.
+	 * @param bool         $autoload           Autoload option.
+	 * @param string|false $capability         Capability.
+	 * @param string|false $dashicon           Dashicon.
+	 * @param bool         $save_button        Save button.
+	 */
 	public function __construct( $page_slug, $args, $parent_menu_slug, $title, $description, $autoload, $capability, $dashicon = false, $save_button = true ) {
 		if ( ! $capability ) {
 			$capability = current_user_can( 'fdp_plugins_viewer' ) ? 'read' : 'activate_plugins';
@@ -31,7 +52,7 @@ class FDP_Settings_Page extends Eos_Fdp_Plugins_Manager_Page {
 		}
 		if ( ! current_user_can( $capability ) && ! defined( 'FDP_EMERGENCY_LOG_ADMIN' ) ) {
 			?>
-	  <h2><?php esc_html_e( 'Sorry, you have not the right for this page', 'freesoul-deactivate-plugins' ); ?></h2>
+	  <h2><?php esc_html_e( 'Sorry, you do not have permission to access this page.', 'freesoul-deactivate-plugins' ); ?></h2>
 			<?php
 			return;
 		}
@@ -53,9 +74,14 @@ class FDP_Settings_Page extends Eos_Fdp_Plugins_Manager_Page {
 		$this->footer( $this->button_class );
 	}
 
+	/**
+	 * Output before section.
+	 *
+	 * @param string $page_slug Page slug.
+	 */
 	public function before_section( $page_slug ) {
 		if ( $this->save_button ) {
-			wp_enqueue_script( 'fdp-pro-settings', EOS_DP_SETTINGS_JS_URL, array( 'eos-dp-backend' ), null, true );
+			wp_enqueue_script( 'fdp-pro-settings', EOS_DP_SETTINGS_JS_URL, array( 'eos-dp-backend' ), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Version is set to null to avoid caching.
 			wp_localize_script(
 				'fdp-pro-settings',
 				'fdp_setts_js',
@@ -92,6 +118,11 @@ class FDP_Settings_Page extends Eos_Fdp_Plugins_Manager_Page {
 		</div>
 		<?php
 	}
+	/**
+	 * Section content.
+	 *
+	 * @param string $page_slug Page slug.
+	 */
 	public function section( $page_slug ) {
 		$nonces = $this->get_nonces_map();
 		if ( isset( $nonces[ $page_slug ] ) ) {
@@ -148,16 +179,31 @@ class FDP_Settings_Page extends Eos_Fdp_Plugins_Manager_Page {
 	</section>
 		<?php
 	}
+	/**
+	 * Table body.
+	 *
+	 * @param string $page_slug Page slug.
+	 */
 	public function tableBody( $page_slug ) {
 		return;
 	}
 
+	/**
+	 * Get nonces map.
+	 *
+	 * @return array
+	 */
 	public function get_nonces_map() {
 		$arr                                     = array();
 		$arr[ sanitize_key( $this->page_slug ) ] = 'fdp_setts_nonce';
 		return $arr;
 	}
 
+	/**
+	 * Page footer.
+	 *
+	 * @param string $button_class Button class.
+	 */
 	public function footer( $button_class ) {
 		require_once EOS_DP_PLUGIN_DIR . '/admin/templates/partials/eos-dp-footer.php';
 		if ( $this->save_button ) {

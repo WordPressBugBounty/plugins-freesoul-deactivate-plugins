@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 function eos_dp_firing_order_callback() {
 	if ( ! current_user_can( 'activate_plugins' ) ) {
 		?>
-		<h2><?php esc_html_e( 'Sorry, you have not the right for this page', 'freesoul-deactivate-plugins' ); ?></h2>
+		<h2><?php esc_html_e( 'Sorry, you do not have permission to access this page.', 'freesoul-deactivate-plugins' ); ?></h2>
 		<?php
 		return;
 	}
@@ -25,9 +25,9 @@ function eos_dp_firing_order_callback() {
 	?>
 	<style id="fdp-firing-order-css">.eos-dp-firing-order.ui-sortable .eos-dp-plugin{margin:15px 0;padding:5px}</style>
 	<section id="eos-dp-by-firing_order-section" class="eos-dp-section">
-		<h2><?php esc_html_e( 'You can change the plugins firing order dragging and moving the plugins.', 'freesoul-deactivate-plugins' ); ?></h2>
+		<h2><?php esc_html_e( 'You can change the plugin firing order by dragging and moving the plugins.', 'freesoul-deactivate-plugins' ); ?></h2>
 		<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Plugins should use action hooks to run code in the desired order. Change the firing order if you really don\'t have other cleaner solutions.', 'freesoul-deactivate-plugins' ); ?></p>
-		<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Remember that every time you activate a new plugin, you may need to change and save again the firing order according with your needs.', 'freesoul-deactivate-plugins' ); ?></p>
+		<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Remember that every time you activate a new plugin, you may need to change and save the firing order again according to your needs.', 'freesoul-deactivate-plugins' ); ?></p>
 		<div class="eos-dp-firing-order" style="margin-top:32px">
 			<?php
 			foreach ( $plugins as $plugin ) {
@@ -48,7 +48,9 @@ function eos_dp_firing_order_callback() {
 					<span class="dashicons dashicons-move"></span>
 					<span class="eos-dp-fo-plugin-wrp">
 						<span class="dashicons dashicons-admin-plugins"></span>
-						<span><a class="eos-dp-no-decoration" title="<?php printf( esc_attr__( 'View details of %s', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" href="<?php echo esc_url( $details_url ); ?>" target="_blank"><?php echo esc_html( $plugin_name ); ?></a></span>
+						<span><a class="eos-dp-no-decoration" title="<?php 
+						// translators: %s is the plugin name.
+						printf( esc_attr__( 'View details of %s', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" href="<?php echo esc_url( $details_url ); ?>" target="_blank"><?php echo esc_html( $plugin_name ); ?></a></span>
 					</span>
 				</div>
 					<?php

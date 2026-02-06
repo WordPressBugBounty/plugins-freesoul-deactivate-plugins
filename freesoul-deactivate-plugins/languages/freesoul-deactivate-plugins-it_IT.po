@@ -36,7 +36,7 @@ msgid "Go to Code Risk"
 msgstr "Vai a Code Risk"
 
 #: admin/eos-dp-helper.php:407
-msgid "Go to the last plugin test results"
+msgid "View the latest plugin test results"
 msgstr "Vai agli ultimi risultati dei test del plugin"
 
 #: admin/templates/pages/eos-dp-code-risk.php:192
@@ -209,14 +209,14 @@ msgstr "Chiudi"
 #: admin/templates/pages/eos-dp-archive.php:80
 #: admin/templates/pages/eos-dp-post-type.php:53
 #: admin/templates/pages/eos-dp-singles.php:313
-msgid "Paste last copied row settings"
+msgid "Paste previously copied row settings"
 msgstr "Incolla ultime impostazioni di riga copiate"
 
 #: admin/templates/pages/eos-dp-terms-archive.php:66
 #: admin/templates/pages/eos-dp-archive.php:79
 #: admin/templates/pages/eos-dp-post-type.php:52
 #: admin/templates/pages/eos-dp-singles.php:312
-msgid "Copy this row settings"
+msgid "Copy settings for this row"
 msgstr "Copia le impostazioni di questa riga"
 
 #: admin/templates/pages/eos-dp-terms-archive.php:60
@@ -226,11 +226,11 @@ msgstr "Genera un'anteprima della pagina in accordo con le impostazioni che vedi
 #: admin/templates/pages/eos-dp-terms-archive.php:58
 #: admin/templates/pages/eos-dp-archive.php:71
 #: admin/templates/pages/eos-dp-singles.php:287
-msgid "Select a different Theme ONLY FOR PREVIEW"
+msgid "Select a different theme (PREVIEW ONLY)"
 msgstr "Seleziona un tema differente SOLO PER L'ANTEPRIMA"
 
 #: admin/templates/pages/eos-dp-terms-archive.php:53
-msgid "View page loading plugins according the saved options"
+msgid "View page with plugins loaded according to the saved options."
 msgstr "Carica la pagina in accordo con le impostazioni salvate"
 
 #: admin/templates/pages/eos-dp-search.php:45
@@ -287,7 +287,7 @@ msgid "Uncheck the plugins you want to disable depending on the URL"
 msgstr "Deseleziona i plug-in che vuoi disabilitare a seconda dell'URL"
 
 #: admin/templates/partials/eos-dp-navigation.php:54
-msgid "Relevant pages"
+msgid "Relevant Pages"
 msgstr "Pagine importanti"
 
 #: admin/templates/pages/eos-dp-firing-order.php:23
@@ -338,7 +338,7 @@ msgid "It looks you have updated Freesoul Deactivate Plugins using FTP. In any c
 msgstr "Sembra che hai aggiornato Freesoul Deactivate Plugins usando FTP. In ogni caso per essere sicuri che è tutto aggiornato, disabilita Freesoul Deactivate Plugins e riattivalo nuovamente."
 
 #: admin/fdp-admin.php:51
-msgid "Disable plugiins | URL"
+msgid "Disable plugins | URL"
 msgstr "Disabilita plugin  URL"
 
 #: admin/eos-dp-helper.php:81 admin/eos-dp-helper.php:138
@@ -386,7 +386,7 @@ msgid "Freesoul Deactivate Plugins Documentation"
 msgstr "Documentazione di Freesoul Deactivate Plugins"
 
 #: admin/fdp-admin.php:50
-msgid "Disable plugiins | Search"
+msgid "Disable plugins | Search"
 msgstr "Disattiva plugin | Cerca"
 
 #: admin/fdp-admin.php:49
@@ -443,7 +443,7 @@ msgid "Deactivate on search results page"
 msgstr "Disabilita nella pagina dei risultati di ricerca"
 
 #: admin/eos-dp-helper.php:134
-msgid "Deactivate on search resutls page"
+msgid "Deactivate on Search results page"
 msgstr "Disabilita nella pagina dei risultati di ricerca"
 
 #: admin/templates/partials/eos-dp-navigation.php:105
@@ -543,7 +543,7 @@ msgid "Back to plugins"
 msgstr "Ritorna a plugins"
 
 #: freesoul-deactivate-plugins.php:33
-msgid "Freesoul Deactivate Plugins can't be activated networkwide, but only on each single site. %s%s%s"
+msgid "Freesoul Deactivate Plugins cannot be activated network-wide; it must be activated on each individual site. %s%s%s"
 msgstr "Freesoul Deactivate Plugins non può essere attivato globalmente nella network, ma solo in ogni singolo sito. %s%s%s"
 
 #: admin/eos-dp-helper.php:160
@@ -551,7 +551,7 @@ msgid "Only the permalinks structures \"Day and name\", \"Month and name\", \"Po
 msgstr "Solo le strutture permalinks \"Giorno e nome\", \"Mese e nome\", \"Nome articolo\" e quelle personalizzate che terminano con /%postname%/ sono supportate (sono anche migliori dal punto di vista SEO)"
 
 #: admin/eos-dp-helper.php:159
-msgid "No plugins will be permanently deactivated because %s."
+msgid "No plugins will be permanently deactivated because of: %s."
 msgstr "Nessun plugin sarà disabilitato in modo permanente perché %s."
 
 #: admin/templates/partials/eos-dp-navigation.php:31
@@ -569,17 +569,17 @@ msgstr "Non puoi salvare perchè %s"
 
 #: admin/templates/partials/eos-dp-save-button.php:15
 #: admin/eos-dp-helper.php:154
-msgid "the permalinks are set as numeric"
+msgid "Permalinks are set to "Numeric""
 msgstr "i permalinks hanno una struttura numerica"
 
 #: admin/templates/partials/eos-dp-save-button.php:12
 #: admin/eos-dp-helper.php:151
-msgid "the permalinks are set as plain"
+msgid "Permalinks are set to "Plain""
 msgstr "i permalinks hanno la struttura semplice"
 
 #: admin/templates/partials/eos-dp-save-button.php:10
 #: admin/eos-dp-helper.php:149
-msgid "the actual permalinks structure is not supported"
+msgid "the current permalink structure is not supported"
 msgstr "l'attuale struttura dei permalinks non é supportata"
 
 #: inc/fdp-metaboxes.php:55
@@ -628,11 +628,11 @@ msgid "Post Types"
 msgstr "Tipi di post"
 
 #: admin/templates/pages/eos-dp-post-type.php:46
-msgid "If activated the Single %s Settings will have this row settings as default."
+msgid "If activated, the Single %s settings will use these row settings as the default."
 msgstr "Se attivato il singolo %s avrà le impostazioni di questa riga come default."
 
 #: admin/templates/pages/eos-dp-post-type.php:42
-msgid "If activated the Single %s Settings will be ignored."
+msgid "If activated, the Single %s settings will be ignored."
 msgstr "Se attivato le impostazioni del singolo %s verranno ignorate."
 
 #: admin/templates/partials/eos-dp-post-types-legend.php:40
@@ -687,7 +687,7 @@ msgid "Order"
 msgstr "Ordine"
 
 #: admin/templates/pages/eos-dp-singles.php:113
-msgid "Last modified date"
+msgid "Last Modified Date"
 msgstr "Data ultima modifica"
 
 #: admin/templates/pages/eos-dp-singles.php:112
@@ -699,7 +699,7 @@ msgid "Author"
 msgstr "Autore"
 
 #: admin/templates/pages/eos-dp-singles.php:110
-msgid "Post id"
+msgid "Post ID"
 msgstr "ID del post"
 
 #: admin/templates/pages/eos-dp-singles.php:109
@@ -762,7 +762,7 @@ msgstr "Archivio %s"
 #: admin/templates/pages/eos-dp-mobile.php:9
 #: admin/templates/pages/eos-dp-firing-order.php:9
 #: admin/templates/pages/eos-dp-singles.php:9
-msgid "Sorry, you have not the right for this page"
+msgid "Sorry, you do not have permission to access this page."
 msgstr "Spiacenti, non hai i diritti per questa pagina"
 
 #: admin/eos-dp-helper.php:79
@@ -787,7 +787,7 @@ msgstr "Ripristina le ultime opzioni salvate in %s"
 #: admin/templates/pages/eos-dp-archive.php:62
 #: admin/templates/pages/eos-dp-post-type.php:41
 #: admin/templates/pages/eos-dp-singles.php:271
-msgid "Activate/deactivate all plugins in %s"
+msgid "Activate/deactivate all plugins for %s"
 msgstr "Attiva/disattiva tutti i plugin in %s"
 
 #: admin/templates/pages/eos-dp-singles.php:235
@@ -848,5 +848,5 @@ msgid "Freesoul Deactivate Plugins"
 msgstr "Freesoul Deactivate Plugins"
 
 #: admin/eos-dp-helper.php:113
-msgid "You have no direct write access, Freesoul Deactivate Plugins was not able to create the necessary mu-plugin and will not work."
+msgid "You do not have direct write access. Freesoul Deactivate Plugins could not create the necessary MU-plugin and will not function.."
 msgstr "Non disponendo di un accesso in scrittura diretto, Freesoul Deactivate Plugins non è stato in grado di creare il necessario mu-plugin e quindi non funzionerà."

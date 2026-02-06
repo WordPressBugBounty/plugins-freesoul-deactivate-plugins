@@ -1,6 +1,6 @@
 <?php
 /**
- * Code that runs if is_admin or doing wp_cli.
+ * Code that runs if `is_admin` or `doing_wp_cli`.
 
  * @package Freesoul Deactivate Plugins
  */
@@ -58,7 +58,7 @@ function eos_dp_allowed_backend_scripts() {
 }
 
 /**
- * It loads plugin translation files.
+ * Loads plugin translation files.
  *
  * @since 1.9.0
  *
@@ -69,7 +69,7 @@ function eos_load_dp_plugin_textdomain() {
 add_action( 'admin_init', 'eos_load_dp_plugin_textdomain' );
 
 /**
- * Filter function to read plugin translation files.
+ * Filter to read plugin translation files.
  *
  * @since 1.9.0
  *
@@ -88,7 +88,7 @@ add_filter( 'load_textdomain_mofile', 'eos_dp_load_translation_file', 99, 2 ); /
 add_action( 'admin_head', 'eos_dp_add_admin_inline_style' );
 
 /**
- * Add admin inline style.
+ * Adds admin inline style.
  *
  * @since 1.9.0
  *
@@ -107,6 +107,7 @@ function eos_dp_add_admin_inline_style() {
 	#template .CodeMirror, #template textarea{min-height:500px !important}
 	#template>div{margin-right:-20px}
 	#wpcontent:not(.js #wpcontent){visibility:hidden !important}
+	.wrap>div,div#documentation{display: none}
 	<?php } ?>
 	</style>
 	<?php

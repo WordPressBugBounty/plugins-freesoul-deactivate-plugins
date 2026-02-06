@@ -32,11 +32,11 @@ msgid "Select All"
 msgstr "Selecteer alles"
 
 #: inc/fdp-metaboxes.php:86
-msgid "Preview the page loading plugins and the theme according the settings you see here and disable JavaScript esecution"
+msgid "Preview the page loading plugins and the theme according the settings you see here and disable JavaScript execution"
 msgstr "Bekijk de pagina's die plugins laden en het thema volgens de instellingen die je hier ziet en schakel JavaScript uitvoering uit. \t"
 
 #: inc/fdp-metaboxes.php:85
-msgid "Preview the page loading plugins according the settings you see here"
+msgid "Preview the page using the plugin settings shown here"
 msgstr "Bekijk de pagina's die plugins laden volgens de instellingen die je hier ziet"
 
 #: admin/eos-dp-ajax.php:961
@@ -60,13 +60,13 @@ msgid "Search on the support forum"
 msgstr "Zoek op het ondersteuningsforum"
 
 #: admin/templates/pages/eos-dp-url.php:51
-msgid "This URL covers the post ID %s. It was not possibe to manage it with the Singles settings."
+msgid "This URL applies to post ID %s. It could not be managed via the "Singles" settings."
 msgstr "Deze URL dekt het bericht-ID %s Het was niet mogelijk om het te beheren met de Singles-instellingen."
 
 #: admin/templates/partials/eos-dp-action-buttons.php:52
 #: admin/templates/pages/eos-dp-terms-archive.php:87
 #: admin/templates/pages/eos-dp-archive.php:94
-msgid "Preview the page loading plugins according the settings you see now on this row and show the files that are called"
+msgid "Preview the page loading plugins according the settings you see now on this row and show the files being called"
 msgstr "Bekijk een voorbeeld van de pagina die plugins laadt volgens de instellingen die je nu in deze rij ziet en laat de bestanden zien die worden genoemd"
 
 #: admin/templates/pages/eos-dp-singles.php:382
@@ -183,7 +183,7 @@ msgid "get variation"
 msgstr "krijg variatie"
 
 #: admin/eos-dp-helper.php:736
-msgid "get refreshed fragments"
+msgid "Get refreshed fragments"
 msgstr "krijg vernieuwde samenvatting"
 
 #: admin/eos-dp-helper.php:735
@@ -195,7 +195,7 @@ msgid "get cart totals"
 msgstr "totalen van winkelwagen ophalen"
 
 #: admin/eos-dp-helper.php:733
-msgid "checkout ajax refresh"
+msgid "Checkout AJAX refresh"
 msgstr "afreken ajax vernieuwen"
 
 #: admin/eos-dp-helper.php:732
@@ -215,19 +215,19 @@ msgid "add to cart"
 msgstr "Toevoegen aan winkelwagen"
 
 #: admin/eos-dp-helper.php:723
-msgid "checking status"
+msgid "Check status"
 msgstr "status controleren"
 
 #: admin/eos-dp-helper.php:722
-msgid "installation exporting"
+msgid "Export installation"
 msgstr "installatie exporteren"
 
 #: admin/eos-dp-helper.php:721
-msgid "Be careful, you should disable the unwanted plugins both on the source before the exporting and on the destination installation"
+msgid "Note: You should disable unwanted plugins on both the source site before exporting and on the destination site."
 msgstr "Wees voorzichtig, je moet de ongewenste plugins uitschakelen, zowel op de bron voor het exporteren als op de installatie van de bestemming."
 
 #: admin/eos-dp-helper.php:721
-msgid "installation importing"
+msgid "Import installation"
 msgstr "installatie-import"
 
 #: admin/eos-dp-helper.php:715
@@ -300,7 +300,7 @@ msgid "Actions"
 msgstr "Acties"
 
 #: admin/eos-dp-helper.php:167
-msgid "Deactivate depending on third party plugin action"
+msgid "Deactivate based on third-party plugin actions"
 msgstr "Deactiveren afhankelijk van actie van plugin van derden"
 
 #: admin/eos-dp-helper.php:161
@@ -518,7 +518,7 @@ msgid "If you want to disable specific plugins for this specific page you have t
 msgstr "Als je specifieke plugins voor deze specifieke pagina wil uitschakelen, moet je het hangslot vergrendelen en vervolgens de pagina opslaan."
 
 #: admin/templates/pages/eos-dp-singles.php:242
-msgid "Pressing the button above, FDP will suggest you the needed plugins. However, check the page preview with the lens icon %s before to save the options."
+msgid "By clicking the button above, FDP will suggest the required plugins. However, please preview the page using the lens icon %s before saving your changes."
 msgstr "Door op de bovenstaande knop te drukken, zal FDP je de benodigde plugins voorstellen. Controleer echter eerst het paginavoorbeeld met het lens pictogram%som de opties op te slaan."
 
 #: admin/templates/pages/eos-dp-singles.php:226 admin/fdp-admin.php:120
@@ -546,7 +546,7 @@ msgid "Issue detected. Disable Freesoul Deactivate Plugins and then activate it 
 msgstr "Probleem gevonden. Deactiveer Freesoul Deactiveer Plugins en activeer het opnieuw."
 
 #: admin/eos-dp-helper.php:140
-msgid "Issue detected. It looks the file %s has been modified."
+msgid "Issue detected. It looks like the file %s has been modified."
 msgstr "Probleem gedetecteerd. Het lijkt erop dat het bestand %s is gewijzigd."
 
 #: admin/eos-dp-helper.php:136
@@ -631,12 +631,12 @@ msgstr "Premium ondersteuning."
 
 #: admin/templates/partials/eos-dp-action-buttons.php:75
 #: admin/templates/pages/eos-dp-archive.php:117
-msgid "Check the page with Google PageSpeed Insights loading plugins and the theme according the settings you see now on this row"
+msgid "Run Google PageSpeed Insights on this page using the plugin and theme settings shown in this row"
 msgstr "Controleer de pagina met plugins voor het laden van Google PageSpeed Insights en het thema volgens de instellingen die je nu in deze rij ziet"
 
 #: admin/templates/partials/eos-dp-action-buttons.php:57
 #: admin/templates/pages/eos-dp-backend.php:127
-msgid "Preview the page loading plugins and the theme according the settings you see now on this row and disable JavaScript esecution"
+msgid "Preview the page loading plugins and the theme according the settings you see now on this row and disable JavaScript execution"
 msgstr "Bekijk een voorbeeld van de plugins voor het laden van de pagina en het thema volgens de instellingen die je nu in deze rij ziet en schakel JavaScript uitvoering uit"
 
 #: admin/templates/partials/eos-dp-action-buttons.php:51
@@ -645,7 +645,7 @@ msgid "Preview the page loading plugins according the settings you see now on th
 msgstr "Bekijk een voorbeeld van de pagina die plugins laadt volgens de instellingen die je nu in deze rij ziet"
 
 #: admin/templates/pages/eos-dp-singles.php:245
-msgid "Unable to finish the tests to suggest the unused plugins. Probably the server is too busy."
+msgid "Unable to complete the tests for plugin suggestions. The server may be too busy."
 msgstr "Kan de tests niet voltooien om ongebruikte plugins voor te stellen. Waarschijnlijk is de server te druk."
 
 #: admin/templates/pages/eos-dp-archive.php:99
@@ -673,11 +673,11 @@ msgid "Issue detected. In the %spermalinks settings%s you have a full stop as ba
 msgstr "Probleem gedetecteerd. In de %spermalinks instellingen%s heb je een punt als basiscategorie, en je hebt geen %s in je aangepaste permalink structuur."
 
 #: admin/templates/partials/eos-dp-home-actions.php:28
-msgid "Check mobile usability loading plugins and the theme according the settings you see now on this row"
+msgid "Check mobile usability while loading plugins and the theme based on the current row settings"
 msgstr "Controleer het laden van plugins voor mobiel gebruiksgemak en het thema volgens de instellingen die je nu op deze rij ziet"
 
 #: admin/templates/partials/eos-dp-home-actions.php:14
-msgid "Check the TTFB loading plugins andd the theme according the settings you see now on this row (beta)"
+msgid "Check the TTFB while loading plugins and the theme according the settings you see now on this row (beta)"
 msgstr "Controleer de TTFB laden van plugins en voeg het thema toe volgens de instellingen die je nu in deze rij ziet (bèta)."
 
 #: admin/eos-dp-helper.php:172
@@ -693,7 +693,7 @@ msgid "Lock all"
 msgstr "Blokkeer alles"
 
 #: admin/templates/pages/eos-dp-singles.php:244
-msgid "It may take a couple of minutes, drink a coffee while we try to understand which plugins you need on this page"
+msgid "This may take a few minutes; feel free to grab a coffee while we analyze which plugins are needed for this page"
 msgstr "Het kan een paar minuten duren, drink een koffie terwijl we proberen te begrijpen welke plugins je nodig hebt op deze pagina"
 
 #: admin/templates/pages/eos-dp-backend.php:133
@@ -717,11 +717,11 @@ msgid "Admin Menu"
 msgstr "Beheermenu"
 
 #: admin/eos-dp-helper.php:166
-msgid "Deactivate in Administration Pages"
+msgid "Deactivate in admin pages"
 msgstr "Deactiveren in de administratiepagina's"
 
 #: admin/eos-dp-helper.php:165
-msgid "Deactivate in Administration Pages by custom URLs"
+msgid "Deactivate in admin pages by custom URLs"
 msgstr "Deactiveren in administratieve pagina's door aangepaste URL's"
 
 #: admin/templates/pages/eos-dp-backend.php:45
@@ -785,7 +785,7 @@ msgid "posts"
 msgstr "berichten"
 
 #: admin/eos-dp-helper.php:501
-msgid "Go to the last plugin test results"
+msgid "View the latest plugin test results"
 msgstr "Ga naar de laatste plugin-testresultaten"
 
 #: admin/templates/pages/eos-dp-smoke-tests.php:184
@@ -872,7 +872,7 @@ msgstr "Pagina bewerken"
 
 #: admin/templates/partials/eos-dp-navigation.php:59
 #: admin/templates/pages/eos-dp-singles.php:217
-msgid "Relevant pages"
+msgid "Relevant Pages"
 msgstr "Relevante pagina's"
 
 #: admin/templates/partials/eos-dp-table-head.php:50
@@ -976,7 +976,7 @@ msgstr "Sluiten"
 #: admin/templates/pages/eos-dp-post-type.php:54
 #: admin/templates/pages/eos-dp-backend.php:136
 #: admin/templates/pages/eos-dp-integration.php:76
-msgid "Paste last copied row settings"
+msgid "Paste previously copied row settings"
 msgstr "Laatste gekopieerde rij-instellingen plakken"
 
 #: admin/templates/partials/eos-dp-action-buttons.php:86
@@ -985,7 +985,7 @@ msgstr "Laatste gekopieerde rij-instellingen plakken"
 #: admin/templates/pages/eos-dp-post-type.php:53
 #: admin/templates/pages/eos-dp-backend.php:135
 #: admin/templates/pages/eos-dp-integration.php:75
-msgid "Copy this row settings"
+msgid "Copy settings for this row"
 msgstr "Kopieer deze rij instellingen"
 
 #: admin/templates/pages/eos-dp-terms-archive.php:86
@@ -995,11 +995,11 @@ msgstr "Bekijk de pagina volgens de instellingen die je nu op deze rij ziet "
 #: admin/templates/partials/eos-dp-action-buttons.php:49
 #: admin/templates/pages/eos-dp-terms-archive.php:84
 #: admin/templates/pages/eos-dp-archive.php:91 inc/fdp-metaboxes.php:83
-msgid "Select a different Theme ONLY FOR PREVIEW"
+msgid "Select a different theme (PREVIEW ONLY)"
 msgstr "Selecteer een ander thema ALLEEN VOOR VOORBEELDEN"
 
 #: admin/templates/pages/eos-dp-backend.php:125 admin/eos-dp-helper.php:761
-msgid "View page loading plugins according the saved options"
+msgid "View page with plugins loaded according to the saved options."
 msgstr "Bekijk het laden van de pagina's met plugins volgens de opgeslagen opties"
 
 #: admin/templates/pages/eos-dp-mobile.php:47
@@ -1124,7 +1124,7 @@ msgid "%sInstall Specific Content For Mobile%s"
 msgstr "%sInstalleer specifieke inhoud voor mobiel%s"
 
 #: admin/eos-dp-helper.php:163
-msgid "Deactivate on search resutls page"
+msgid "Deactivate on Search results page"
 msgstr "Deactiveer op de pagina met zoekresultaten"
 
 #: admin/templates/partials/eos-dp-navigation.php:110
@@ -1210,7 +1210,7 @@ msgid "Back to plugins"
 msgstr "Terug naar plugins"
 
 #: freesoul-deactivate-plugins.php:38
-msgid "Freesoul Deactivate Plugins can't be activated networkwide, but only on each single site. %s%s%s"
+msgid "Freesoul Deactivate Plugins cannot be activated network-wide; it must be activated on each individual site. %s%s%s"
 msgstr "Freesoul Deactivate Plugins kunnen niet in het hele netwerk worden geactiveerd, maar alleen op elke afzonderlijke site. %s%s%s"
 
 #: admin/eos-dp-helper.php:195
@@ -1218,7 +1218,7 @@ msgid "Only the permalinks structures \"Day and name\", \"Month and name\", \"Po
 msgstr "Alleen de permalinks structuren \"Dag en naam\", \"Maand en naam\", \"Berichtnaam\" en de aangepaste structuren die eindigen op \"%Berichtnaam%\"worden ondersteund (ze zijn ook beter voor SEO)."
 
 #: admin/eos-dp-helper.php:194
-msgid "No plugins will be permanently deactivated because %s."
+msgid "No plugins will be permanently deactivated because of: %s."
 msgstr "Er worden geen plugins permanent gedeactiveerd omdat %s."
 
 #: admin/templates/partials/eos-dp-navigation.php:32
@@ -1235,15 +1235,15 @@ msgid "You can't save because %s"
 msgstr "Je kunt niet opslaan omdat %s"
 
 #: admin/templates/partials/eos-dp-footer.php:15 admin/eos-dp-helper.php:189
-msgid "the permalinks are set as numeric"
+msgid "Permalinks are set to "Numeric""
 msgstr "de permalinks zijn ingesteld als numeriek"
 
 #: admin/templates/partials/eos-dp-footer.php:12 admin/eos-dp-helper.php:186
-msgid "the permalinks are set as plain"
+msgid "Permalinks are set to "Plain""
 msgstr "de permalinks zijn als eenvoudig ingesteld"
 
 #: admin/templates/partials/eos-dp-footer.php:10 admin/eos-dp-helper.php:184
-msgid "the actual permalinks structure is not supported"
+msgid "the current permalink structure is not supported"
 msgstr "de huidige permalinkstructuur wordt niet ondersteund"
 
 #: inc/fdp-metaboxes.php:95
@@ -1290,11 +1290,11 @@ msgid "Post Types"
 msgstr "Berichttypen"
 
 #: admin/templates/pages/eos-dp-post-type.php:47
-msgid "If activated the Single %s Settings will have this row settings as default."
+msgid "If activated, the Single %s settings will use these row settings as the default."
 msgstr "Indien geactiveerd zullen de Enkele %s Instellingen standaard deze rij-instellingen hebben."
 
 #: admin/templates/pages/eos-dp-post-type.php:43
-msgid "If activated the Single %s Settings will be ignored."
+msgid "If activated, the Single %s settings will be ignored."
 msgstr "Indien geactiveerd zullen de Enkele %s instellingen genegeerd worden."
 
 #: admin/templates/partials/eos-dp-post-types-legend.php:40
@@ -1349,7 +1349,7 @@ msgid "Order"
 msgstr "Sortering"
 
 #: admin/templates/pages/eos-dp-singles.php:148
-msgid "Last modified date"
+msgid "Last Modified Date"
 msgstr "Datum laatst gewijzigd"
 
 #: admin/templates/pages/eos-dp-singles.php:147
@@ -1361,7 +1361,7 @@ msgid "Author"
 msgstr "Auteur"
 
 #: admin/templates/pages/eos-dp-singles.php:145
-msgid "Post id"
+msgid "Post ID"
 msgstr "Bericht id"
 
 #: admin/templates/pages/eos-dp-singles.php:144
@@ -1424,7 +1424,7 @@ msgstr "Archief %s"
 #: admin/templates/pages/eos-dp-help.php:9
 #: admin/templates/pages/eos-dp-advanced-support.php:9
 #: admin/templates/pages/eos-dp-integration.php:10
-msgid "Sorry, you have not the right for this page"
+msgid "Sorry, you do not have permission to access this page."
 msgstr "Je hebt niet het recht voor deze pagina"
 
 #. Description of the plugin
@@ -1458,7 +1458,7 @@ msgstr "Herstel laatst opgeslagen opties in %s"
 #: admin/templates/pages/eos-dp-archive.php:81
 #: admin/templates/pages/eos-dp-post-type.php:42
 #: admin/templates/pages/eos-dp-backend.php:122
-msgid "Activate/deactivate all plugins in %s"
+msgid "Activate/deactivate all plugins for %s"
 msgstr "Activeer/deactiveer alle plugins in %s"
 
 #: admin/templates/partials/eos-dp-navigation.php:186
@@ -1506,7 +1506,7 @@ msgid "Freesoul Deactivate Plugins"
 msgstr "Freesoul Deactivate Plugins"
 
 #: admin/eos-dp-helper.php:127
-msgid "You have no direct write access, Freesoul Deactivate Plugins was not able to create the necessary mu-plugin and will not work."
+msgid "You do not have direct write access. Freesoul Deactivate Plugins could not create the necessary MU-plugin and will not function.."
 msgstr "Je hebt geen directe schrijftoegang, Freesoul Deactivate Plugins was niet in staat om de nodige mu-plugin te maken en zal niet werken."
 
 #: admin/eos-dp-helper.php:88

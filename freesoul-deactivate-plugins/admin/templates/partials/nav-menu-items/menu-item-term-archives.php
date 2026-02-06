@@ -24,7 +24,9 @@ if ( $taxs ) {
 			}
 			if ( $show ) {
 				?>
-		<li class="eos-dp-submenu-item"><a href="<?php echo esc_url( add_query_arg( 'eos_dp_tax', $tax->name, admin_url( 'admin.php?page=eos_dp_by_term_archive' ) ) ); ?>"><?php printf( esc_html__( '%1$s (%2$s)', 'freesoul-deactivate-plugins' ), esc_html( $tax->label ), esc_html( implode( ',', $labels_names ) ) ); ?></a></li>
+		<li class="eos-dp-submenu-item"><a href="<?php 
+		// translators: %1$s is the taxonomy label, %2$s is the list of post type names.
+		echo esc_url( add_query_arg( 'eos_dp_tax', $tax->name, admin_url( 'admin.php?page=eos_dp_by_term_archive' ) ) ); ?>"><?php printf( esc_html__( '%1$s (%2$s)', 'freesoul-deactivate-plugins' ), esc_html( $tax->label ), esc_html( implode( ',', $labels_names ) ) ); ?></a></li>
 				<?php
 			}
 		}

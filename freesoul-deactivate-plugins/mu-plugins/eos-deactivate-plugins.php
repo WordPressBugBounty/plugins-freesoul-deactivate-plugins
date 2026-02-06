@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.4.6
+  Version: 2.5.0
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -50,7 +50,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.4.6' );
+define( 'EOS_DP_MU_VERSION','2.5.0' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -89,7 +89,7 @@ add_filter( 'fdp_active_by_addon', function( $plugins ) {
 	return $plugins;
 } );
 if( isset( $_GET['fdp-autosuggestion'] ) && 'on' === $_GET['fdp-autosuggestion'] &&  get_site_transient( 'eos_dp_pro_scanning_unused_plugins' ) ) {
-	// We need more an higher memory limit during the auto-suggestion.
+	// We need a higher memory limit during the auto-suggestion.
 	@ini_set( 'memory_limit', '2048M' );
 }
 
@@ -199,7 +199,7 @@ if(
 				$msg .= PHP_EOL.'<strong>'.sprintf( 'If after dismissing this notice, it appears over again and again, please, open a thread on the FDP support forum, and give us the information below.' ).'</strong>';
 				$msg .= PHP_EOL.PHP_EOL.wp_kses_post( $output ).$code;
 				$msg .= PHP_EOL.PHP_EOL.sprintf( 'If it is a recurring issue, we also suggest you to contact the support of %s',$cause );
-				$msg .= PHP_EOL.PHP_EOL.sprintf( 'Read %shere%s to learn more about this issue.','<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/rewrite-rules-notice/" target="_blank" rel="noopener">', '</a>' );
+				$msg .= PHP_EOL.PHP_EOL.sprintf( 'Read %shere%s to learn more about this issue.','<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/rewrite-rules-notice/" target="_blank" rel="noopener">', '</a>' );
 			
 				eos_dp_update_admin_notices( 'rewrite_rules',$msg );
 				do_action( 'fdp_flush_rewrite_rules' );
@@ -1167,7 +1167,7 @@ add_action( 'admin_footer', function() {
 } );
 
 /**
- * Return active plugins in according with the options for the frontend.
+ * Return active plugins according to the options for the frontend.
  *
  * @param array $plugins
  * 
@@ -1296,6 +1296,7 @@ function eos_dp_mu_deactivate_by_post_requests( $plugins ){
 			$o = 0;
 			$post_data = $GLOBALS['fdp_post_data'];
 			foreach( $opts as $url => $post_plugins ){
+					$url = str_replace( '&amp;','&',$url );
 					$n = 0;
 					$bools = array();
 					$c = strpos( $url,'(' );
@@ -1503,7 +1504,7 @@ function eos_check_dp_preview_nonce(){
 				return true;
 			}
 		}
-		echo '<p>It looks you are not allowed to see this preview.</p>';
+		echo '<p>It looks like you are not allowed to see this preview.</p>';
 		echo '<p>Be sure you have the rights to activate and deactivate plugins.</p>';
 		echo '<p>Log out, log in, and try again.</p>';
 		if( isset( $_SERVER['SERVER_NAME'] ) ){
@@ -2108,6 +2109,7 @@ function eos_dp_return_all_plugins( $plugins ){
 	if( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'],array( 'activate','deactivate','delete','delete-plugin' ) ) && isset( $_REQUEST['plugin'] ) ){
 		return $plugins;
 	}
+	$GLOBALS['fdp_filtered_active_plugins'] = $plugins;
 	return $GLOBALS['fdp_all_plugins'];
 }
 
@@ -2234,7 +2236,7 @@ function eos_dp_translated_id( $page_path,$after_home_uri,$urlsA,$post_types ) {
         AND post_type IN ($post_type_in_string)
     ";
 	$unsets = array();
-    $pages = $wpdb->get_results( $sql, OBJECT_K );
+    $pages = $wpdb->get_results( $sql, OBJECT_K ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	foreach( (array) $pages as &$page ){
 		if( $page->post_name !== basename( $page_path ) ){
 			$unsets[] = $page->ID;
@@ -2319,15 +2321,15 @@ function eos_dp_unshift_fdp( $plugins ){
  */
 function eos_dp_logged_user_conditions(){
 	return array(
-		array( 'role','hammer',__( 'Role' ) ),
-		array( 'capability','admin-tools',__( 'Capability','eos-dp-pro' ) ),
-		array( 'username','businessperson',__( 'Username' ) ),
+		array( 'role','hammer',__( 'Role', 'freesoul-deactivate-plugins' ) ),
+		array( 'capability','admin-tools',__( 'Capability', 'freesoul-deactivate-plugins' ) ),
+		array( 'username','businessperson',__( 'Username', 'freesoul-deactivate-plugins' ) ),
 		array( 'email','email','Email' ),
-		array( 'language','translation',__( 'Language' ) ),
-		array( 'registered_before','backup',__( 'Registered before','eos-dp-pro' ) ),
-		array( 'registered_after','clock',__( 'Registered after','eos-dp-pro' ) ),
-		array( 'has_bought','cart',__( 'Has bought something','eos-dp-pro' ) ),
-		array( 'usermeta','nametag',__( 'User meta','eos-dp-pro' ) )
+		array( 'language','translation',__( 'Language', 'freesoul-deactivate-plugins' ) ),
+		array( 'registered_before','backup',__( 'Registered before', 'freesoul-deactivate-plugins' ) ),
+		array( 'registered_after','clock',__( 'Registered after', 'freesoul-deactivate-plugins' ) ),
+		array( 'has_bought','cart',__( 'Has made a purchase', 'freesoul-deactivate-plugins' ) ),
+		array( 'usermeta','nametag',__( 'User meta', 'freesoul-deactivate-plugins' ) )
 	);
 }
 
@@ -2394,7 +2396,7 @@ function eos_dp_is_user_logged(){
  *
  */
 function eos_dp_get_current_user() {
-		if( function_exists( 'wp_get_current_user' ) ) return wp_get_current_user(); // If the core function is availablle we use it and return.
+		if( function_exists( 'wp_get_current_user' ) ) return wp_get_current_user(); // If the core function is available, we use it and return.
 		if( !defined( 'LOGGED_IN_COOKIE' ) || !isset( $_COOKIE[LOGGED_IN_COOKIE] ) ) return false;
 		$cookie = $_COOKIE[LOGGED_IN_COOKIE]; // @codingStandardsIgnoreLine.
     if ( empty( $cookie ) ) {
@@ -2408,7 +2410,7 @@ function eos_dp_get_current_user() {
     }
 		if( isset( $cookie_elements[0] ) && $cookie_elements[0] && '' !== $cookie_elements[0] ){
 			global $wpdb;
-			$user = $wpdb->get_row(
+			$user = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					"SELECT * FROM $wpdb->users WHERE user_login = %s LIMIT 1",
 					sanitize_user( $cookie_elements[0] )
@@ -2516,8 +2518,8 @@ function eos_dp_parse_expression( $expression,$user ){
 function eos_dp_user_has_bought( $user_id ){
     $customer_orders = get_posts( array(
         'numberposts' => 1,
-        'meta_key' => '_customer_user',
-        'meta_value' => $user_id,
+        'meta_key' => '_customer_user', // phpcs:ignore WordPress.DB.SlowDBQuery -- Needed to get orders by user ID.
+        'meta_value' => $user_id, // phpcs:ignore WordPress.DB.SlowDBQuery -- Needed to get orders by user ID.
         'post_type' => 'shop_order',
         'post_status' => 'wc-completed',
         'fields' => 'ids',
@@ -2662,11 +2664,23 @@ function eos_dp_sanitize_file_name( $filename ){
 	if ( ! isset( $utf8_pcre ) ) {
 		$utf8_pcre = @preg_match( '/^./u', 'a' );
 	}
-	if ( ! seems_utf8( $filename ) ) {
+
+	$is_valid_utf8 = true;
+
+	if ( function_exists( 'wp_is_valid_utf8' ) ) {
+		// WP >= 6.9
+		$is_valid_utf8 = wp_is_valid_utf8( $filename );
+	} elseif ( function_exists( 'seems_utf8' ) ) {
+		// WP < 6.9 only
+		$is_valid_utf8 = seems_utf8( $filename );
+	}
+
+	if ( ! $is_valid_utf8 ) {
 		$_ext     = pathinfo( $filename, PATHINFO_EXTENSION );
 		$_name    = pathinfo( $filename, PATHINFO_FILENAME );
 		$filename = sanitize_title_with_dashes( $_name ) . '.' . $_ext;
 	}
+
 	if ( $utf8_pcre ) {
 		$filename = preg_replace( "#\x{00a0}#siu", ' ', $filename );
 	}
@@ -2803,7 +2817,7 @@ function eos_dp_fatal_error_notice(){
 		if( $line && $file ){
 			$notice_description .= eos_dp_get_code_extract( $line,$file );
 		}
-		$after_notice = sprintf( 'Dismissing this notice FDP will activate again %s in the FDP backend pages. Maybe better you first solve the issue.',esc_attr( $plugin_name ) );
+		$after_notice = sprintf( 'If you dismiss this notice, FDP will activate %s again in the FDP backend pages. It may be better to solve the issue first.',esc_attr( $plugin_name ) );
 		eos_dp_display_admin_notice( 'plugin_fatal_error',sprintf( '%s caused a fatal error.',$plugin_name ),$notice_description,'error',$after_notice );
 	}
 }

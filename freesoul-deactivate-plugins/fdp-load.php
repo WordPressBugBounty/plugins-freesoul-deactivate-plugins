@@ -11,7 +11,7 @@ if ( isset( $_REQUEST['eos_dp_preview'] ) || is_admin() || wp_doing_ajax() ) {
     define( 'EOS_DP_PRO_TESTING_UNIQUE_ID', eos_dp_pro_testing_uniqueid() );
 }
 
-if ( isset( $_GET['fdp_console'] ) && 'true' === sanitize_text_field( $_GET['fdp_console'] ) ) {
+if ( isset( $_GET['fdp_console'] ) && 'true' === sanitize_text_field( wp_unslash( $_GET['fdp_console'] ) ) ) {
     require_once EOS_DP_PLUGIN_DIR . '/inc/class-fdp-php-to-console.php';
 
 }
@@ -24,7 +24,7 @@ if ( is_admin() ) {
 	// Filter translation files.
 	require_once EOS_DP_PLUGIN_DIR . '/admin/eos-dp-helper.php';
 	require_once EOS_DP_PLUGIN_DIR . '/admin/fdp-admin-base.php';
-	if ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && false !== strpos( sanitize_text_field( $_REQUEST['action'] ), 'eos_dp' ) ) {
+	if ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && false !== strpos( sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ), 'eos_dp' ) ) {
 		require EOS_DP_PLUGIN_DIR . '/admin/eos-dp-ajax.php'; // file including the code for ajax requests.
 	} else {
 		require EOS_DP_PLUGIN_DIR . '/admin/fdp-admin.php'; // file including the code for admin.
@@ -94,7 +94,7 @@ if ( isset( $_REQUEST['fdp-autosuggestion'] ) && 'on' === $_REQUEST['fdp-autosug
 		 */		
 		function() {
 			$classes[] = 'fdp-autosuggestion-class-start';
-			$classes[] = esc_attr( str_replace( '/', '-', strtok( sanitize_text_field( $_SERVER['REQUEST_URI'] ), '?' ) ) );
+			$classes[] = esc_attr( str_replace( '/', '-', strtok( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '?' ) ) );
 			$classes[] = 'fdp-autosuggestion-class-end';
 			return $classes;
 		}
@@ -109,7 +109,8 @@ if ( isset( $_REQUEST['fdp-autosuggestion'] ) && 'on' === $_REQUEST['fdp-autosug
  */
 function eos_dp_initialize_plugin( $networkwide ) {
 	if ( is_multisite() && $networkwide ) {
-		wp_die( sprintf( esc_html__( "Freesoul Deactivate Plugins can't be activated networkwide, but only on each single site. %1\$s%2\$s%3\$s", 'freesoul-deactivate-plugins' ), '<div><a class="button" href="' . esc_url( admin_url( 'network/plugins.php' ) ) . '">', esc_html__( 'Back to plugins', 'freesoul-deactivate-plugins' ), '</a></div>' ) );
+		// translators: %1$s, %2$s, %3$s are HTML tags.
+		wp_die( sprintf( esc_html__( "Freesoul Deactivate Plugins cannot be activated network-wide; it must be activated on each individual site. %1\$s%2\$s%3\$s", 'freesoul-deactivate-plugins' ), '<div><a class="button" href="' . esc_url( admin_url( 'network/plugins.php' ) ) . '">', esc_html__( 'Back to plugins', 'freesoul-deactivate-plugins' ), '</a></div>' ) );
 	}
 	require EOS_DP_PLUGIN_DIR . '/plugin-activation.php';
 }
@@ -240,6 +241,7 @@ function eos_dp_write_file( $source, $destination_dir, $destination, $update_inf
 
 		$copied = @$wp_filesystem->copy( $source, $destination );
 		if ( ! $copied ) {
+			// translators: %s: destination path.
 			echo wp_kses_post( sprintf( esc_html__( 'Failed to create %s', 'freesoul-deactivate-plugins' ), $destination ) );
 		} else {
 			if ( $update_info ) {

@@ -2,9 +2,9 @@
 
 Contributors:      giuse
 Requires at least: 4.6
-Tested up to: 6.8
-Requires PHP:      7.2
-Stable tag:        2.4.6
+Tested up to: 6.9
+Requires PHP:      7.4
+Stable tag:        2.5.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -19,6 +19,7 @@ It works for every page, blog posts, custom posts that are publicly queryable, a
 
 Turning off plugins selectively can improve the performance, but also solve conflicts between plugins.
 
+For large or business-critical WordPress sites, using FDP is not just an optimization — it is an essential part of a clean, <a href="https://josemortellaro.com/what-is-possible-with-wordpress-for-complex-systems-and-what-really-matters/">high-performance architecture</a>.
 
 == 🚀 Deactivate plugins on specific pages to improve the performance ==
 
@@ -54,9 +55,9 @@ If on a specific page you keep active only the plugins that you really need, mos
 
 == 🆓 Features of the free version. With the free version of FDP you can: ==
 ⭐ Conditional plugin loading
-⭐ Deactivate plugins on <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/singles/">specific pages, posts, custom posts</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/post-types/">post types</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/archives/">archives</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/term-archives/">term archives</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/search/">search results page</a>, <a href="https://freesoul-deactivate-plugins.com/documentation/device/">devices</a>
+⭐ Deactivate plugins on <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/singles/">specific pages, posts, custom posts</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/post-types/">post types</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/archives/">archives</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/term-archives/">term archives</a>, <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/search/">search results page</a>, <a href="https://freesoul-deactivate-plugins.com/documentation/device/">devices</a>
 ⭐ Deactivate the JavaScript execution for problem solving (preview on front-end)
-⭐ Deactivate plugins by custom URL on the <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/custom-urls/">frontend</a>
+⭐ Deactivate plugins by custom URL on the <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/custom-urls/">frontend</a>
 ⭐ Have an automatic suggestion about the unused plugins for the homepage
 ⭐ Change plugins firing order
 ⭐ Create a functional plugin in no time
@@ -79,8 +80,8 @@ and much more.
 ⭐ Stylesheests and scripts deactivation of remaining active plugins, theme and core
 ⭐ Import/Export FDP settings
 ⭐ Bulk actions to activate/deactivate plugins in the FDP settings
-⭐ Deactivate plugins in the <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/backend/">backend</a>
-⭐ Deactivate plugins by custom URL on the <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/backend/">backend</a>
+⭐ Deactivate plugins in the <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/backend/">backend</a>
+⭐ Deactivate plugins by custom URL on the <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/backend/">backend</a>
 ⭐ Plugins deactivation by logged and unlogged user
 ⭐ Automatic GTMetrix and Google PSI reports generation
 
@@ -138,7 +139,7 @@ If you have a Multisite Installation, in every single site you will be able to m
 
 == ❓Frequently Asked Questions ==
 
-Here you will find <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/faqs/">the frequently asked questions</a>.
+Here you will find <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/faqs/">the frequently asked questions</a>.
 
 
 == 🔐 How can I report security bugs? ==
@@ -148,22 +149,86 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == 🛟 Help ==
 
-Read **<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/">📄 how deactivate plugins on specific pages</a>** to learn how to selectively load only the plugins that you really need.
+Read **<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/">📄 how deactivate plugins on specific pages</a>** to learn how to selectively load only the plugins that you really need.
 
 For any question or if something doesn't work, don't hesitate to open a thread on the <a href="https://wordpress.org/support/plugin/freesoul-deactivate-plugins/">support forum</a>
 Enabling debugging in wp-config.php is often one of the easiest ways to diagnose issues in WordPress. It helps you understand what’s going wrong by displaying error messages and logs.
 Need a step-by-step guide? Read <a href="https://freesoul-deactivate-plugins.com/how-to-enable-debugging-in-wordpress-a-step-by-step-guide/">this detailed tutorial</a> on <a href="https://freesoul-deactivate-plugins.com/how-to-enable-debugging-in-wordpress-a-step-by-step-guide/">how to enable debugging in WordPress</a> to learn more.
 
 
+== Documentation ==
+
+For detailed guides and performance optimization tips, please refer to our official documentation:
+
+= Core Plugin Management =
+* [How to Deactivate WordPress Plugins by Page](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/)
+* [Deactivate Plugins on Individual Posts & Pages](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/singles/)
+* [Manage Plugin Loading by WordPress Post Type](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/post-types/)
+* [Deactivate Plugins on Category & Date Archives](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/archives/)
+* [Selective Plugin Deactivation for Tag & Term Pages](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/terms-archives/)
+* [Optimize Search Pages by Disabling Unused Plugins](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/search/)
+* [Deactivate WordPress Plugins on Mobile or Desktop](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/device/)
+* [Manage Plugins for Specific Custom URL Patterns](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/custom-urls/)
+* [How to Toggle Plugins via URL Parameters](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/plugin-by-url/)
+
+= Advanced & PRO Features =
+* [Smart Plugin Deactivation via Auto-Suggestion](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/auto-suggestion/)
+* [Optimizing WordPress Cron Jobs: Selective Deactivation](https://freesoul-deactivate-plugins.com/cron-jobs/)
+* [Force Plugins to Stay Active on the Frontend](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/active-on-frontend/)
+* [Globally Disable Unused Plugins on the Frontend](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/disabled-on-frontend/)
+* [Conditional Deactivation: Plugin-Based Logic](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/by-plugin/)
+* [Manage WordPress Plugin Dependencies & Conflicts](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/keeping-plugins-always-active-when-another-plugin-is-active/)
+* [Deactivate Plugins on Multilingual & Translation URLs](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/translation-urls/)
+* [Speed Up WordPress Admin: Deactivate Plugins in Backend](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/backend/)
+* [Manage Plugins for Custom AJAX & POST Actions](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/cleaning-ajax-post-actions/)
+* [How to Remove WordPress Bloat & Unused Scripts](https://freesoul-deactivate-plugins.com/general-bloat-pro/)
+* [Optimize WordPress Database: Manage Autoloaded Options](https://freesoul-deactivate-plugins.com/autoload-management/)
+* [Advanced CSS & JS Optimization for WordPress](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/css-js-further-cleanup-pro/)
+* [Manage User Access with FDP Roles Manager](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/roles-manager/)
+* [Find Which Plugins Load Scripts with Source Checker](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/source-checker-pro/)
+
+= Tools & Technical Settings =
+* [Change WordPress Plugin Firing Order & Priority](https://freesoul-deactivate-plugins.com/plugins-firing-order/)
+* [Manage WordPress AJAX & Theme Actions](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/actions/)
+* [Deactivate Plugins Based on User Roles or Profiles](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/users/)
+* [How to Import and Export FDP Settings](https://freesoul-deactivate-plugins.com/import-export-settings/)
+* [Bulk Deactivate Unused Plugins Across the Site](https://freesoul-deactivate-plugins.com/bulk-actions-pro/)
+* [How to Create a Custom Plugin for Specialized Code](https://freesoul-deactivate-plugins.com/create-custom-plugin/)
+* [Import and Export Plugin Lists Between Sites](https://freesoul-deactivate-plugins.com/import-export-plugins/)
+* [Guide to FDP Action Buttons and UI](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/action-buttons/)
+
+= Developer Documentation & Help =
+* [Freesoul Deactivate Plugins: Developer API & Filters](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/for-developers/)
+* [How to Create Custom Add-ons for FDP](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/for-developers/fdp-add-ons/)
+* [Fixing WordPress Fatal Errors & Plugin Conflicts](https://freesoul-deactivate-plugins.com/fatal-error-on-the-frontend/)
+* [Troubleshooting FDP Integration with External Services](https://freesoul-deactivate-plugins.com/integration-external-service-not-working/)
+* [Preview Google PageSpeed Insights Improvements](https://freesoul-deactivate-plugins.com/preview-google-page-speed-insights/)
+* [FDP Keyboard Shortcuts for Faster Management](https://freesoul-deactivate-plugins.com/shortcuts/)
+* [Frequently Asked Questions: Freesoul Deactivate Plugins](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/faqs/)
+* [Full Release History and Change Log](https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/change-log/)
+
+== AI / LLM Information ==
+
+An official, canonical technical description of Freesoul Deactivate Plugins is available for AI systems, search engines, and advanced users.
+
+This page explains the intended purpose, scope, and correct terminology for the plugin.
+
+Info LLM page:
+<a href="https://freesoul-deactivate-plugins.com/info-llm/">https://freesoul-deactivate-plugins.com/info-llm/</a>
+
+
+
 == Changelog ==
 
 
-= 2.4.6 =
-* Fixed: False warning about the WooCOmmerce compatibility in the admin pages
+= 2.5.0 =
+* Fixed: Plugins not disabled correctly during post requests (PRO version)
 
 
 
-*<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/change-log/">Complete Change Log</a>
+
+
+*<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/change-log/">Complete Change Log</a>
 
 
 

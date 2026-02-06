@@ -45,9 +45,10 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 			add_action(
 				'fdp_top_bar_notifications',
 				function() {
-					$msg  = '<p>' . esc_html__( 'The option Archives and Terms Archives is becoming too big and they may worsening the performance. Maybe better you move this option from the database to the filesystem.', 'freesoul-deactivate-plugins' ) . '</p>';
-					$msg .= '<p>' . wp_kses_post( sprintf( __( 'If you want to do it go to %1$sExperiments%2$s', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( add_query_arg( 'page', 'eos_dp_experiments', admin_url( 'admin.php' ) ) ) . '" title="' . esc_attr__( 'Experiments', 'freesoul-deactivate-plugins' ) . '">', '</a>' ) ) . '</p>';
-					eos_dp_display_admin_notice( 'eos_dp_archives', esc_html__( 'Option Archives and Terms Archives too big.', 'freesoul-deactivate-plugins' ), wp_kses_post( $msg ), 'warning' );
+					$msg  = '<p>' . esc_html__( 'The "Archives" and "Terms Archives" options have become too large, which may degrade performance. We recommend moving these options from the database to the filesystem.', 'freesoul-deactivate-plugins' ) . '</p>';
+					// translators: %s is the link to the experiments page.
+					$msg .= '<p>' . wp_kses_post( sprintf( __( 'To do this, go to %1$sExperiments%2$s', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( add_query_arg( 'page', 'eos_dp_experiments', admin_url( 'admin.php' ) ) ) . '" title="' . esc_attr__( 'Experiments', 'freesoul-deactivate-plugins' ) . '">', '</a>' ) ) . '</p>';
+					eos_dp_display_admin_notice( 'eos_dp_archives', esc_html__( 'Archive and Term Archive options are too large.', 'freesoul-deactivate-plugins' ), wp_kses_post( $msg ), 'warning' );
 				}
 			);
 		}
@@ -83,15 +84,22 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 	  z-index: 9;
 	}
 	</style>
-	<p><?php printf( esc_html__( 'If you need to disable the same plugins on all archives, use the row All %s', 'freesoul-deactivate-plugins' ), esc_html( $this->tax->labels->name ) ); ?></p>
+	<p><?php 
+	// translators: %s is the taxonomy name.
+	printf( esc_html__( 'If you need to disable the same plugins on all archives, use the row All %s', 'freesoul-deactivate-plugins' ), esc_html( $this->tax->labels->name ) ); ?></p>
 		<?php
 		if ( false === strpos( $this->permalink_structure, '%category%' ) && '.' === eos_dp_get_option( 'category_base' ) ) {
 			?>
 	  <div id="eos-dp-plain-permalink-wrg" style="line-height:1;margin:20px 0;padding:10px;color:#23282d;background:#fff;border-<?php echo is_rtl() ? 'right' : 'left'; ?>:4px solid  #dc3232">
 		  <div>
-			  <h1><?php echo wp_kses_post( sprintf( __( "Issue detected. In the %1\$spermalinks settings%2\$s you have a full stop as base category, and you don't have %3\$s in your custom permalink structure.", 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'options-permalink.php' ) ) . '" target="_blank">', '</a>', '%category%' ) ); ?></h1>
+			  <h1><?php 
+			  // translators: 1: Link opening tag, 2: Link closing tag, 3: %category%. 
+			  echo wp_kses_post( sprintf( __( "Issue detected: In your %1$spermalink settings%2$s, you have a period (dot) as the category base, but %3$s is missing from your custom structure.", 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'options-permalink.php' ) ) . '" target="_blank">', '</a>', '%category%' ) ); // phpcs:ignore WordPress.WP.I18n.InterpolatedVariableText -- The placeholders are necessary for translation.
+			  ?></h1>
 			  <h1><?php esc_html_e( 'The plugins control will probably not work for term archives.', 'freesoul-deactivate-plugins' ); ?></h1>
-			  <h1><?php echo wp_kses_post( sprintf( __( 'If you really want these permalink settings, you need %1$sthe custom URLs%2$s for the term archives.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'admin.php?page=eos_dp_url' ) ) . '" target="_blank">', '</a>' ) ); ?></h1>
+			  <h1><?php 
+			  // translators: 1: Link opening tag, 2: Link closing tag.
+			  echo wp_kses_post( sprintf( __( 'If you wish to keep these permalink settings, you must use %1$scustom URLs%2$s for term archives.', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( admin_url( 'admin.php?page=eos_dp_url' ) ) . '" target="_blank">', '</a>' ) ); ?></h1>
 		  </div>
 		  <div>
 			  <a class="button" target="_blank" href="<?php echo esc_url( admin_url( 'options-permalink.php' ) ); ?>"><?php esc_html_e( 'Check Permalinks Structure', 'freesoul-deactivate-plugins' ); ?></a>
@@ -135,6 +143,7 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 			$all_archives->taxonomy   = $this->tax->name;
 			$this->tax_slug                 = isset( $this->tax->rewrite ) && isset( $this->tax->rewrite['slug'] ) ? $this->tax->rewrite['slug'] : $this->tax->name;
 			$all_archives->slug       = $this->is_missing_base() ? false : 'all_archives_' . $this->tax_slug;
+			// translators: %s is the taxonomy name.
 			$this->all_archives_name  = sprintf( esc_attr__( 'All %s', 'freesoul-deactivate-plugins' ), $this->tax->labels->name );
 			array_unshift( $all_terms, $all_archives );
 			foreach ( $all_terms as $term ) {
@@ -201,9 +210,12 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 					echo 1 === $row && defined( 'FDP_SKIP_DB_FOR_ARCHIVES' ) && FDP_SKIP_DB_FOR_ARCHIVES && ( ! isset( $_GET['l'] ) || 'all' === $_GET['l'] ) ? ' eos-no-events' : '';
 					?>" data-url="<?php echo esc_attr( str_replace( $this->home_url, '', $archive_url ) ); ?>" data-post-type="<?php echo isset( $term->name ) ? esc_attr( $term->name ) : 'unkown'; ?>" data-tax="<?php echo esc_attr( $this->tax->name ); ?>" data-href="<?php echo 1 === $row && ( ! isset( $_GET['l'] ) || 'all' === $_GET['l'] ) ? esc_attr( $all_archives->slug ) : esc_url( $archive_url ); ?>">
 			<td class="eos-dp-post-name-wrp">
-			  <span class="fdp-row-actions-ico dashicons dashicons-plus" title="<?php esc_attr__( 'Action buttons', 'freesoul-deactivate-plugins' ); ?>"></span>
-			  <span class="eos-dp-not-active-wrp"><input title="<?php printf( esc_attr__( 'Activate/deactivate all plugins in %s', 'freesoul-deactivate-plugins' ), esc_attr( $labels_name ) ); ?>" data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
+			  <span class="fdp-row-actions-ico dashicons dashicons-plus" title="<?php esc_attr_e( 'Action buttons', 'freesoul-deactivate-plugins' ); ?>"></span>
+			  <span class="eos-dp-not-active-wrp"><input title="<?php 
+			  // translators: %s is the taxonomy name.
+			  printf( esc_attr__( 'Activate/deactivate all plugins for %s', 'freesoul-deactivate-plugins' ), esc_attr( $labels_name ) ); ?>" data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
 			  <span class="eos-dp-title"><?php
+			        // translators: %s is the taxonomy name.
 					echo 1 === $row && ( ! isset( $_GET['l'] ) || 'all' === $_GET['l'] ) ? esc_html( $this->all_archives_name ) : sprintf( esc_html__( '%s Archive', 'freesoul-deactivate-plugins' ), esc_html( $labels_name ) );
 					echo $flag; //phpcs:ignore WordPress.Security.EscapeOutput -- The escaping was already applied while building $flag. ?>
 					</span>
@@ -237,7 +249,7 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 							?>
 				<a class="eos-dp-theme-sel fdp-has-tooltip fdp-right-tooltip" style="border:1px solid #fff !important">
 							<?php echo $themes_list; //phpcs:ignore WordPress.Security.EscapeOutput -- The escaping was already applied on the output of eos_dp_active_themes_list(). ?>
-				  <div class="fdp-tooltip"><?php esc_html_e( 'Select a different Theme and then click on the lens icon to see the preview', 'freesoul-deactivate-plugins' ); ?></div>
+				  <div class="fdp-tooltip"><?php esc_html_e( 'Select a different theme and then click on the lens icon to see the preview', 'freesoul-deactivate-plugins' ); ?></div>
 				</a>
 						<?php } ?>
 				<a class="eos-dp-preview eos-dp-archive-preview fdp-has-tooltip" oncontextmenu="return false;" href="
@@ -258,7 +270,7 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 					?>
 					" target="_blank">
 				  <span class="dashicons dashicons-search"></span>
-				  <div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according the settings you see now on this row and the selected theme', 'freesoul-deactivate-plugins' ); ?></div>
+				  <div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according to the settings you see now on this row and the selected theme', 'freesoul-deactivate-plugins' ); ?></div>
 				</a>
 				<a data-page_speed_insights="false" class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="
 					<?php
@@ -283,7 +295,7 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 				  <span class="dashicons dashicons-search">
 					<span class="dashicons dashicons-media-code"></span>
 				  </span>
-				  <div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according the settings you see now on this row and the selected theme', 'freesoul-deactivate-plugins' ); ?></div>
+				  <div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according to the settings you see now on this row and the selected theme', 'freesoul-deactivate-plugins' ); ?></div>
 				</a>
 				<a class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="
 					<?php
@@ -306,16 +318,16 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 				  <span class="dashicons dashicons-search">
 					<span class="eos-dp-no-js">JS</span>
 				  </span>
-				  <div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins and the theme according the settings you see now on this row and disable JavaScript esecution', 'freesoul-deactivate-plugins' ); ?></div>
+				  <div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins and the theme according to the settings you see now on this row and disable JavaScript execution', 'freesoul-deactivate-plugins' ); ?></div>
 				</a>
 				<a class="eos-dp-invert-selection fdp-has-tooltip" href="#"><span class="dashicons"><span style="display:inline-block"><span class="fdp-invert-up"></span><span class="fdp-invert-down"></span></span></span>
 				  <div class="fdp-tooltip"><?php esc_html_e( 'Invert selection', 'freesoul-deactivate-plugins' ); ?></div>
 				</a>
 				<a class="eos-dp-copy fdp-has-tooltip" href="#"><span class="dashicons dashicons-admin-page"></span>
-				  <div class="fdp-tooltip"><?php esc_html_e( 'Copy this row settings', 'freesoul-deactivate-plugins' ); ?></div>
+				  <div class="fdp-tooltip"><?php esc_html_e( 'Copy settings for this row', 'freesoul-deactivate-plugins' ); ?></div>
 				</a>
 				<a class="eos-dp-paste fdp-has-tooltip" href="#"><span class="dashicons dashicons-category"></span>
-				  <div class="fdp-tooltip"><?php esc_html_e( 'Paste last copied row settings', 'freesoul-deactivate-plugins' ); ?></div>
+				  <div class="fdp-tooltip"><?php esc_html_e( 'Paste previously copied row settings', 'freesoul-deactivate-plugins' ); ?></div>
 				</a>
 					<?php do_action( 'eos_dp_action_buttons' ); ?>
 					<?php do_action( 'eos_dp_archive_action_buttons' ); ?>
@@ -344,7 +356,9 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 			}
 		} else {
 			?>
-	  <p><?php printf( esc_html__( 'You have no %s', 'freesoul-deactivate-plugins' ), esc_html( $this->tax->label ) ); ?></p>
+	  <p><?php 
+	  // translators: %s is the taxonomy name.
+	  printf( esc_html__( 'You have no %s', 'freesoul-deactivate-plugins' ), esc_html( $this->tax->label ) ); ?></p>
 			<?php
 		}
 	}
@@ -363,7 +377,7 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 					$rank_key = $permalinks_slugs[$this->tax_slug];
 					if( isset( $rank_math_opts[$rank_key] ) && 'on' === sanitize_text_field( $rank_math_opts[$rank_key] ) ) {
 						add_action( 'eos_dp_after_footer', function() {
-							echo '<style id="fdp-all-archives-disabled-css">' . sanitize_text_field( strip_tags( $this->missing_base_css() ) ) . '</style>'; //phpcs:ignore WordPress.Security.EscapeOutput -- No need to escape cause already escaped in the method missing_base_css.
+							echo '<style id="fdp-all-archives-disabled-css">' . sanitize_text_field( wp_strip_all_tags( $this->missing_base_css() ) ) . '</style>'; //phpcs:ignore WordPress.Security.EscapeOutput -- No need to escape cause already escaped in the method missing_base_css.
 						} );
 						return true;
 					}
@@ -379,6 +393,7 @@ class FDP_Terms_Archives_Page extends Eos_Fdp_Matrix_Page {
 		$css .= '.fdp-all-archvies-missing-base td{background-image:none !important;background-color:transparent !important;border:none !important}';
 		$css .= '.fdp-all-archvies-missing-base td:nth-child(2){opacity:1 !important}';
 		$css .= '.fdp-all-archvies-missing-base td:nth-child(2):after{';
+		// translators: %s is the Rank Math plugin name.
 		$css .= 'content:"\f534  ' . sprintf( '%s disabled because %s removes the archive base from the URL', esc_html( $this->all_archives_name ), 'Rank Math' ) .'";';
 		$css .= 'position:absolute;';
 		$css .= 'height:20px;';

@@ -129,7 +129,7 @@ abstract class Eos_Fdp_Plugins_Manager_Page {
 		)
 		) {
 			?>
-	  	<h2><?php esc_html_e( 'Sorry, you have not the right for this page', 'freesoul-deactivate-plugins' ); ?></h2>
+	  	<h2><?php esc_html_e( 'Sorry, you do not have permission to access this page.', 'freesoul-deactivate-plugins' ); ?></h2>
 			<?php
 			return;
 		}
@@ -264,7 +264,7 @@ abstract class Eos_Fdp_Plugins_Manager_Page {
 			<h2 id="fdp-general-msg-title" style="background:#D3C4B8;color:#fff;padding:10px;margin-top:-10px;position:relative;top:0"></h2>
 			<p id="fdp-general-msg-body" style="padding:10px"></p>
 			<div style="position:absolute;padding:10px;bottom:0;left:0;right:0;text-align:<?php echo is_rtl() ? 'left' : 'right'; ?>">
-				<button id="fdp-close-general-message" class="button" onclick="fdp.close_alert();"><?php esc_html_e( 'Close' ); ?></button>
+				<button id="fdp-close-general-message" class="button" onclick="fdp.close_alert();"><?php esc_html_e( 'Close', 'freesoul-deactivate-plugins' ); ?></button>
 			</div>
 		</div>		
 		<script id="fdp-js">

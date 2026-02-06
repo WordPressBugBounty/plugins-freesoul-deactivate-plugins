@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 function eos_dp_help_callback() {
 	if ( ! current_user_can( 'activate_plugins' ) ) {
 		?>
-		<h2><?php esc_html_e( 'Sorry, you have not the right for this page', 'freesoul-deactivate-plugins' ); ?></h2>
+		<h2><?php esc_html_e( 'Sorry, you do not have permission to access this page.', 'freesoul-deactivate-plugins' ); ?></h2>
 		<?php
 		return;
 	}
@@ -67,7 +67,7 @@ function eos_dp_help_home_section() {
 				<td class="fdp-help-button"><p><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_menu&reopen_pointer=true' ) ); ?>"><?php esc_html_e( 'Guided tour', 'freesoul-deactivate-plugins' ); ?></a></p></td>
 				<td class="fdp-help-button"><p><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_help&tab=common_issues' ) ); ?>"><?php esc_html_e( 'Common issues', 'freesoul-deactivate-plugins' ); ?></a></p></td>
 			</tr>
-				<td class="fdp-help-button"><p><a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/" target="_blank" rel="noopener"><?php esc_html_e( 'Documentation', 'freesoul-deactivate-plugins' ); ?></p></td>
+				<td class="fdp-help-button"><p><a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/" target="_blank" rel="noopener"><?php esc_html_e( 'Documentation', 'freesoul-deactivate-plugins' ); ?></p></td>
 				<td class="fdp-help-button"><p><a href="<?php echo esc_url( $support_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $support_text ); ?></a></p></td>
 			</tr>
 		</table>
@@ -106,13 +106,13 @@ function eos_dp_help_common_issues_section() {
 							}
 						}
 					}
-					$versions_list[] = '<select id="eos-dp-previuos-versions" style="margin-top:-4px">';
+					$versions_list[] = '<select id="eos-dp-previous-versions" style="margin-top:-4px">';
 					$versions_list   = implode( '', array_reverse( $versions_list ) );
 				}
 			}
 		}
 	}
-	$versions_download = $versions_list . ' <a href="#" id="eos-dp-download-previous" class="button" download onclick="this.href=\'' . esc_url( $download_url ) . '\' + document.getElementById(\'eos-dp-previuos-versions\').value + \'.zip\';">' . esc_html__( 'Download', 'freesoul-deactivate-plugins' ) . '</a>';
+	$versions_download = $versions_list . ' <a href="#" id="eos-dp-download-previous" class="button" download onclick="this.href=\'' . esc_url( $download_url ) . '\' + document.getElementById(\'eos-dp-previous-versions\').value + \'.zip\';">' . esc_html__( 'Download', 'freesoul-deactivate-plugins' ) . '</a>';
 	?>
 	<section class="eos-dp-section">
 	<style>
@@ -201,7 +201,7 @@ function eos_dp_help_common_issues_section() {
 			</tbody>
 		</table>
 		<div style="margin-top:64px">
-			<input style="min-width:25rem" type="text" id="eos-dp-search-on-support-input" placeholder="<?php esc_html_e( 'Search on the support forum', 'freesoul-deactivate-plugins' ); ?>" />
+			<input style="min-width:25rem" type="text" id="eos-dp-search-on-support-input" placeholder="<?php esc_html_e( 'Search the support forum', 'freesoul-deactivate-plugins' ); ?>" />
 			<a class="button"style="margin:0 8px" id="eos-dp-search-on-support-button" href="https://wordpress.org/search/freesoul+deactivate+plugins" target="_blank" rel="noopener"><?php esc_html_e( 'Search', 'freesoul-deactivate-plugins' ); ?></a>
 		</div>
 	</section>
@@ -273,7 +273,7 @@ function eos_dp_help_shortcuts_section() {
 	?>
 	<section id="eos-dp-shortcuts" class="eos-dp-section">
 		<style>#fdp-shortcuts{max-width:calc(100vw - 60px)}@media screen and (min-width:468px){#fdp-shortcuts{max-width:500px}}</style>
-		<h2><?php esc_html_e( 'Shortcuts.', 'freesoul-deactivate-plugins' ); ?></h2>
+		<h2><?php esc_html_e( 'Shortcuts', 'freesoul-deactivate-plugins' ); ?></h2>
 		<table id="fdp-shortcuts" class="wp-list-table widefat fixed striped">
 		<tbody>
 			<tr>

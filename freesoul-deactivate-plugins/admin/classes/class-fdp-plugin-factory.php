@@ -43,9 +43,9 @@ class FDP_Plugin_Factory extends Eos_Fdp_Plugins_Manager_Page {
 		?>
 		<section id="fdp-create-plugin-wrp">
 			<?php if( ! is_writable( WP_PLUGIN_DIR ) ) { ?>
-			<div class="eos-dp-notice notice notice-warning" style="padding:10px;font-size:20px"><?php esc_html_e( 'It looks you have no rights to write in the plugins folder. It will not be possible to create any plugin until the plugins folder is writable.', 'freesoul-deactivate-plugins' ); ?></div>
+			<div class="eos-dp-notice notice notice-warning" style="padding:10px;font-size:20px"><?php esc_html_e( 'It looks like you do not have write permissions for the plugins folder. New plugins cannot be created until the plugins folder is writable.', 'freesoul-deactivate-plugins' ); ?></div>
 			<?php } ?>
-			<h2><?php esc_html_e( 'Create custom plugin.', 'eos-dp-pro' ); ?></h2>
+			<h2><?php esc_html_e( 'Create custom plugin', 'freesoul-deactivate-plugins' ); ?></h2>
 				<label for="fdp-create-plugin-name"><?php esc_html_e( 'Plugin name', 'freesoul-deactivate-plugins' ); ?></label>
 				<p><input id="fdp-create-plugin-name" type="text" class="regular-text" placeholder="<?php esc_attr_e( 'My custom plugin', 'freesoul-deactivate-plugins' ); ?>" /></p>
 				<label for="fdp-create-plugin-author"><?php esc_html_e( 'Plugin author', 'freesoul-deactivate-plugins' ); ?></label>
@@ -112,16 +112,15 @@ class FDP_Plugin_Factory extends Eos_Fdp_Plugins_Manager_Page {
 		?>
 		<div id="fdp-create-plugins-instructions">
 			<p style="margin-top:32px"><span id="fdp-create-plugin" class="button<?php echo  ! is_writable( WP_PLUGIN_DIR ) ? ' eos-no-events' : ''; ?>"><span class="dashicons dashicons-admin-plugins" style="margin:4px 0"></span><?php esc_html_e( 'Create plugin', 'freesoul-deactivate-plugins' ); ?></span></p>
-			<p><?php esc_html_e( 'Pushing the button FDP will create an empty new plugin for your custom code.', 'freesoul-deactivate-plugins' ); ?></p>
+			<p><?php esc_html_e( 'When you click the button, FDP will create an empty new plugin for your custom code.', 'freesoul-deactivate-plugins' ); ?></p>
 			<p><?php esc_html_e( 'You will need to activate the new plugin as you do for other plugins.', 'freesoul-deactivate-plugins' ); ?></p>
 		</div>
 		<div id="fdp-success" class="eos-dp-notice notice notice-success eos-dp-opts-msg_success eos-hidden" style="padding:10px"><?php esc_html_e( 'Plugin created successfully!', 'freesoul-deactivate-plugins' ); ?>
 			<div class="eos-dp-margin-top-15">
-				<a id="fdp-edit-new-plugin" class="button" href="#" target="_blank"><?php esc_html_e( 'Open Code Editor.', 'freesoul-deactivate-plugins' ); ?></a>
-				<a id="fdp-activate-new-plugin" class="button" href="#" target="_blank"><?php esc_html_e( 'Activate your new plugin.', 'freesoul-deactivate-plugins' ); ?></a>
+				<a id="fdp-activate-new-plugin" class="button" href="#" target="_blank"><?php esc_html_e( 'Activate your new plugin', 'freesoul-deactivate-plugins' ); ?></a>
 			</div>
 		</div>
-		<div id="fdp-fail" class="eos-dp-notice notice notice-error eos-hidden" style="padding:10px" data-default_msg="<?php esc_attr_e( 'Something went wrong!', 'eos-dp-pro' ); ?>"></div>
+		<div id="fdp-fail" class="eos-dp-notice notice notice-error eos-hidden" style="padding:10px" data-default_msg="<?php esc_attr_e( 'Something went wrong!', 'freesoul-deactivate-plugins' ); ?>"></div>
 		<?php
 		}
 	}	

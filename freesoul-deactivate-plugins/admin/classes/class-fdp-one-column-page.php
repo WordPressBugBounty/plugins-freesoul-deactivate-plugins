@@ -154,7 +154,9 @@ class Eos_Fdp_One_Column_Page extends Eos_Fdp_Plugins_Manager_Page {
 		<tr>
 		  <td class="<?php echo esc_attr( $page_slug_dash ); ?>-chk-col fdp-one-col-td <?php echo '' !== $checked ? 'eos-dp-active' : 'd'; ?>">
 			<div class="eos-dp-td-chk-wrp">
-			  <input id="<?php echo esc_attr( $page_slug_dash . '-' . ( $n + 1 ) ); ?>" class="fdp-one-col-i <?php echo esc_attr( $page_slug_dash ); ?>" title="<?php printf( esc_attr__( 'Activate/deactivate %s everywhere', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" data-path="<?php echo esc_attr( $p ); ?>" type="checkbox"<?php echo $checked; //phpcs:ignore WordPress.Security.EscapeOutput -- The escaping was already applied on $checked. ?> />
+			  <input id="<?php echo esc_attr( $page_slug_dash . '-' . ( $n + 1 ) ); ?>" class="fdp-one-col-i <?php echo esc_attr( $page_slug_dash ); ?>" title="<?php 
+			  // translators: %s is the plugin name.
+			  printf( esc_attr__( 'Activate/deactivate %s everywhere', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" data-path="<?php echo esc_attr( $p ); ?>" type="checkbox"<?php echo $checked; //phpcs:ignore WordPress.Security.EscapeOutput -- The escaping was already applied on $checked. ?> />
 			</div>
 		  </td>
 		  <td class="eos-dp-name-td"><span class="dashicons dashicons-admin-plugins"></span><a title="<?php esc_attr_e( 'View details', 'freesoul-deactivate-plugins' ); ?>" target="_blank" class="eos-dp-no-decoration" href="<?php echo esc_url( $details_url ); ?>"><?php echo esc_html( $plugin_name ); ?></a></td>

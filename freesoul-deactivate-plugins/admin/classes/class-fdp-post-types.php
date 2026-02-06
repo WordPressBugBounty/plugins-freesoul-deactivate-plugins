@@ -47,31 +47,39 @@ class FDP_Post_Types_Page extends Eos_Fdp_Matrix_Page {
 					?>
 					" data-post-type="<?php echo esc_attr( $post_type ); ?>" data-row_id="<?php echo esc_attr( $post_type ); ?>">
 		  <td class="eos-dp-post-name-wrp">
-			<span class="fdp-row-actions-ico dashicons dashicons-plus" title="<?php esc_attr__( 'Action buttons', 'freesoul-deactivate-plugins' ); ?>"></span>
-			<span class="eos-dp-not-active-wrp"><input title="<?php printf( esc_attr__( 'Activate/deactivate all plugins in %s', 'freesoul-deactivate-plugins' ), esc_attr( $labs_name ) ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
-			<span class="eos-dp-not-active-wrp<?php echo ! isset( $plugins[0] ) || $plugins[0] === 1 || false === $this->old_method ? ' eos-dp-priority-active' : ''; ?> eos-dp-priority-post-type-wrp"<?php echo ! $this->old_method ? 'style="display:none !important"' : ''; ?>><input title="<?php printf( esc_attr__( 'If activated the Single %s Settings will be ignored.', 'freesoul-deactivate-plugins' ), esc_attr( $labs_name ) ); ?>" class="eos-dp-priority-post-type" type="checkbox" /></span>
+			<span class="fdp-row-actions-ico dashicons dashicons-plus" title="<?php esc_attr_e( 'Action buttons', 'freesoul-deactivate-plugins' ); ?>"></span>
+			<span class="eos-dp-not-active-wrp"><input title="<?php 
+			// translators: %s is the post type name.
+			printf( esc_attr__( 'Activate/deactivate all plugins for %s', 'freesoul-deactivate-plugins' ), esc_attr( $labs_name ) ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
+			<span class="eos-dp-not-active-wrp<?php echo ! isset( $plugins[0] ) || $plugins[0] === 1 || false === $this->old_method ? ' eos-dp-priority-active' : ''; ?> eos-dp-priority-post-type-wrp"<?php echo ! $this->old_method ? 'style="display:none !important"' : ''; ?>><input title="<?php 
+			// translators: %s is the post type name.
+			printf( esc_attr__( 'If activated, the Single %s settings will be ignored.', 'freesoul-deactivate-plugins' ), esc_attr( $labs_name ) ); ?>" class="eos-dp-priority-post-type" type="checkbox" /></span>
 			<span class="eos-dp-title"><a style="color:inherit;text-decoration:none" href="<?php echo esc_url( $singles ); ?>"><?php echo esc_html( $labs_name ); ?></a></span>
 			<span class="<?php echo isset( $plugins[2] ) && $plugins[2] == '1' ? 'eos-dp-default-active' : ''; ?> eos-dp-default-post-type-wrp">
 			  <span class="eos-dp-default-chk-wrp">
-				<input title="<?php printf( esc_attr__( 'If activated the Single %s Settings will have this row settings as default.', 'freesoul-deactivate-plugins' ), esc_attr( $labs_name ) ); ?>" class="eos-dp-default-post-type" type="checkbox"<?php echo isset( $plugins[2] ) && $plugins[2] == '1' ? ' checked' : ''; ?>/>
+				<input title="<?php 
+				// translators: %s is the post type name.
+				printf( esc_attr__( 'If activated, the Single %s settings will use these row settings as the default.', 'freesoul-deactivate-plugins' ), esc_attr( $labs_name ) ); ?>" class="eos-dp-default-post-type" type="checkbox"<?php echo isset( $plugins[2] ) && $plugins[2] == '1' ? ' checked' : ''; ?>/>
 				<span></span>
 			  </span>
 			</span>
 			<span class="eos-dp-x-space"></span>
 			<div class="eos-dp-actions">
 			  <a class="eos-dp-to-singles fdp-has-tooltip" style="padding:0 10px;border:1px solid #fff !important" href="<?php echo esc_url( add_query_arg( 'eos_dp_post_type', $post_type, admin_url( 'admin.php?page=eos_dp_menu' ) ) ); ?>"><span class="dashicons dashicons-admin-generic"></span><span style="position:relative;top:6px"><?php esc_html_e( 'Singles', 'freesoul-deactivate-plugins' ); ?></span>
-				<div class="fdp-tooltip"><?php printf( esc_html__( 'Go to singles settings of %s', 'freesoul-deactivate-plugins' ), esc_html( $labs_name ) ); ?></div>
+				<div class="fdp-tooltip"><?php 
+				// translators: %s is the post type name.
+				printf( esc_html__( 'Go to singles settings for %s', 'freesoul-deactivate-plugins' ), esc_html( $labs_name ) ); ?></div>
 			  </a>
 			  <a class="eos-dp-invert-selection fdp-has-tooltip" href="#"><span class="dashicons"><span style="display:inline-block"><span class="fdp-invert-up"></span><span class="fdp-invert-down"></span></span></span>
 				<div class="fdp-tooltip"><?php esc_html_e( 'Invert selection', 'freesoul-deactivate-plugins' ); ?></div>
 			  </a>
 			  <a class="eos-dp-copy fdp-has-tooltip" href="#"><span class="dashicons dashicons-admin-page"></span>
-				<div class="fdp-tooltip"><?php esc_html_e( 'Copy this row settings', 'freesoul-deactivate-plugins' ); ?></div>
+				<div class="fdp-tooltip"><?php esc_html_e( 'Copy settings for this row', 'freesoul-deactivate-plugins' ); ?></div>
 				<div class="fdp-action-msg fdp-msg-success" style="opacity:0;position:absolute;top:34px;background:#fff;padding:10px;transition:opacity 0.5s linear"><?php esc_html_e( 'Row settings copied', 'freesoul-deactivate-plugins' ); ?></div>
 				<div class="fdp-action-msg fdp-msg-error" style="opacity:0;display:none;position:absolute;top:34px;background:#fff;padding:10px;transition:opacity 0.5s linear"><?php esc_html_e( 'It was not possible to copy the row settings', 'freesoul-deactivate-plugins' ); ?></div>
 			  </a>
 			  <a class="eos-dp-paste fdp-has-tooltip" href="#"><span class="dashicons dashicons-category"></span>
-				<div class="fdp-tooltip"><?php esc_html_e( 'Paste last copied row settings', 'freesoul-deactivate-plugins' ); ?></div>
+				<div class="fdp-tooltip"><?php esc_html_e( 'Paste previously copied row settings', 'freesoul-deactivate-plugins' ); ?></div>
 			  </a>
 					  <?php do_action( 'eos_dp_action_buttons' ); ?>
 			</div>

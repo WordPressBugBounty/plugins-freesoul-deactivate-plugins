@@ -1,6 +1,6 @@
 <?php
 /**
- * It includes the some information about the most popular plugins.
+ * Includes some information about the most popular plugins.
 
  * @package Freesoul Deactivate Plugins
  */

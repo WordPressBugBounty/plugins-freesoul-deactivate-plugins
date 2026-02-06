@@ -7,19 +7,20 @@
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-// It displays the save button and related messages
+// Displays the save button and related messages
 function eos_dp_save_button( $css_class = false ) {
 	$extra_class         = '';
 	$warning             = '';
 	$permalink_structure = get_option( 'permalink_structure' );
-	$permalinks_label    = __( 'the actual permalinks structure is not supported' );
+	$permalinks_label    = __( 'the current permalink structure is not supported', 'freesoul-deactivate-plugins' );
 	if ( '' === $permalink_structure ) {
-		$permalinks_label = __( 'the permalinks are set as plain', 'freesoul-deactivate-plugins' );
+		$permalinks_label = __( 'Permalinks are set to "Plain"', 'freesoul-deactivate-plugins' );
 	} elseif ( '/archives/%post_id%' === $permalink_structure ) {
-		$permalinks_label = __( 'the permalinks are set as numeric', 'freesoul-deactivate-plugins' );
+		$permalinks_label = __( 'Permalinks are set to "Numeric"', 'freesoul-deactivate-plugins' );
 	}
 	if ( false === strpos( basename( $permalink_structure ), '%postname%' ) && ! in_array( $_GET['page'], array( 'eos_dp_admin', 'eos_dp_admin_url', 'eos_dp_url' ) ) ) {
 			$extra_class = ' eos-no-events';
+			// translators: %s is the permalink structure label.
 			$warning     = '<div style="background:#fff;color:#000;padding:10px;margin-bottom:10px;border-left:4px solid  #dc3232">' . sprintf( esc_html__( "You can't save because %s", 'freesoul-deactivate-plugins' ), esc_html( $permalinks_label ) );
 			$warning    .= '<p><a class="button" target="_blank" href="' . esc_url( admin_url( 'options-permalink.php' ) ) . '">' . esc_html__( 'Change Permalinks Structure', 'freesoul-deactivate-plugins' ) . '</a></p>';
 			$warning    .= '</div>';
@@ -44,7 +45,7 @@ function eos_dp_save_button( $css_class = false ) {
 				<span><?php esc_html_e( 'Options saved.', 'freesoul-deactivate-plugins' ); ?></span>
 			</div>
 			<div class="eos-dp-opts-msg_failed eos-dp-opts-msg eos-hidden msg_response" style="padding:10px;margin:10px;border-left:4px solid #d63638;background:#fff">
-				<span><?php echo wp_kses_post( apply_filters( 'fdp_generic_failure_message', __( 'Something went wrong, maybe you need to refresh the page and try again, but you will lose all your changes', 'freesoul-deactivate-plugins' ) ) ); ?></span>
+				<span><?php echo wp_kses_post( apply_filters( 'fdp_generic_failure_message', __( 'Something went wrong. You may need to refresh the page and try again, but you will lose all your changes', 'freesoul-deactivate-plugins' ) ) ); ?></span>
 			</div>
 			<div class="eos-dp-opts-msg_warning eos-dp-opts-msg eos-hidden msg_response" style="padding:10px;margin:10px;border-left:4px solid #dba617;background:#fff">
 				<span></span>
@@ -55,10 +56,10 @@ function eos_dp_save_button( $css_class = false ) {
 				<p><img id="fdp-response-screenshot" class="eos-hidden" src="" /></p>
 				<p>
 					<?php wp_nonce_field( 'eos_dp_pro_remove_test', 'eos_dp_pro_remove_test' ); ?>
-					<span id="fdp-remove-from-report" class="button"><?php esc_html_e( 'Discard', 'eos-dp-pro' ); ?></span>
-					<span id="fdp-test-close" class="button"><?php esc_html_e( 'Close', 'eos-dp-pro' ); ?></span>
-					<a id="fdp-see-all-gtmetrix-tests" class="button fdp-see-all-tests eos-hidden" style="position:relative;padding-<?php echo esc_attr( $dir ); ?>:30px" href="<?php echo esc_url( admin_url( '/admin.php?page=eos_dp_report&tool=gtmetrix' ) ); ?>" target="_fdp_gtmetrix_report"><span style="position:absolute;<?php echo esc_attr( $dir ); ?>:0" class="eos-dp-gtmetrix-icon"></span><?php esc_html_e( 'All tests', 'eos-dp-pro' ); ?></a>
-					<a id="fdp-see-all-gpsi-tests" class="button fdp-see-all-tests eos-hidden" style="position:relative;padding-<?php echo esc_attr( $dir ); ?>:30px" href="<?php echo esc_url( admin_url( '/admin.php?page=eos_dp_report&tool=gpsi' ) ); ?>" target="_fdp_gpsi_report"><span style="position:absolute;<?php echo esc_attr( $dir ); ?>:0" class="eos-dp-gpsi-icon"></span><?php esc_html_e( 'All tests', 'eos-dp-pro' ); ?></a>
+					<span id="fdp-remove-from-report" class="button"><?php esc_html_e( 'Discard', 'freesoul-deactivate-plugins' ); ?></span>
+					<span id="fdp-test-close" class="button"><?php esc_html_e( 'Close', 'freesoul-deactivate-plugins' ); ?></span>
+					<a id="fdp-see-all-gtmetrix-tests" class="button fdp-see-all-tests eos-hidden" style="position:relative;padding-<?php echo esc_attr( $dir ); ?>:30px" href="<?php echo esc_url( admin_url( '/admin.php?page=eos_dp_report&tool=gtmetrix' ) ); ?>" target="_fdp_gtmetrix_report"><span style="position:absolute;<?php echo esc_attr( $dir ); ?>:0" class="eos-dp-gtmetrix-icon"></span><?php esc_html_e( 'All tests', 'freesoul-deactivate-plugins' ); ?></a>
+					<a id="fdp-see-all-gpsi-tests" class="button fdp-see-all-tests eos-hidden" style="position:relative;padding-<?php echo esc_attr( $dir ); ?>:30px" href="<?php echo esc_url( admin_url( '/admin.php?page=eos_dp_report&tool=gpsi' ) ); ?>" target="_fdp_gpsi_report"><span style="position:absolute;<?php echo esc_attr( $dir ); ?>:0" class="eos-dp-gpsi-icon"></span><?php esc_html_e( 'All tests', 'freesoul-deactivate-plugins' ); ?></a>
 				</p>
 			</div>
 		</div>
@@ -73,7 +74,9 @@ function eos_dp_save_button( $css_class = false ) {
 			if ( isset( $locA[0] ) && ! in_array( $locA[0], array( 'en', 'it' ) ) ) {
 				?>
 			<div id="eos-dp-translate" class="eos-dp-margin-top-48">
-				<p><?php echo wp_kses_post( sprintf( __( 'Click %1$shere%2$s if you want to translate Freesoul Deactivate Plugins in your language.', 'freesoul-deactivate-plugins' ), '<a href="https://translate.wordpress.org/projects/wp-plugins/freesoul-deactivate-plugins/stable/' . esc_attr( $locA[0] ) . '/default/" rel="noopener" target="_blank">', '</a>' ) ); ?></p>
+				<p><?php 
+				// translators: %s is the language code.
+				echo wp_kses_post( sprintf( __( 'Click %1$shere%2$s if you want to translate Freesoul Deactivate Plugins in your language.', 'freesoul-deactivate-plugins' ), '<a href="https://translate.wordpress.org/projects/wp-plugins/freesoul-deactivate-plugins/stable/' . esc_attr( $locA[0] ) . '/default/" rel="noopener" target="_blank">', '</a>' ) ); ?></p>
 			</div>
 				<?php
 			}
@@ -84,7 +87,9 @@ function eos_dp_save_button( $css_class = false ) {
 		<div id="eos-dp-popup-top" style="<?php echo esc_attr( $dir ); ?>:0;text-align:<?php echo esc_attr( $dir ); ?>;position:absolute;position:sticky;top:0">
 			<span id="eos-dp-popup-close" class="hover dashicons dashicons-no-alt" style="padding:10px;font-size:24px" title="<?php esc_attr_e( 'Close', 'freesoul-deactivate-plugins' ); ?>"></span>
 		</div>
-		<h3><?php echo wp_kses_post( sprintf( __( 'The %1$spage%2$s was checked simulating a logged user.', 'freesoul-deactivate-plugins' ), '<a id="eos-dp-popup-page-link" href="#" target="_blank">', '</a>' ) ); ?></h3>
+		<h3><?php 
+		// translators: %1$s is the opening anchor tag, %2$s is the closing anchor tag.
+		echo wp_kses_post( sprintf( __( 'The %1$spage%2$s was checked while simulating a logged-in user.', 'freesoul-deactivate-plugins' ), '<a id="eos-dp-popup-page-link" href="#" target="_blank">', '</a>' ) ); ?></h3>
 		<div id="eos-dp-popup-txt"></div>
 	</div>
 	<?php

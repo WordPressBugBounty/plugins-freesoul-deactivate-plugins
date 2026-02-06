@@ -100,10 +100,14 @@ abstract class Eos_Fdp_Matrix_Page extends Eos_Fdp_Plugins_Manager_Page {
 				  <th class="eos-dp-name-th"<?php echo isset( $_GET['int_plugin'] ) && dirname( $p ) === $_GET['int_plugin'] ? ' style="display:none"' : ''; ?>>
 					  <div>
 						  <div id="eos-dp-plugin-name-<?php echo esc_attr( $n + 1 ); ?>" class="eos-dp-plugin-name" title="<?php echo esc_attr( $plugin_name ); ?>" data-path="<?php echo esc_attr( $p ); ?>">
-							  <span><a title="<?php printf( esc_attr__( 'View details of %s', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" href="<?php echo esc_url( $details_url ); ?>" target="_blank"><?php echo esc_attr( apply_filters( 'fdp_plugin_name_short', $plugin_name_short, $p ) ); ?></a></span>
+							  <span><a title="<?php 
+							  // translators: %s is the plugin name.
+							  printf( esc_attr__( 'View details of %s', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" href="<?php echo esc_url( $details_url ); ?>" target="_blank"><?php echo esc_attr( apply_filters( 'fdp_plugin_name_short', $plugin_name_short, $p ) ); ?></a></span>
 						  </div>
 						  <div class="eos-dp-global-chk-col-wrp">
-							  <div class="eos-dp-not-active-wrp"><input title="<?php printf( esc_attr__( 'Activate/deactivate %s everywhere', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" data-col="<?php echo esc_attr( $n + 1 ); ?>" class="eos-dp-global-chk-col" type="checkbox" /></div>
+							  <div class="eos-dp-not-active-wrp"><input title="<?php 
+							  // translators: %s is the plugin name.
+							  printf( esc_attr__( 'Activate/deactivate %s everywhere', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" data-col="<?php echo esc_attr( $n + 1 ); ?>" class="eos-dp-global-chk-col" type="checkbox" /></div>
 							<?php do_action( 'eos_dp_table_head_col_after' ); ?>
 						  </div>
 						  <div class="fdp-p-n"><?php echo esc_attr( $n + 1 ); ?></div>

@@ -54,23 +54,23 @@ if ( $this->fdp_is_single_post ) {
 		?>
 	<a class="eos-dp-theme-sel fdp-has-tooltip fdp-right-tooltip" style="border:1px solid #fff !important">
 		<?php echo $themes_list; //phpcs:ignore WordPress.Security.EscapeOutput -- The escaping was already applied on the output of eos_dp_active_themes_list(). ?>
-		<div class="fdp-tooltip"><?php esc_html_e( 'Select a different Theme and then click on the lens icon to see the preview', 'freesoul-deactivate-plugins' ); ?></div>
+		<div class="fdp-tooltip"><?php esc_html_e( 'Select a different theme and then click on the lens icon to see the preview', 'freesoul-deactivate-plugins' ); ?></div>
 	</a>
 	<?php } ?>
 	<a data-page_speed_insights="false" class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="<?php echo esc_url( wp_nonce_url( add_query_arg( $args, get_permalink( $post->ID ) ), 'eos_dp_preview', 'eos_dp_preview' ) ); ?>" target="_blank"><span class="dashicons dashicons-search"></span>
-		<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according the settings you see now on this row and the selected theme (shortcut: P)', 'freesoul-deactivate-plugins' ); ?></div>
+		<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according to the settings you see now on this row and the selected theme (shortcut: P)', 'freesoul-deactivate-plugins' ); ?></div>
 	</a>
 	<a data-page_speed_insights="false" class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array_merge( $args, array( 'show_files' => 'true' ) ), get_permalink( $post->ID ) ), 'eos_dp_preview', 'eos_dp_preview' ) ); ?>" target="_blank">
 		<span class="dashicons dashicons-search">
 			<span class="dashicons dashicons-media-code"></span>
 		</span>
-		<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according the settings you see now on this row and show the files that are called', 'freesoul-deactivate-plugins' ); ?></div>
+		<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according to the settings you see now on this row and show the files being called', 'freesoul-deactivate-plugins' ); ?></div>
 	</a>
 	<a data-page_speed_insights="false" class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array_merge( $args, array( 'js' => 'off' ) ), get_permalink( $post->ID ) ), 'eos_dp_preview', 'eos_dp_preview' ) ); ?>" target="_blank">
 		<span class="dashicons dashicons-search">
 			<span class="eos-dp-no-js">JS</span>
 		</span>
-		<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins and the theme according the settings you see now on this row and disable JavaScript esecution', 'freesoul-deactivate-plugins' ); ?></div>
+		<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins and the theme according to the settings you see now on this row and disable JavaScript execution', 'freesoul-deactivate-plugins' ); ?></div>
 	</a>
 	<?php
 	$args['eos_dp_preview'] = 1000 * absint( time() / 1000 );
@@ -92,13 +92,13 @@ if ( $this->fdp_is_single_post ) {
 		<span class="dashicons dashicons-search">
 			<img width="20" height="20" src="<?php echo esc_url( EOS_DP_PLUGIN_URL . '/admin/assets/img/pagespeed.png' ); ?>" />
 		</span>
-		<div class="fdp-tooltip"><?php esc_html_e( 'Check the page with Google PageSpeed Insights loading plugins and the theme according the settings you see now on this row', 'freesoul-deactivate-plugins' ); ?></div>
+		<div class="fdp-tooltip"><?php esc_html_e( 'Run Google PageSpeed Insights on this page using the plugin and theme settings shown in this row', 'freesoul-deactivate-plugins' ); ?></div>
 	</a>
 	<?php
 	if ( defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE && defined( 'EOS_DP_PRO_PLUGIN_URL' ) ) {
 		?>
 		<a data-page_speed_insights="false" class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array_merge( $args, array( 'fdp-hooks' => 'actions' ) ), get_permalink( $post->ID ) ), 'eos_dp_preview', 'eos_dp_preview' ) ); ?>" target="_blank"><span class="fdp-hook-ico dashicons" style="margin:0 4px"></span>
-			<div class="fdp-tooltip"><?php esc_html_e( 'Show the hooks loading plugins according the settings you see now on this row', 'eos-dp-pro' ); ?></div>
+			<div class="fdp-tooltip"><?php esc_html_e( 'Show the hooks loading plugins according to the settings you see now on this row', 'freesoul-deactivate-plugins' ); ?></div>
 		</a>
 		<a data-page_speed_insights="false" class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="
 		<?php
@@ -120,7 +120,7 @@ if ( $this->fdp_is_single_post ) {
 		);
 		?>
 																														" target="_blank"><span class="dashicons"><span class="dashicons dashicons-editor-code" style="top:2px"><span class="eos-dp-after-icon">CSS</span></span>
-			<div class="fdp-tooltip"><?php esc_html_e( 'Unload stylesheets of the remaining active plugins', 'eos-dp-pro' ); ?></div>
+			<div class="fdp-tooltip"><?php esc_html_e( 'Unload stylesheets of the remaining active plugins', 'freesoul-deactivate-plugins' ); ?></div>
 		</a>
 		<a data-page_speed_insights="false" class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="
 		<?php
@@ -142,7 +142,7 @@ if ( $this->fdp_is_single_post ) {
 		);
 		?>
 																														" target="_blank"><span class="dashicons"><span class="dashicons dashicons-editor-code" style="top:2px"><span class="eos-dp-after-icon">JS</span></span>
-			<div class="fdp-tooltip"><?php esc_html_e( 'Unload scripts of the remaining active plugins', 'eos-dp-pro' ); ?></div>
+			<div class="fdp-tooltip"><?php esc_html_e( 'Unload scripts of the remaining active plugins', 'freesoul-deactivate-plugins' ); ?></div>
 		</a>
 		<?php
 	}
@@ -154,12 +154,12 @@ if ( $this->fdp_is_single_post ) {
 		<div class="fdp-tooltip"><?php esc_html_e( 'Invert selection (shortcut: I)', 'freesoul-deactivate-plugins' ); ?></div>
 	</a>
 	<a class="eos-dp-copy fdp-has-tooltip" href="#"><span class="dashicons dashicons-admin-page"></span>
-		<div class="fdp-tooltip"><?php esc_html_e( 'Copy this row settings (shortcut: C)', 'freesoul-deactivate-plugins' ); ?></div>
+		<div class="fdp-tooltip"><?php esc_html_e( 'Copy settings for this row (shortcut: C)', 'freesoul-deactivate-plugins' ); ?></div>
 		<div class="fdp-action-msg fdp-msg-success" style="opacity:0;position:absolute;top:34px;background:#fff;padding:10px;transition:opacity 0.5s linear"><?php esc_html_e( 'Row settings copied', 'freesoul-deactivate-plugins' ); ?></div>
-		<div class="fdp-action-msg fdp-msg-error" style="opacity:0;display:none;position:absolute;top:34px;background:#fff;padding:10px;transition:opacity 0.5s linear"><?php esc_html_e( 'It was not possible to copy the row settings', 'freesoul-deactivate-plugins' ); ?></div>
+		<div class="fdp-action-msg fdp-msg-error" style="opacity:0;display:none;position:absolute;top:34px;background:#fff;padding:10px;transition:opacity 0.5s linear"><?php esc_html_e( 'Could not copy the row settings', 'freesoul-deactivate-plugins' ); ?></div>
 	</a>
 	<a class="eos-dp-paste fdp-has-tooltip" href="#"><span class="dashicons dashicons-category"></span>
-		<div class="fdp-tooltip"><?php esc_html_e( 'Paste last copied row settings (shortcut: V)', 'freesoul-deactivate-plugins' ); ?></div>
+		<div class="fdp-tooltip"><?php esc_html_e( 'Paste previously copied row settings (shortcut: V)', 'freesoul-deactivate-plugins' ); ?></div>
 	</a>
 	<?php
 	$GLOBALS['fdp_action_post_id'] = absint( $post->ID );

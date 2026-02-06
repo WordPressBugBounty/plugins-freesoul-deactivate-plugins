@@ -47,7 +47,7 @@ if ( ! empty( $plugins_table ) ) {
 														)
 													);
 													?>
-													"><?php esc_html_e( 'Relevant pages', 'freesoul-deactivate-plugins' ); ?></a></li>
+													"><?php esc_html_e( 'Relevant Pages', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  </ul>
 				<?php
 			}

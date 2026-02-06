@@ -15,9 +15,10 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 	if ( file_exists( $logo_path ) ) {
 		$type = pathinfo( $logo_path, PATHINFO_EXTENSION );
 		$data = file_get_contents( $logo_path );
+		// translators: first %s is the plugin version, second %s is ' Pro' if the pro version is active, empty string otherwise.
 		$text = apply_filters( 'fdp_pre_navigation_title', sprintf( 'FDP v%s%s', EOS_DP_VERSION, $pro ) );
 		?>
-	  <a title="<?php echo esc_attr( $text ); ?>" alt="FDP logo" href="https://freesoul-deactivate-plugins.com" target="_bank" rel="noopener">
+	  <a title="<?php echo esc_attr( $text ); ?>" alt="FDP logo" href="https://freesoul-deactivate-plugins.com" target="_blank" rel="noopener">
 		<img class="fdp-logo" src="data:image/<?php echo esc_attr( $type ); ?>;base64,<?php echo esc_attr( base64_encode( $data ) ); ?>" style="width:50px;height:50px" />
 	  </a>
 		<?php
@@ -80,7 +81,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 	  </li>
 	  <li class="eos-dp-submenu-item hover<?php echo '' === $pro ? ' fdp-pro-feature fdp-dismiss-pro-notice' : ''; ?>"><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_pro_bulk_actions' ) ); ?>"><?php esc_html_e( 'Bulk actions', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <li class="hover<?php echo '' === $pro ? ' fdp-pro-feature fdp-dismiss-pro-notice' : ''; ?>">
-		<a href="<?php echo '' === $pro ? esc_url( EOS_DP_DOCUMENTATION_URL . 'hooks-pro?fbk=1' ) . '" target="_blank" rel="noopener' : esc_url( add_query_arg( 'fdp-hooks', 'actions', home_url() ) ); ?>" title="<?php esc_attr_e( 'Hooks | Frontent', 'freesoul-deactivate-plugins' ); ?>" target="_blank">
+		<a href="<?php echo '' === $pro ? esc_url( EOS_DP_DOCUMENTATION_URL . 'hooks-pro?fbk=1' ) . '" target="_blank" rel="noopener' : esc_url( add_query_arg( 'fdp-hooks', 'actions', home_url() ) ); ?>" title="<?php esc_attr_e( 'Hooks | Frontend', 'freesoul-deactivate-plugins' ); ?>" target="_blank">
 		  <?php esc_html_e( 'Hooks | Frontend', 'freesoul-deactivate-plugins' ); ?>
 		</a>
 	  </li>
@@ -91,7 +92,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 	  </li>
 	  <?php if ( current_user_can( 'manage_options' ) ) { ?>
 	  <li class="eos-dp-submenu-item hover"><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_create_plugin' ) ); ?>"><?php esc_html_e( 'Create custom plugin', 'freesoul-deactivate-plugins' ); ?></a></li>
-	  <li class="eos-dp-submenu-item hover"><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_reset_settings' ) ); ?>"><?php esc_html_e( 'Reset FDP Settings', 'freesoul-deactivate-plugins' ); ?> </a></li>
+	  <li class="eos-dp-submenu-item hover"><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_reset_settings' ) ); ?>"><?php esc_html_e( 'Reset FDP Settings', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <?php } ?>
 	  <li class="eos-dp-submenu-item hover"><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_favorite_plugins' ) ); ?>"><?php esc_html_e( 'Favorite plugins', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <li class="fdp-show-only-on-pro eos-dp-submenu-item hover<?php echo '' === $pro ? ' fdp-pro-feature fdp-dismiss-pro-notice' : ''; ?>">
@@ -116,7 +117,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 	  <li class="hover"><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_menu&reopen_pointer=true' ) ); ?>"><?php esc_html_e( 'Guided tour', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <li class="hover"><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_help&tab=common_issues' ) ); ?>"><?php esc_html_e( 'Common issues', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <li class="hover"><a href="<?php echo esc_url( admin_url( 'admin.php?page=eos_dp_help&tab=shortcuts' ) ); ?>"><?php esc_html_e( 'Shortcuts', 'freesoul-deactivate-plugins' ); ?></a></li>
-	  <li class="hover"><a target="_blank" rel="noopener" href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/"><?php esc_html_e( 'Documentation', 'freesoul-deactivate-plugins' ); ?></a></li>
+	  <li class="hover"><a target="_blank" rel="noopener" href="<?php echo esc_url( FDP_DOC_URL ); ?>"><?php esc_html_e( 'Documentation', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <li class="hover"><a target="_blank" rel="noopener" href="https://wordpress.org/support/plugin/freesoul-deactivate-plugins/"><?php esc_html_e( 'Support Forum', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <li class="hover<?php echo '' === $pro ? ' fdp-pro-feature fdp-dismiss-pro-notice' : ''; ?>"><a target="_blank" rel="noopener" href="https://support.freesoul-deactivate-plugins.com/"><?php esc_html_e( 'Premium Support', 'freesoul-deactivate-plugins' ); ?></a></li>
 	  <?php do_action( 'fdp_help_submenu_end' ); ?>

@@ -17,4 +17,4 @@ echo '' === $pro ? ' fdp-pro-feature fdp-dismiss-pro-notice' : '';
 <?php
 echo '' === $pro ? ' fdp-pro-feature fdp-dismiss-pro-notice' : '';
 ?>
- eos-dp-setts-menu-item"><a href="<?php echo '' === $pro ? esc_url( EOS_DP_DOCUMENTATION_URL . '/users/' ) : esc_url( admin_url( 'admin.php?page=eos_dp_unlogged' ) ); ?>"><?php esc_html_e( 'unlogged Users', 'freesoul-deactivate-plugins' ); ?></a></li>
+ eos-dp-setts-menu-item"><a href="<?php echo '' === $pro ? esc_url( EOS_DP_DOCUMENTATION_URL . '/users/' ) : esc_url( admin_url( 'admin.php?page=eos_dp_unlogged' ) ); ?>"><?php esc_html_e( 'Logged-out users', 'freesoul-deactivate-plugins' ); ?></a></li>

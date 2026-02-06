@@ -1,13 +1,13 @@
 <?php
 /**
- * It includes all the helper functions for the backend.
+ * Includes all the helper functions for the backend.
 
  * @package Freesoul Deactivate Plugins
  */
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-// Return sortable pages.
+// Returns sortable pages.
 function eos_dp_sortable_pages() {
 	return array(
 		'eos_dp_menu',
@@ -37,10 +37,10 @@ function eos_dp_scripts() {
 	$params['plugins_step']  = 4;
 	remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 	if ( isset( $_GET['page'] ) ) {
-		if ( in_array( $_GET['page'], eos_dp_sortable_pages() ) ) {
-			wp_enqueue_script( 'jquery-ui-draggable', array( 'jquery', 'jquery-ui-sortable' ) );
+		if ( in_array( $_GET['page'], eos_dp_sortable_pages() ) ) { // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
+			wp_enqueue_script( 'jquery-ui-draggable', array( 'jquery', 'jquery-ui-sortable' ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Version is set to null to avoid caching.
 		}
-		$params['page']      = esc_js( esc_attr( sanitize_text_field( $_GET['page'] ) ) );
+		$params['page']      = esc_js( esc_attr( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) ); // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
 		$params['plugins_n'] = count( $active_plugins );
 		$dependencies        = eos_dp_plugins_dependencies();
 		if ( ! empty( $dependencies ) ) {
@@ -49,11 +49,11 @@ function eos_dp_scripts() {
 				$params['dependencies'] = wp_json_encode( $dependencies );
 			}
 		}
-		if( isset( $_GET['reopen_pointer'] ) && 'true' === $_GET['reopen_pointer'] ) {
-			$pointers = apply_filters( 'fdp_admin_pointers-' . sanitize_text_field( $_GET['page'] ), array() );
+		if( isset( $_GET['reopen_pointer'] ) && 'true' === $_GET['reopen_pointer'] ) { // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
+			$pointers = apply_filters( 'fdp_admin_pointers-' . sanitize_text_field( wp_unslash( $_GET['page'] ) ), array() );
 			if ( $pointers && is_array( $pointers ) ) {
 				$user_meta      = get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true );
-				$dismissed      = isset( $_GET['reopen_pointer'] ) || ! is_string( $user_meta ) ? array() : explode( ',', $user_meta );
+				$dismissed      = isset( $_GET['reopen_pointer'] ) || ! is_string( $user_meta ) ? array() : explode( ',', $user_meta ); // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
 				$valid_pointers = $valid_pointers_keys = array();
 				foreach ( $pointers as $pointer_id => $pointer ) {
 					if ( in_array( $pointer_id, $dismissed ) ) {
@@ -83,21 +83,21 @@ function eos_dp_scripts() {
 					$all_dismissed = is_array( $all_dismissed ) ? $all_dismissed : array();
 					update_user_meta( get_current_user_id(), 'dismissed_wp_pointers', implode( ',', $all_dismissed ) );
 					wp_enqueue_style( 'wp-pointer' );
-					wp_localize_script( 'wp-pointer', 'fdpWpPointer', array( 'dismiss_text' => esc_html__( "Don't show again", 'freesoul-deactivate-plugins' ) ) );
-					wp_enqueue_script( 'fdp-pointer', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-pointers.js', array( 'wp-pointer' ), null, true );
+					wp_localize_script( 'wp-pointer', 'fdpWpPointer', array( 'dismiss_text' => esc_html__( "Don't show this again", 'freesoul-deactivate-plugins' ) ) );
+					wp_enqueue_script( 'fdp-pointer', EOS_DP_PLUGIN_URL . '/admin/assets/js/fdp-pointers.js', array( 'wp-pointer' ), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Version is set to null to avoid caching.
 					wp_localize_script( 'fdp-pointer', 'fdpPointer', $valid_pointers );
 					$rtl = is_rtl() ? '-rtl' : '';
-					wp_enqueue_style( 'pointer-css', includes_url() . 'css/wp-pointer' . $rtl . '.min.css' );
+					wp_enqueue_style( 'pointer-css', includes_url() . 'css/wp-pointer' . $rtl . '.min.css' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Version is set to null to avoid caching.
 				}
 			}
 		}
 	}
 	$deps = array( 'jquery' );
-	if ( isset( $_GET['page'] ) && in_array( $_GET['page'], eos_dp_sortable_pages() ) ) {
+	if ( isset( $_GET['page'] ) && in_array( $_GET['page'], eos_dp_sortable_pages() ) ) { // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
 		$deps[] = 'jquery-ui-draggable';
 		$deps[] = 'jquery-ui-sortable';
 	}
-	wp_enqueue_script( 'eos-dp-backend', EOS_DP_MAIN_JS . '.js', $deps, null, true );
+	wp_enqueue_script( 'eos-dp-backend', EOS_DP_MAIN_JS . '.js', $deps, null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Version is set to null to avoid caching.
 	wp_localize_script( 'eos-dp-backend', 'eos_dp_js', $params );
 }
 
@@ -125,7 +125,7 @@ function eos_dp_plugins_dependencies() {
 // Print style.
 function eos_dp_link_style( $handle, $url, $media = 'all' ) {
 	?>
-	<link id="<?php echo esc_attr( $handle ); ?>-css" rel="stylesheet" type="text/css" href="<?php echo esc_url( $url ); ?>" media="<?php echo esc_attr( $media ); ?>" />
+	<link id="<?php echo esc_attr( $handle ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet ?>-css" rel="stylesheet" type="text/css" href="<?php echo esc_url( $url ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet ?>" media="<?php echo esc_attr( $media ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet ?>" />
 	<?php
 }
 // Print script.
@@ -136,7 +136,7 @@ function eos_dp_add_inline_script( $handle, $url ) {
 }
 
 if ( ! function_exists( 'eos_dp_get_option' ) ) {
-	// Get options in case of single or multisite installation.
+	// Gets options in case of single or multisite installation.
 	function eos_dp_get_option( $option ) {
 		if ( ! is_multisite() ) {
 			return get_option( $option );
@@ -162,11 +162,12 @@ if ( ! function_exists( 'eos_dp_get_plugin_name_by_slug' ) ) {
 		return str_replace( '-',' ',dirname( sanitize_text_field( $plugin_slug ) ) );
 	}
 }
-// It adds a settings link to the action links in the plugins page.
+// Adds a settings link to the action links on the plugins page.
 function eos_dp_plugin_add_settings_link( $links ) {
 	$fdp_links = array(
 		'<a class="eos-dp-setts" href="' . admin_url( 'admin.php?page=eos_dp_menu' ) . '">' . esc_html__( 'Settings', 'freesoul-deactivate-plugins' ) . '</a>',
-		'<a class="eos-dp-help" href="' . EOS_DP_DOCUMENTATION_URL . '" target="_blank" rel="noopener">' . esc_html__( 'Documentation', 'freesoul-deactivate-plugins' ) . '</a>'
+		'<a class="eos-dp-help" href="' . EOS_DP_DOCUMENTATION_URL . '" target="_blank" rel="noopener">' . esc_html__( 'Documentation', 'freesoul-deactivate-plugins' ) . '</a>',
+		'<a class="eos-dp-help" href="https://wordpress.org/support/plugin/freesoul-deactivate-plugins/reviews/?rate=5#new-post" rel="noopener" target="_blank">' . esc_html__( 'Suggest a new feature', 'freesoul-deactivate-plugins' ) . '</a>'
 	);
 	if( defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE ) {
 		$fdp_links[] = '<a href="https://support.freesoul-deactivate-plugins.com/" target="_fdp_premium_support" rel="noopener">' . esc_html__( 'Support', 'freesoul-deactivate-plugins' ) . '</a>';
@@ -179,7 +180,7 @@ function eos_dp_plugin_add_settings_link( $links ) {
 	return array_merge( $links, $fdp_links );
 }
 
-// It redirects to the plugin settings page on successfully plugin activation.
+// Redirects to the plugin settings page on successful plugin activation.
 function eos_dp_redirect_to_settings() {
 	if ( get_transient( 'freesoul-dp-notice-succ' ) ) {
 		delete_transient( 'freesoul-dp-notice-succ' );
@@ -187,8 +188,8 @@ function eos_dp_redirect_to_settings() {
 			wp_safe_redirect( admin_url( 'admin.php?page=eos_dp_menu' ) );
 		}
 	}
-	if ( isset( $_REQUEST['eos_dp_activated_from'] ) ) {
-		wp_safe_redirect( esc_url( add_query_arg( 'page', esc_attr( sanitize_text_field( $_REQUEST['eos_dp_activated_from'] ) ), admin_url( 'admin.php' ) ) ) );
+	if ( isset( $_REQUEST['eos_dp_activated_from'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
+		wp_safe_redirect( esc_url( add_query_arg( 'page', esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['eos_dp_activated_from'] ) ) ), admin_url( 'admin.php' ) ) ) );
 	}
 	$previous_version = eos_dp_get_option( 'eos_dp_version' );
 	$version_compare  = version_compare( $previous_version, EOS_DP_VERSION, '<' );
@@ -204,15 +205,15 @@ function eos_dp_redirect_to_settings() {
 	}
 }
 
-// It creates the transient needed for displaing plugin notices after activation.
+// Creates the transient needed for displaying plugin notices after activation.
 function eos_dp_admin_notices() {
 	do_action( 'fdp_admin_notices' );
-	// It creates the transient needed for displaing plugin notices after activation.
+	// Creates the transient needed for displaying plugin notices after activation.
 	if ( get_transient( 'freesoul-dp-notice-fail' ) ) {
 		delete_transient( 'freesoul-dp-notice-fail' );
 		?>
 	<div class="fdp-wrp notice notice-error is-dismissible">
-		<p><?php esc_html_e( 'You have no direct write access, Freesoul Deactivate Plugins was not able to create the necessary mu-plugin and will not work.', 'freesoul-deactivate-plugins' ); ?></p>
+		<p><?php esc_html_e( 'You do not have direct write access. Freesoul Deactivate Plugins could not create the necessary MU-plugin and will not function.', 'freesoul-deactivate-plugins' ); ?></p>
 	</div>
 		<?php
 	}
@@ -229,22 +230,25 @@ function eos_dp_admin_notices() {
 		if ( ! defined( 'EOS_DP_MU_VERSION' ) || EOS_DP_MU_VERSION !== EOS_DP_VERSION || ! $mu_exists ) {
 			if ( ! $mu_exists ) {
 				$class   = 'error';
-				$message = '<p><h1>' . sprintf( esc_html__( 'Very important file missing. First, refresh this page, if you still see this message, disable Freesoul Deactivate Plugins and activate it again. If nothing helps, copy the file %1$s and put it into the directory %2$s', 'freesoul-deactivate-plugins' ), '/wp-content/plugins/freesoul-deactivate-plugins/mu-plugins/eos-deactivate-plugins.php', 'wp-content/mu-plugins/' ) . '</h1></p>';
+				// translators: %1$s and %2$s are file paths.
+				$message = '<p><h1>' . sprintf( esc_html__( 'A very important file is missing. First, refresh this page. If you still see this message, disable Freesoul Deactivate Plugins and activate it again. If nothing helps, copy the file %1$s and put it into the directory %2$s', 'freesoul-deactivate-plugins' ), '/wp-content/plugins/freesoul-deactivate-plugins/mu-plugins/eos-deactivate-plugins.php', 'wp-content/mu-plugins/' ) . '</h1></p>';
 			} elseif ( $mu_exists && ! defined( 'EOS_DP_MU_VERSION' ) ) {
 				$class   = 'error';
 				if( defined( 'FDP_EXCLUDE_MU_BACKEND' ) && FDP_EXCLUDE_MU_BACKEND ) {
-					$message = '<p><h1>' . esc_html__( 'FDP will disable no plugins in the backend because of:', 'freesoul-deactivate-plugins' ) . '</h1></p>';
+					$message = '<p><h1>' . esc_html__( 'FDP will not disable any plugins in the backend due to:', 'freesoul-deactivate-plugins' ) . '</h1></p>';
 					$message .= "<div style=\"padding:10px;background:black;color:white\"><pre>define( 'FDP_EXCLUDE_MU_BACKEND', " . esc_attr( json_encode( FDP_EXCLUDE_MU_BACKEND ) ) . ");</pre></div>";
 				}
 				else{
-					$message = '<p><h1>' . sprintf( esc_html__( 'Issue detected. It looks the file %s has been modified.', 'freesoul-deactivate-plugins' ), WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php', WPMU_PLUGIN_DIR ) . '</h1></p>';
+					// translators: %s is the file path.
+					$message = '<p><h1>' . sprintf( esc_html__( 'Issue detected. It looks like the file %s has been modified.', 'freesoul-deactivate-plugins' ), WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php', WPMU_PLUGIN_DIR ) . '</h1></p>';
 				}
 				
 
 			} elseif ( defined( 'EOS_DP_MU_VERSION' ) && EOS_DP_MU_VERSION !== EOS_DP_VERSION ) {
 				$class    = 'warning';
-				$message  = '<p>' . esc_html__( 'Issue detected. Refresh this page. If you still see this message disable Freesoul Deactivate Plugins (only disable NOT DELETING it, or you will lose all the options), then activate it and refresh again this page.', 'freesoul-deactivate-plugins' ) . '</p>';
-				$message .= '<p>' . sprintf( esc_html__( 'If you still see this message after disabling and reactivating Freesoul Deactivate Plugins and after refreshing this page, open a thread on the %1$sPlugin Support Forum%2$s', 'freesoul-deactivate-plugins' ) . '</p>', '<a href="https://wordpress.org/support/plugin/freesoul-deactivate-plugins/" target="_blank" rel="noopener">', '</a>' ) . '</p>';
+				$message  = '<p>' . esc_html__( 'Issue detected. Refresh this page. If this message persists, please deactivate and then reactivate Freesoul Deactivate Plugins.', 'freesoul-deactivate-plugins' ) . '</p>';
+				// translators: %1$s and %2$s are HTML tags.
+				$message .= '<p>' . sprintf( esc_html__( 'If you still see this message after disabling and reactivating Freesoul Deactivate Plugins and after refreshing this page, open a thread in the %1$sPlugin Support Forum%2$s', 'freesoul-deactivate-plugins' ) . '</p>', '<a href="https://wordpress.org/support/plugin/freesoul-deactivate-plugins/" target="_blank" rel="noopener">', '</a>' ) . '</p>';
 			}
 			?>
 			<div class="fdp-wrp notice notice-<?php echo esc_attr( $class ); ?> is-dismissible" style="line-height:1.5;display:block !important">
@@ -270,7 +274,7 @@ function eos_dp_admin_notices() {
 	}
 }
 
-// It display the message of an admin notice.
+// Displays the message of an admin notice.
 function eos_dp_display_admin_notice( $name, $title, $msg, $type, $after_notice = '' ) {
 	static $counter = 0;
 	++$counter;
@@ -283,23 +287,23 @@ function eos_dp_display_admin_notice( $name, $title, $msg, $type, $after_notice 
 		<div id="fdp-<?php echo sanitize_key( $name ); ?>-notice-content"><?php echo wp_kses_post( wpautop( $msg ) ); ?></div>
 		<p><?php echo wp_kses_post( $after_notice ); ?></p>
 		<div style="margin-top:16px" class="right">
-			<button class="button" onclick="eos_cbi_copy_to_clipboard(document.getElementById('fdp-<?php echo sanitize_key( $name ); ?>-notice-content').innerText);"><?php esc_html_e( 'Copy' ); ?></button>
-			<button class="button" onclick="document.getElementById('fdp-<?php echo sanitize_key( $name ); ?>-notice').style.display='none';"><?php esc_html_e( 'Close' ); ?></button>
-			<button class="button fdp-dismiss-notice" onclick="document.getElementById('fdp-<?php echo sanitize_key( $name ); ?>-notice').style.display='none';eos_dp_call_ajax(this);" data-nonce="<?php echo esc_attr( wp_create_nonce( 'eos_dp_dismiss_notice' ) ); ?> " data-action="eos_dp_dismiss_notice" data-data="<?php echo esc_attr( wp_json_encode( array( 'key' => sanitize_key( $name ) ) ) ); ?>"><?php esc_html_e( 'Dismiss' ); ?></button>
+			<button class="button" onclick="eos_cbi_copy_to_clipboard(document.getElementById('fdp-<?php echo sanitize_key( $name ); ?>-notice-content').innerText);"><?php esc_html_e( 'Copy', 'freesoul-deactivate-plugins' ); ?></button>
+			<button class="button" onclick="document.getElementById('fdp-<?php echo sanitize_key( $name ); ?>-notice').style.display='none';"><?php esc_html_e( 'Close', 'freesoul-deactivate-plugins' ); ?></button>
+			<button class="button fdp-dismiss-notice" onclick="document.getElementById('fdp-<?php echo sanitize_key( $name ); ?>-notice').style.display='none';eos_dp_call_ajax(this);" data-nonce="<?php echo esc_attr( wp_create_nonce( 'eos_dp_dismiss_notice' ) ); ?> " data-action="eos_dp_dismiss_notice" data-data="<?php echo esc_attr( wp_json_encode( array( 'key' => sanitize_key( $name ) ) ) ); ?>"><?php esc_html_e( 'Dismiss', 'freesoul-deactivate-plugins' ); ?></button>
 		</div>
 	</div>
 	<script>
 	document.getElementById('fdp-notifications-count').innerText = <?php echo absint( $counter ); ?>;
 	<?php
-	if( isset( $_GET['open-notification'] ) && sanitize_text_field( $_GET['open-notification'] ) === esc_attr( $_GET['open-notification'] ) ) {
-		echo 'document.getElementById("' . esc_attr( $_GET['open-notification'] ) . '").className=document.getElementById("' . esc_js( esc_attr( $_GET['open-notification'] ) ) . '").className.replace("eos-hidden","eos-auto-shown");';
+	if( isset( $_GET['open-notification'] ) && sanitize_text_field( wp_unslash( $_GET['open-notification'] ) ) === esc_attr( sanitize_text_field( wp_unslash( $_GET['open-notification'] ) ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
+		echo 'document.getElementById("' . esc_attr( $_GET['open-notification'] ) . '").className=document.getElementById("' . esc_js( esc_attr( $_GET['open-notification'] ) ) . '").className.replace("eos-hidden","eos-auto-shown");'; // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
 	}
 	?>	
 	</script>
 	<?php
 }
 
-// It adds the plugin setting page under plugins menu.
+// Adds the plugin settings page under the plugins menu.
 function eos_dp_options_page() {
 	if ( ! apply_filters( 'eos_dp_user_can_settings', true ) ) {
 		return;
@@ -325,7 +329,7 @@ function eos_dp_options_page() {
 			esc_html( $menu_page[2] ),
 			esc_attr( $menu_page[3] ),
 			esc_attr( $menu_page[4] ),
-			esc_attr( isset( $_GET['page'] ) && $menu_page[4] === sanitize_text_field( $_GET['page'] ) ? $menu_page[5] : '__return_false' ),
+			esc_attr( isset( $_GET['page'] ) && $menu_page[4] === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ? $menu_page[5] : '__return_false' ), // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
 			absint( $menu_page[6] ) );
 	}
 
@@ -340,13 +344,13 @@ function eos_dp_options_page() {
 		array( 'fdp_hidden_menu', __( 'Deactivate by Archive', 'freesoul-deactivate-plugins' ), __( 'Archives', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_by_archive', 'eos_dp_by_archive_callback', 30 ),
 		array( 'fdp_hidden_menu', __( 'Deactivate by Term Archive', 'freesoul-deactivate-plugins' ), __( 'Term Archives', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_by_term_archive', 'eos_dp_by_term_archive_callback', 40 ),
 		array( 'fdp_hidden_menu', __( 'Deactivate on mobile devices', 'freesoul-deactivate-plugins' ), __( 'Mobile', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_mobile', 'eos_dp_mobile_callback', 50 ),
-		array( 'fdp_hidden_menu', __( 'Deactivate on search resutls page', 'freesoul-deactivate-plugins' ), __( 'Search', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_search', 'eos_dp_search_callback', 60 ),
-		array( 'fdp_hidden_menu', __( 'Activate only on specific URLs', 'freesoul-deactivate-plugins' ), __( 'By URL', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_one_place', 'eos_dp_one_place_callback', 60 ),
+		array( 'fdp_hidden_menu', __( 'Deactivate on Search results page', 'freesoul-deactivate-plugins' ), __( 'Search', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_search', 'eos_dp_search_callback', 60 ),
+		array( 'fdp_hidden_menu', __( 'Activate on specific URLs only', 'freesoul-deactivate-plugins' ), __( 'By URL', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_one_place', 'eos_dp_one_place_callback', 60 ),
 		array( 'fdp_hidden_menu', __( 'Deactivate by User Agent', 'freesoul-deactivate-plugins' ), __( 'Browser', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_browser', 'eos_dp_browser_callback', 70 ),
 		array( 'fdp_hidden_menu', __( 'Deactivate by URL', 'freesoul-deactivate-plugins' ), __( 'Custom URLs', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_url', 'eos_dp_by_url_callback', 80 ),
-		array( 'fdp_hidden_menu', __( 'Deactivate in Administration Pages by custom URLs', 'freesoul-deactivate-plugins' ), __( 'Backend URLs', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_admin_url', 'eos_dp_by_admin_url_callback', 90 ),
-		array( 'fdp_hidden_menu', __( 'Deactivate in Administration Pages', 'freesoul-deactivate-plugins' ), __( 'Backend', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_admin', 'eos_dp_admin_callback', 100 ),
-		array( 'fdp_hidden_menu', __( 'Deactivate depending on third party plugin action', 'freesoul-deactivate-plugins' ), __( 'Actions', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_integration', 'eos_dp_integration_callback', 110 ),
+		array( 'fdp_hidden_menu', __( 'Deactivate in admin pages by custom URLs', 'freesoul-deactivate-plugins' ), __( 'Backend URLs', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_admin_url', 'eos_dp_by_admin_url_callback', 90 ),
+		array( 'fdp_hidden_menu', __( 'Deactivate in admin pages', 'freesoul-deactivate-plugins' ), __( 'Backend', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_admin', 'eos_dp_admin_callback', 100 ),
+		array( 'fdp_hidden_menu', __( 'Deactivate based on third-party plugin actions', 'freesoul-deactivate-plugins' ), __( 'Actions', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_integration', 'eos_dp_integration_callback', 110 ),
 		array( 'fdp_hidden_menu', __( 'Firing Order', 'freesoul-deactivate-plugins' ), __( 'Firing Order', 'freesoul-deactivate-plugins' ), 'activate_plugins', 'eos_dp_firing_order', 'eos_dp_firing_order_callback', 120 ),
 		array( 'fdp_hidden_menu', __( 'Roles Manager', 'freesoul-deactivate-plugins' ), __( 'Roles Manager', 'freesoul-deactivate-plugins' ), 'manage_options', 'eos_dp_roles_manager', 'eos_dp_pro_roles_manager_callback', 130 ),
 		array( 'fdp_hidden_menu', __( 'Favorite plugins', 'freesoul-deactivate-plugins' ), __( 'Favorite plugins', 'freesoul-deactivate-plugins' ), $capability, 'eos_dp_favorite_plugins', 'eos_dp_favorite_plugins_callback', 140 ),
@@ -360,7 +364,7 @@ function eos_dp_options_page() {
 			esc_html( $menu_page[2] ),
 			esc_attr( $menu_page[3] ),
 			esc_attr( $menu_page[4] ),
-			esc_attr( isset( $_GET['page'] ) && $menu_page[4] === sanitize_text_field( $_GET['page'] ) ? $menu_page[5] : '__return_false' ),
+			esc_attr( isset( $_GET['page'] ) && $menu_page[4] === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ? $menu_page[5] : '__return_false' ), // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
 			absint( $menu_page[6] ) );
 	}
 	if( ( ! defined( 'FDP_PRO_ACTIVE' ) || true !== FDP_PRO_ACTIVE ) && isset( $GLOBALS['submenu'] ) ) {
@@ -373,13 +377,13 @@ function eos_dp_options_page() {
 }
 
 add_filter( 'submenu_file', function( $submenu_file ) {
-	// Remove FDP hidden menu item.
+	// Removes FDP hidden menu item.
     remove_menu_page( 'fdp_hidden_menu' );
     return $submenu_file;
 } );
 
 
-// It displays the ajax loader gif.
+// Displays the AJAX loader GIF.
 function eos_dp_ajax_loader_img() {
 	?>
 	<img alt="<?php esc_html_e( 'Ajax loader', 'freesoul-deactivate-plugins' ); ?>" class="ajax-loader-img eos-not-visible" width="30" height="30" src="<?php echo esc_url( EOS_DP_PLUGIN_URL ); ?>/admin/assets/img/ajax-loader.gif" />
@@ -389,17 +393,19 @@ function eos_dp_ajax_loader_img() {
 function eos_dp_alert_plain_permalink() {
 	$permalink_structure = basename( get_option( 'permalink_structure' ) );
 	if ( false === strpos( $permalink_structure, '%postname%' ) ) {
-		$permalinks_label = esc_html__( 'the actual permalinks structure is not supported', 'freesoul-deactivate-plugins' );
+		$permalinks_label = esc_html__( 'the current permalink structure is not supported', 'freesoul-deactivate-plugins' );
 		if ( '' === $permalink_structure ) {
-			$permalinks_label = esc_html__( 'the permalinks are set as plain', 'freesoul-deactivate-plugins' );
+			$permalinks_label = esc_html__( 'Permalinks are set to "Plain"', 'freesoul-deactivate-plugins' );
 		} elseif ( '/archives/%post_id%' === $permalink_structure ) {
-			$permalinks_label = esc_html__( 'the permalinks are set as numeric', 'freesoul-deactivate-plugins' );
+			$permalinks_label = esc_html__( 'Permalinks are set to "Numeric"', 'freesoul-deactivate-plugins' );
 		}
 		?>
 	<div id="eos-dp-plain-permalink-wrg" style="line-height:1;margin:20px 0;padding:10px;color:#23282d;background:#fff;border-<?php echo is_rtl() ? 'right' : 'left'; ?>:4px solid  #dc3232">
 		<div>
-			<h1><?php printf( esc_html__( 'No plugins will be permanently deactivated because %s.', 'freesoul-deactivate-plugins' ), esc_html( $permalinks_label ) ); ?></h1>
-			<h1><?php esc_html_e( 'Only the permalinks structures "Day and name", "Month and name", "Post name"  and the custom ones ending with "%postname%" are supported (they are also better for SEO).', 'freesoul-deactivate-plugins' ); ?></h1>
+			<h1><?php 
+			// translators: %s is the permalink structure label.
+			printf( esc_html__( 'No plugins will be permanently deactivated because of: %s.', 'freesoul-deactivate-plugins' ), esc_html( $permalinks_label ) ); ?></h1>
+			<h1><?php esc_html_e( 'Only the "Day and name", "Month and name", and "Post name" structures (or custom structures ending in %postname%) are supported. These are also better for SEO.', 'freesoul-deactivate-plugins' ); ?></h1>
 		</div>
 		<div>
 			<a class="button" target="_blank" href="<?php echo esc_url( admin_url( 'options-permalink.php' ) ); ?>"><?php esc_html_e( 'Change Permalinks Structure', 'freesoul-deactivate-plugins' ); ?></a>
@@ -409,10 +415,10 @@ function eos_dp_alert_plain_permalink() {
 	}
 }
 
-// It gets the plugins that are active/deactive for each post type.
+// Gets the plugins that are active/deactivated for each post type.
 function eos_dp_post_types_empty() {
-	if ( isset( $_POST['eos_dp_setts'] ) ) {
-		$setts = $_POST['eos_dp_setts']; //@codingStandardsIgnoreLine.
+	if ( isset( $_POST['eos_dp_setts'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
+		$setts = $_POST['eos_dp_setts']; // phpcs:ignore WordPress.Security -- No nonce needed here. Input sanitized below.
 		// Sanitizatin on $setts['eos_dp_post_types'], nothing else used from $_POST.
 		if ( isset( $setts['eos_dp_post_types'] ) && $setts['eos_dp_post_types'] && ! empty( $setts['eos_dp_post_types'] && '[]' !== $setts['eos_dp_post_types'] ) ) {
 			$post_types = json_decode( stripslashes( sanitize_text_field( $setts['eos_dp_post_types'] ) ), true );
@@ -446,7 +452,7 @@ function eos_dp_post_types_empty() {
 		)
 	);
 }
-// It returns the active plugins excluding Freesoul Deactivate Plugins.
+// Returns the active plugins, excluding Freesoul Deactivate Plugins.
 function eos_dp_active_plugins() {
 	$active = isset( $GLOBALS['fdp_all_plugins'] ) && is_array( $GLOBALS['fdp_all_plugins'] ) ? array_unique( $GLOBALS['fdp_all_plugins'] ) : array_unique( get_option( 'active_plugins', array() ) );
 	unset( $active[ array_search( EOS_DP_PLUGIN_BASE_NAME, $active ) ] );
@@ -464,7 +470,7 @@ function eos_dp_active_plugins() {
 	return apply_filters( 'eos_dp_active_plugins', array_values( $active ) );
 }
 
-// Get plugins.
+// Gets plugins.
 function eos_dp_get_plugins() {
 	$plugin_root = WP_PLUGIN_DIR;
 	// Files in wp-content/plugins directory.
@@ -517,7 +523,7 @@ function eos_dp_sort_uname_callback( $a, $b ) {
 	return strnatcasecmp( $a['Name'], $b['Name'] );
 }
 
-// It returns the updated plugins table after a third plugin activation.
+// Returns the updated plugins table after a third-party plugin activation.
 function eos_dp_get_updated_plugins_table() {
 	$plugins_table = eos_dp_get_option( 'eos_post_types_plugins' );
 	if ( ! $plugins_table || ! is_array( $plugins_table ) || empty( $plugins_table ) ) {
@@ -546,7 +552,7 @@ function eos_dp_get_updated_plugins_table() {
 	return $plugins_table;
 }
 
-// It returns the important pages.
+// Returns the important pages.
 function eos_dp_important_pages() {
 	$menus = wp_get_nav_menus();
 	$ids   = $woo_ids = $nav_ids = array();
@@ -611,16 +617,17 @@ function eos_dp_get_update_notice() {
 			set_transient( $transient_name, $upgrade_notice, 3600 * 12 );
 		}
 	}
-	$warning  = 'Make always a backup before updating any plugin.';
+	$warning  = 'Always make a backup before updating any plugin.';
 	$warning .= '<br/>';
 	$warning .= '<br/>';
-	$warning .= sprintf( 'If you have any issues, don\'t hesitate to open a thread on the %sSupport Forum%s', '<a href="https://wordpress.org/support/plugin/freesoul-deactivate-plugins/" target="_blan" rel="noopener">', '</a>' );
+	// translators: %s and %s are HTML tags.
+	$warning .= sprintf( 'If you have any issues, don\'t hesitate to open a thread in the %sSupport Forum%s', '<a href="https://wordpress.org/support/plugin/freesoul-deactivate-plugins/" target="_blank" rel="noopener">', '</a>' );
 	$warning .= '<br/>';
 
 	echo '<div class="eos_dp_plugin_upgrade_notice"><br/>' . $warning . '<br/><b>Last changes:</b><br/>' . wp_kses_post( str_replace( '*', '</br>', $upgrade_notice ) ) . '</div>'; //phpcs:ignore WordPress.Security.EscapeOutput -- No need to escape an hardcoded value.
 }
 
-if ( isset( $_GET['eos_dp_info'] ) && 'true' === $_GET['eos_dp_info'] ) {
+if ( isset( $_GET['eos_dp_info'] ) && 'true' === $_GET['eos_dp_info'] ) { // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
 	add_action( 'install_plugins_pre_plugin-information', 'eos_dp_plugin_information' );
 }
 // Add plugin information if it's not on the repository.
@@ -629,11 +636,11 @@ function eos_dp_plugin_information() {
 		$api = plugins_api(
 			'plugin_information',
 			array(
-				'slug' => wp_unslash( sanitize_text_field( $_REQUEST['plugin'] ) ),
+				'slug' => wp_unslash( sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) ),
 			)
 		);
 		if ( is_wp_error( $api ) ) {
-			$plugin_data = get_plugin_data( WP_PLUGIN_DIR . '/' . sanitize_text_field( $_GET['eos_dp'] ) );
+			$plugin_data = get_plugin_data( WP_PLUGIN_DIR . '/' . sanitize_text_field( wp_unslash( $_GET['eos_dp'] ) ) );
 			if ( $plugin_data ) {
 				global $plugin_data;
 				remove_all_actions( 'admin_notices' );
@@ -678,7 +685,9 @@ function eos_dp_plugin_page_content() {
 			<div id="section-description" style="padding:20px" class="section">
 				<?php if ( isset( $plugin_data['Author'] ) ) { ?>
 				<div style="margin-top:64px">
-					<p><?php printf( esc_html__( 'By %s', 'freesoul-deactivate-plugins' ), wp_kses( $plugin_data['Author'], array( 'a' => array( 'href' => array() ) ) ) ); ?></p>
+					<p><?php 
+					// translators: %s is the plugin author.
+					printf( esc_html__( 'By %s', 'freesoul-deactivate-plugins' ), wp_kses( $plugin_data['Author'], array( 'a' => array( 'href' => array() ) ) ) ); ?></p>
 				</div>
 				<?php } ?>
 				<?php if ( isset( $plugin_data['Description'] ) ) { ?>
@@ -690,7 +699,9 @@ function eos_dp_plugin_page_content() {
 				if ( isset( $plugin_data['PluginURI'] ) ) {
 					?>
 				<div style="margin-top:32px">
-					<p><?php printf( esc_html__( 'More info at %s', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '">' . esc_url( $plugin_data['PluginURI'] ) . '</a>' ); ?></p>
+					<p><?php 
+					// translators: %s is the plugin URI.
+					printf( esc_html__( 'More info at %s', 'freesoul-deactivate-plugins' ), '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '">' . esc_url( $plugin_data['PluginURI'] ) . '</a>' ); ?></p>
 				</div>
 			</div>
 		</div>
@@ -706,16 +717,16 @@ function eos_dp_plugin_badge() {
 	</div>
 	<div id="eos-dp-plugin-badge" style="position:fixed;top:10px;padding:10px;z-index:99999">
 		<p>
-			<a target="_blank" rel="noopener" href="https://plugintests.com/plugins/<?php echo esc_attr( sanitize_text_field( $_GET['plugin'] ) ); // @codingStandardsIgnoreLine. ?>/latest"><img src="https://plugintests.com/plugins/<?php echo esc_attr( sanitize_text_field( $_GET['plugin'] ) ); // @codingStandardsIgnoreLine. ?>/php-badge.svg"></a>
+			<a target="_blank" rel="noopener" href="https://plugintests.com/plugins/<?php echo esc_attr( sanitize_text_field( wp_unslash( $_GET['plugin'] ) ) ); // @codingStandardsIgnoreLine. ?>/latest"><img src="https://plugintests.com/plugins/<?php echo esc_attr( sanitize_text_field( wp_unslash( $_GET['plugin'] ) ) ); // @codingStandardsIgnoreLine. ?>/php-badge.svg"></a>
 		</p>
 		<p>
-			<a class="button" target="_blank" rel="noopener" href="https://plugintests.com/plugins/<?php echo esc_attr( sanitize_text_field( $_GET['plugin'] ) ); // @codingStandardsIgnoreLine. ?>/latest"><?php esc_html_e( 'Go to the last plugin test results', 'freesoul-deactivate-plugins' ); ?></a>
+			<a class="button" target="_blank" rel="noopener" href="https://plugintests.com/plugins/<?php echo esc_attr( sanitize_text_field( wp_unslash( $_GET['plugin'] ) ) ); // @codingStandardsIgnoreLine. ?>/latest"><?php esc_html_e( 'View the latest plugin test results', 'freesoul-deactivate-plugins' ); ?></a>
 		</p>
 	</div>
 	<div class="hidden">
 	<?php
 }
-// Return list of installed themes.
+// Returns list of installed themes.
 function eos_dp_active_themes_list( $dummy_html = true ) {
 	$active_themes = wp_get_themes();
 	if ( count( $active_themes ) < 1 ) {
@@ -727,7 +738,7 @@ function eos_dp_active_themes_list( $dummy_html = true ) {
 		$output .= '<option value="' . esc_attr( $theme ) . '">' . esc_html( $theme ) . '</option>';
 	}
 	$output .= '<option value="empty_theme">' . esc_html__( 'Empty Theme', 'freesoul-deactivate-plugins' ) . '</option>';
-	$output .= '<option value="fdp_naked">' . esc_html__( 'Naked Theme', 'freesoul-deactivate-plugins' ) . '</option>';
+	$output .= '<option value="fdp_naked">' . esc_html__( 'Bare Theme', 'freesoul-deactivate-plugins' ) . '</option>';
 	if ( $dummy_html ) {
 		$output .= '<option value="dummy_html">' . esc_html__( 'Dummy HTML file', 'freesoul-deactivate-plugins' ) . '</option>';
 	}
@@ -752,6 +763,7 @@ function eos_dp_is_fdp_page() {
 				'eos_dp_by_post_request',
 				'eos_dp_by_term_archive',
 				'eos_dp_create_plugin',
+				'eos_dp_pro_create_conditions',
 				'eos_dp_critical_css',
 				'eos_dp_experiments',
 				'eos_dp_favorite_plugins',
@@ -798,7 +810,7 @@ function eos_dp_is_fdp_page() {
 	);
 }
 
-// Return the slug of the current FDP page.
+// Returns the slug of the current FDP page.
 function eos_dp_current_fdp_page() {
 	if ( ! eos_dp_is_fdp_page() ) {
 		return false;
@@ -806,7 +818,7 @@ function eos_dp_current_fdp_page() {
 	return sanitize_key( $_GET['page'] ); // @codingStandardsIgnoreLine. Var already checked before calling the function.
 }
 
-// Return option as array.
+// Returns option as array.
 function eos_dp_get_option_array( $option ) {
 	$opts = eos_dp_get_option( 'eos_dp_general_setts' );
 	if ( ! $opts || ! is_array( $opts ) ) {
@@ -815,12 +827,12 @@ function eos_dp_get_option_array( $option ) {
 	return $opts;
 }
 
-// Check if the input is a plugin pathinfo.
+// Checks if the input is a plugin pathinfo.
 function eos_dp_is_not_empty_string( $string ) {
 	return '' !== $string ? '0' : '1';
 }
 
-// Return $plugins_table.
+// Returns $plugins_table.
 function eos_dp_plugins_table() {
 	$plugins_table = eos_dp_get_updated_plugins_table();
 	$plugins_table = is_array( $plugins_table ) && ! empty( $plugins_table ) ? $plugins_table : eos_dp_post_types_empty();
@@ -878,10 +890,10 @@ function eos_dp_plugins_integration() {
 
 // Saved options preview action button.
 function eos_dp_saved_preview_button( $path, $target = '_blank' ) {
-	$remote_addr = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( $_SERVER['REMOTE_ADDR'] ) : '';
+	$remote_addr = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 	?>
 	<a class="eos-dp-view fdp-has-tooltip fdp-right-tooltip" href="<?php echo esc_url( add_query_arg( 'show_disabled_plugins', md5( $remote_addr . ( absint( time() / 1000 ) ) ), $path ) ); ?>" target="eos-dp-view-<?php echo esc_attr( $target ); ?>"><span class="dashicons dashicons-visibility"></span>
-		<div class="fdp-tooltip"><?php esc_html_e( 'View page loading plugins according the saved options', 'freesoul-deactivate-plugins' ); ?></div>
+		<div class="fdp-tooltip"><?php esc_html_e( 'View page with plugins loaded according to the saved options.', 'freesoul-deactivate-plugins' ); ?></div>
 	</a>
 	<?php
 }
@@ -899,11 +911,11 @@ function eos_dp_debug_button( $path, $target = '_blank' ) {
 function eos_dp_is_deactivation_page() {
 	return isset( $_GET['page'] ) && in_array( $_GET['page'], eos_dp_deactivation_pages() );
 }
-// Return array of plugins deactivation settings Pages.
+// Returns array of plugins deactivation settings pages.
 function eos_dp_deactivation_pages() {
 	return apply_filters( 'eos_dp_deactivation_pages', array( 'eos_dp_menu', 'eos_dp_by_post_type', 'eos_dp_by_archive', 'eos_dp_by_term_archive', 'eos_dp_mobile', 'eos_dp_desktop', 'eos_dp_search', 'eos_dp_url', 'eos_dp_admin_url', 'eos_dp_admin', 'eos_dp_integration', 'eos_dp_hooks', 'eos_dp_pro_general_bloat' ) );
 }
-// It saves multiple metadata given the $meta_key and an associative array of post IDs  and values.
+// Saves multiple metadata given the $meta_key and an associative array of post IDs and values.
 function eos_dp_save_multiple_metadata( $meta_key, $arr ) {
 	if ( empty( $arr ) || '' === $meta_key ) {
 		return false;
@@ -919,19 +931,19 @@ function eos_dp_save_multiple_metadata( $meta_key, $arr ) {
 		$values .= '(' . $id . ',\'' . $v . '\'),';
 	}
 	$values = rtrim( $values, ',' );
-	$result = $wpdb->update(
+	$result = $wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Values are escaped before.
 		$wpdb->postmeta,
 		array(
 			'post_id'    => $post_ids,
-			'meta_key'   => $meta_key,
-			'meta_value' => $values,
+			'meta_key'   => $meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery -- This query is a lot faster than the standard WP way. Tested and confirmed.
+			'meta_value' => $values, // phpcs:ignore WordPress.DB.SlowDBQuery -- This query is a lot faster than the standard WP way. Tested and confirmed.
 		),
 		$post_ids
 	);
 	return $result;
 }
 
-// It retrieves multiple metadata given the $meta_key and the array of post IDs.
+// Retrieves multiple metadata given the $meta_key and an array of post IDs.
 function eos_dp_get_multiple_metadata( $meta_key, $ids ) {
 	if ( empty( $ids ) || '' === $meta_key ) {
 		return false;
@@ -945,15 +957,15 @@ function eos_dp_get_multiple_metadata( $meta_key, $ids ) {
 	$ids      = esc_sql( $ids );
 	$meta_key = esc_sql( $meta_key );
 	$sql      = "SELECT post_id,meta_value FROM $wpdb->postmeta WHERE post_id IN ($ids) AND meta_key='$meta_key';";
-	return $wpdb->get_results( $sql, OBJECT );
+	return $wpdb->get_results( $sql, OBJECT ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Values are escaped before they are used.
 }
 
-// It returns the plugin name by its paths.
+// Returns the plugin name by its path.
 function eos_dp_name_by_path( $path ) {
 	return ucwords( str_replace( '-', ' ', dirname( $path ) ) );
 }
 
-// Check the privilegs what the user can do with FDP.
+// Check the privileges of what the user can do with FDP.
 function eos_dp_user_capabilities( $user = false ) {
 	if ( ! $user ) {
 		if ( function_exists( 'wp_get_current_user' ) ) {
@@ -1008,7 +1020,7 @@ function eos_dp_user_capabilities( $user = false ) {
 	return false;
 }
 
-// Updte line of code in file_exists.
+// Update line of code in file.
 function eos_dp_update_file_line( $file, $search, $replace ) {
 	$access_type = get_filesystem_method();
 	if ( $access_type === 'direct' ) {
@@ -1055,7 +1067,7 @@ function eos_dp_update_file_line( $file, $search, $replace ) {
 		}
 	}
 }
-// Updte options by URL.
+// Update options by URL.
 function eos_dp_update_url_options( $path, $post_id, $plugins, $post_type, $post_status = 'public' ) {
 	$access_type = get_filesystem_method();
 	if ( $access_type === 'direct' ) {
@@ -1109,7 +1121,7 @@ function eos_dp_update_url_options( $path, $post_id, $plugins, $post_type, $post
 		eos_dp_update_option( 'eos_dp_opts', $opts );
 	}
 }
-// Updte FDP cache.
+// Update FDP cache.
 function eos_dp_update_fdp_cache( $slug, $html, $delete = false ) {
 	if ( ! function_exists( 'get_filesystem_method' ) ) {
 		return;
@@ -1184,11 +1196,11 @@ function eos_dp_delete_folder( $dirPath ) {
 	}
 }
 
-// Get current page URL.
+// Gets current page URL.
 function eos_dp_get_current_page_url() {
 	if ( isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['REQUEST_URI'] ) ) {
 		$url  = isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-		$url .= sanitize_text_field( $_SERVER['HTTP_HOST'] ) . sanitize_text_field( $_SERVER['REQUEST_URI'] );
+		$url .= sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) . sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 		if ( isset( $_SERVER['QUERY_STRING'] ) ) {
 			$url .= '?' . sanitize_text_field( $_SERVER['QUERY_STRING'] );
 		}
@@ -1323,7 +1335,7 @@ add_action(
 	}
 );
 
-// It stores the information needed to rebuild the admin menu.
+// Stores the information needed to rebuild the admin menu.
 function eos_dp_update_fdp_admin_menu( $args ) {
 	static $called = false;
 	if( $called ) return;
@@ -1383,7 +1395,7 @@ add_action( 'upgrader_process_complete', 'eos_dp_rebuild_rewrite_rules_and_menu'
 add_action( 'core_upgrade_preamble', 'eos_dp_rebuild_rewrite_rules_and_menu', PHP_INT_MAX );
 add_action( 'update_option_WPLANG', 'eos_dp_rebuild_rewrite_rules_and_menu', PHP_INT_MAX );
 
-// Check the rewrite rules. If empty remotely call the homepage loading all the plugins to rebuilt hhem without issues.
+// Check the rewrite rules. If empty, remotely call the homepage loading all the plugins to rebuild them without issues.
 function eos_dp_rebuild_rewrite_rules_and_menu() {
 	eos_dp_update_fdp_admin_menu( getallheaders() );
 	$rewrite_rules = eos_dp_get_option( 'rewrite_rules' );
@@ -1428,7 +1440,7 @@ add_action(
 		delete_site_transient( 'fdp_plugin_disabledd_fatal_error' );
 		$fdp_json =  WP_PLUGIN_DIR . '/' . dirname( sanitize_text_field( $plugin ) ) . '/fdp.json';
 		if( file_exists( $fdp_json ) ) {
-			// If it's an FDP add-on, it has to be removed fromm the active FDP add-ons.
+			// If it's an FDP add-on, it has to be removed from the active FDP add-ons.
 			$fdp_addons = eos_dp_get_option( 'fdp_addons', array() );
 			if( $fdp_addons && ! empty( $fdp_addons ) ) {
 				$fdp_addons = array_unique( $fdp_addons );
@@ -1444,7 +1456,7 @@ add_action(
 add_action( 'update_option_stylesheet', 'eos_dp_add_fdp_theme_activation_hook', 999999, 3 );
 add_action( 'update_site_option_stylesheet', 'eos_dp_add_fdp_theme_activation_hook', 999999, 3 );
 
-// It adds an action hook after theme activation, no matter if the old theme still exists.
+// Adds an action hook after theme activation, regardless of whether the old theme still exists.
 function eos_dp_add_fdp_theme_activation_hook( $old_value, $value, $option ) {
 	do_action( 'fdp_after_theme_activation' );
 }
@@ -1472,7 +1484,7 @@ function fdp_add_plugins_settings_page( $slug, $title, $dashicon = '' ) {
 function eos_dp_get_option_size( $option_name ) {
 	global $wpdb;
 	$option_name = sanitize_key( $option_name );
-	$results     = $wpdb->get_results( "SELECT length(option_value) AS option_value_length FROM $wpdb->options WHERE option_name = '$option_name'" );
+	$results     = $wpdb->get_results( "SELECT length(option_value) AS option_value_length FROM $wpdb->options WHERE option_name = '$option_name'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Sanitization applied on $option_name.
 	if ( $results && isset( $results[0] ) && isset( $results[0]->option_value_length ) ) {
 		return absint( 10 * $results[0]->option_value_length ) / 10000;
 	}
@@ -1527,7 +1539,7 @@ function eos_dp_menu_items(){
 				'file'      => $menu_file . 'device.php',
 			),
 			'miscellaneus' => array(
-				'title'     => __( 'Miscellaneus', 'freesoul-deactivate-plugins' ),
+				'title'     => __( 'Miscellaneous', 'freesoul-deactivate-plugins' ),
 				'section'   => 'miscellaneus',
 				'active_if' => array( 'eos_dp_search' ),
 				'subitems'  => array( 'eos_dp_search' ),

@@ -43,7 +43,7 @@ function eos_dp_code_profiler_page() {
   <h1><?php esc_html_e( 'Code Profiler - Plugins', 'freesoul-deactivate-plugins' ); ?></h1>
   <h2><?php esc_html_e( 'Plugins active during the code profiling', 'freesoul-deactivate-plugins' ); ?></h2>
   <p><input id="fdp-radio-fdp" type="radio" name="fdp_cp_setts" value="fdp" <?php echo ! isset( $opts['fdp_cp'] ) || 'fdp' === $opts['fdp_cp'] ? 'checked' : ''; ?>/><span><?php esc_html_e( 'According to the FDP settings', 'freesoul-deactivate-plugins' ); ?></span></p>
-  <p><input id="fdp-radio-cp" type="radio" name="fdp_cp_setts" value="cp" <?php echo isset( $opts['fdp_cp'] ) && 'cp' === $opts['fdp_cp'] ? 'checked' : ''; ?>/><span><?php esc_html_e( 'According to this page settings', 'freesoul-deactivate-plugins' ); ?></span></p>
+  <p><input id="fdp-radio-cp" type="radio" name="fdp_cp_setts" value="cp" <?php echo isset( $opts['fdp_cp'] ) && 'cp' === $opts['fdp_cp'] ? 'checked' : ''; ?>/><span><?php esc_html_e( "According to this page's settings", 'freesoul-deactivate-plugins' ); ?></span></p>
 	<section class="fdp-cp-plugins" style="margin-top:32px">
 		<?php
 		$n = 0;
@@ -54,7 +54,9 @@ function eos_dp_code_profiler_page() {
 				<div>
 					<div class="eos-dp-cp-chk-col">
 						<p class="fdp-cp-chk-wrp">
-							<input id="fdp-cp-<?php echo esc_attr( $n + 1 ); ?>" class="eos-dp-cp" title="<?php printf( esc_attr__( 'Activate/deactivate %s during the code profiling', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" data-path="<?php echo esc_attr( $p ); ?>" type="checkbox"<?php echo $cp && in_array( $p, $cp ) ? '' : ' checked'; ?> />
+							<input id="fdp-cp-<?php echo esc_attr( $n + 1 ); ?>" class="eos-dp-cp" title="<?php 
+							// translators: %s is the plugin name.
+							printf( esc_attr__( 'Activate/deactivate %s during code profiling', 'freesoul-deactivate-plugins' ), esc_attr( $plugin_name ) ); ?>" data-path="<?php echo esc_attr( $p ); ?>" type="checkbox"<?php echo $cp && in_array( $p, $cp ) ? '' : ' checked'; ?> />
 			  <span><?php echo esc_html( $plugin_name ); ?></span>
 			</p>
 					</div>

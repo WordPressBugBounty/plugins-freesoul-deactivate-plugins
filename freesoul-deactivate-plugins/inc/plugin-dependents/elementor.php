@@ -1,6 +1,6 @@
 <?php
 /**
- * Dependents fromm Elementor.
+ * Dependents from Elementor.
 
  * @package Freesoul Deactivate Plugins
  */
@@ -111,6 +111,7 @@ $deps = array(
 	'creative-elements-for-elementor',
 	'creatrix-countdown',
 	'cresta-addons-for-elementor',
+	'crocoblock-wizard',
 	'cryptocurrency-widgets-for-elementor',
 	'css-for-elementor',
 	'custom-breakpoints-for-elementor',
@@ -271,7 +272,10 @@ $deps = array(
 	'item-lists-for-elementor',
 	'jarryd-and-the-jackles-elementor-random-image',
 	'jeg-elementor-kit',
+	'jet-blocks',
+	'jet-elements',
 	'jetsticky-for-elementor',
+	'jet-tabs',
 	'jetwidgets-for-elementor',
 	'jetwoo-widgets-for-elementor',
 	'just-show-free-stuff-in-elementor',

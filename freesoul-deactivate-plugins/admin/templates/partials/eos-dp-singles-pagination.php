@@ -9,7 +9,9 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 ?>
 <div style="display:inline-block">
-  <div class="tablenav-pages"><span class="displaying-num"><?php printf( esc_html__( '%s items', 'freesoul-deactivate-plugins' ), esc_html( $published_posts ) ); ?></span>
+  <div class="tablenav-pages"><span class="displaying-num"><?php 
+  // translators: %s is the number of items.
+  printf( esc_html__( '%s items', 'freesoul-deactivate-plugins' ), esc_html( $published_posts ) ); ?></span>
 	<span class="pagination-links">
 	<a class="button next-page<?php echo $current_page - 1 === 0 ? ' eos-no-events' : ''; ?>" href="
 										 <?php

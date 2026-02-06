@@ -33,8 +33,12 @@ if ( $taxs && is_array( $taxs ) ) {
 			}
 			if ( $show ) {
 				?>
-		<li class="eos-dp-submenu-item"><a href="<?php echo esc_url( add_query_arg( array( 'eos_dp_tax' =>  $tax->name, 'tpt' => $term_post_type ), admin_url( 'admin.php?page=eos_dp_by_term_archive' ) ) ); ?>"><?php echo esc_html( sprintf( esc_html__( '%1$s (%2$s)', 'freesoul-deactivate-plugins' ), $tax->label, implode( ',', $labels_names ) ) ); ?></a></li>
-		<li class="eos-dp-submenu-item"><a href="<?php echo esc_url( add_query_arg( array( 'eos_dp_tax' => $tax->name, 'tpt' => $term_post_type, 'only-all' => '1' ), admin_url( 'admin.php?page=eos_dp_by_term_archive' ) ) ); ?>"><?php echo esc_html( sprintf( esc_html__( 'Any %1$s (%2$s)', 'freesoul-deactivate-plugins' ), $tax->label, implode( ',', $labels_names ) ) ); ?></a></li>
+		<li class="eos-dp-submenu-item"><a href="<?php 
+		// translators: %1$s is the taxonomy label, %2$s is the list of post type names.
+		echo esc_url( add_query_arg( array( 'eos_dp_tax' =>  $tax->name, 'tpt' => $term_post_type ), admin_url( 'admin.php?page=eos_dp_by_term_archive' ) ) ); ?>"><?php echo esc_html( sprintf( esc_html__( '%1$s (%2$s)', 'freesoul-deactivate-plugins' ), $tax->label, implode( ',', $labels_names ) ) ); ?></a></li>
+		<li class="eos-dp-submenu-item"><a href="<?php 
+		// translators: %1$s is the taxonomy label, %2$s is the list of post type names.
+		echo esc_url( add_query_arg( array( 'eos_dp_tax' => $tax->name, 'tpt' => $term_post_type, 'only-all' => '1' ), admin_url( 'admin.php?page=eos_dp_by_term_archive' ) ) ); ?>"><?php echo esc_html( sprintf( esc_html__( 'Any %1$s (%2$s)', 'freesoul-deactivate-plugins' ), $tax->label, implode( ',', $labels_names ) ) ); ?></a></li>
 				<?php
 			}
 		}

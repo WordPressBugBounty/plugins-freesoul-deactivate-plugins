@@ -7,11 +7,11 @@
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-// Callback for deactivate in integration.
+// Callback for the deactivate in integration settings page.
 function eos_dp_integration_callback() {
 	if ( ! current_user_can( 'activate_plugins' ) && function_exists( 'eos_dp_active_plugins' ) ) {
 		?>
-		<h2><?php esc_html_e( 'Sorry, you have not the right for this page', 'freesoul-deactivate-plugins' ); ?></h2>
+		<h2><?php esc_html_e( 'Sorry, you do not have permission to access this page.', 'freesoul-deactivate-plugins' ); ?></h2>
 		<?php
 		return;
 	}
@@ -22,12 +22,14 @@ function eos_dp_integration_callback() {
 		$int_plugin = sanitize_text_field( $_GET['int_plugin'] );
 	}
 	if ( ! isset( $plugins_integration[ $int_plugin ] ) ) {
+		// translators: %s is the plugin name.
 		printf( esc_html__( 'No integration available for %s', 'freesoul-deactivate-plugins' ), esc_html( strtoupper( str_replace( '-', ' ', $int_plugin ) ) ) );
 		return;
 	}
 	$plugin_info = $plugins_integration[ $int_plugin ];
 	$is_active   = $plugin_info['is_active'];
 	if ( ! $is_active ) {
+		// translators: %s is the plugin name.
 		printf( esc_html__( '%s is not active', 'freesoul-deactivate-plugins' ), esc_html( strtoupper( str_replace( '-', ' ', $int_plugin ) ) ) );
 		return;
 	}
@@ -40,7 +42,9 @@ function eos_dp_integration_callback() {
 	?>
 	<section id="eos-dp-by-integration-section" class="eos-dp-section">
 		<div class="eos-dp-margin-top-32">
-			<h2><?php printf( esc_html__( 'Uncheck the plugins you want to deactivate on specific actions fired by %s.', 'freesoul-deactivate-plugins' ), esc_html( strtoupper( str_replace( '-', ' ', $int_plugin ) ) ) ); ?></h2>
+			<h2><?php 
+			// translators: %s is the plugin name.
+			printf( esc_html__( 'Uncheck the plugins you want to deactivate on specific actions fired by %s.', 'freesoul-deactivate-plugins' ), esc_html( strtoupper( str_replace( '-', ' ', $int_plugin ) ) ) ); ?></h2>
 			<?php do_action( 'eos_dp_before_wrapper' ); ?>
 			<div id="eos-dp-wrp">
 				<div>
@@ -65,7 +69,9 @@ function eos_dp_integration_callback() {
 					?>
 					<tr class="eos-dp-integration-row eos-dp-post-row" data-integration="<?php echo esc_attr( $action ); ?>">
 						<td class="eos-dp-post-name-wrp">
-							<span class="eos-dp-not-active-wrp"><input title="<?php printf( esc_attr__( 'Activate/deactivate all plugins for %s', 'freesoul-deactivate-plugins' ), esc_attr( $description ) ); ?>" data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
+							<span class="eos-dp-not-active-wrp"><input title="<?php 
+							// translators: %s is the action description.
+							printf( esc_attr__( 'Activate/deactivate all plugins for %s', 'freesoul-deactivate-plugins' ), esc_attr( $description ) ); ?>" data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
 							<span class="eos-dp-ajax-desc"><?php echo esc_html( $description ); ?></span>
 							<span class="eos-dp-ajax-slug eos-hidden"><?php echo esc_html( $action ); ?></span>
 							<?php
@@ -76,8 +82,8 @@ function eos_dp_integration_callback() {
 							}
 							?>
 							<div class="eos-dp-actions">
-								<a title="<?php esc_attr_e( 'Copy this row settings', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-copy" href="#"><span class="dashicons dashicons-admin-page"></span></a>
-								<a title="<?php esc_attr_e( 'Paste last copied row settings', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-paste" href="#"><span class="dashicons dashicons-category"></span></a>
+								<a title="<?php esc_attr_e( 'Copy settings for this row', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-copy" href="#"><span class="dashicons dashicons-admin-page"></span></a>
+								<a title="<?php esc_attr_e( 'Paste previously copied row settings', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-paste" href="#"><span class="dashicons dashicons-category"></span></a>
 							</div>
 						</td>
 						<?php
@@ -114,8 +120,8 @@ function eos_dp_integration_callback() {
 			</div>
 		</div>
 		<div style="margin-top:64px">
-			<h2><?php esc_html_e( 'For developers.', 'freesoul-deactivate-plugins' ); ?></h2>
-			<p>Read <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugiins-on-specific-pages/for-developers#custom-ajax-action-in-fdp-settings" target="_blank">here</a> to learn how to add the ajax actions of a plugin or theme</p>
+			<h2><?php esc_html_e( 'For developers', 'freesoul-deactivate-plugins' ); ?></h2>
+			<p>Read <a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/for-developers#custom-ajax-action-in-fdp-settings" target="_blank">here</a> to learn how to add ajax actions of a plugin or theme.</p>
 		</div>
 		<?php eos_dp_save_button(); ?>
 	</section>

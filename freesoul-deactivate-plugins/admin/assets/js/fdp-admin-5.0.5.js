@@ -163,8 +163,8 @@ function eos_dp_show_errors(e) {
     jQuery(".eos-dp-opts-msg_warning").removeClass("eos-hidden")) : jQuery(".eos-dp-opts-msg_failed").removeClass("eos-hidden")
 }
 function eos_dp_send_autosuggest_request(e, s) {
-    jQuery(".eos-dp-plugin-name").slice(4 * window.eos_dp_autosuggest_counter, 4 * window.eos_dp_autosuggest_counter + 4).addClass("fdp-plugin-in-check"),
-    jQuery(".eos-dp-name-th").slice(4 * window.eos_dp_autosuggest_counter, 4 * window.eos_dp_autosuggest_counter + 4).addClass("eos-dp-plugin-hover"),
+    jQuery(".eos-dp-plugin-name").slice(parseInt(eos_dp_js.plugins_step) * window.eos_dp_autosuggest_counter, parseInt(eos_dp_js.plugins_step) * window.eos_dp_autosuggest_counter + parseInt(eos_dp_js.plugins_step)).addClass("fdp-plugin-in-check"),
+    jQuery(".eos-dp-name-th").slice(parseInt(eos_dp_js.plugins_step) * window.eos_dp_autosuggest_counter, parseInt(eos_dp_js.plugins_step) * window.eos_dp_autosuggest_counter + parseInt(eos_dp_js.plugins_step)).addClass("eos-dp-plugin-hover"),
     jQuery.ajax({
         type: "POST",
         url: ajaxurl,
@@ -185,7 +185,7 @@ function eos_dp_send_autosuggest_request(e, s) {
                 var o = "undefined" != typeof is_single_post && is_single_post ? jQuery(".eos-dp-post-row") : e.closest(".eos-dp-post-row")
                   , a = "";
                 if (o.find("input[type=checkbox]").filter(":visible").not(".eos-dp-global-chk-row").not(".eos-dp-lock-post").each(function(e, s) {
-                    e + 1 > 4 * (window.eos_dp_autosuggest_counter - 1) && e < 4 * (window.eos_dp_autosuggest_counter - 1) + 4 && e < jQuery(".eos-dp-name-th").length + 1 && (a = (chk = jQuery(this)).closest("td").attr("data-path"),
+                    e + 1 > parseInt(eos_dp_js.plugins_step) * (window.eos_dp_autosuggest_counter - 1) && e < parseInt(eos_dp_js.plugins_step) * (window.eos_dp_autosuggest_counter - 1) + parseInt(eos_dp_js.plugins_step) && e < jQuery(".eos-dp-name-th").length + 1 && (a = (chk = jQuery(this)).closest("td").attr("data-path"),
                     json.indexOf(a) > -1 ? chk.attr("checked", 1).closest("td").addClass("eos-dp-autochecked").removeClass("eos-dp-active").trigger("change") : chk.removeAttr("checked").closest("td").addClass("eos-dp-autochecked").addClass("eos-dp-active").trigger("change"),
                     chk.trigger("change"))
                 }),
@@ -195,8 +195,8 @@ function eos_dp_send_autosuggest_request(e, s) {
                         eos_dp_clone_row_options(o, jQuery(this).closest("tr"))
                     })
                 }
-                if (s.offset = 4 * window.eos_dp_autosuggest_counter,
-                parseInt(window.eos_dp_autosuggest_counter) < Math.ceil(jQuery(".eos-dp-name-th").length / 4))
+                if (s.offset = eos_dp_js.plugins_step * window.eos_dp_autosuggest_counter,
+                parseInt(window.eos_dp_autosuggest_counter) < Math.ceil(jQuery(".eos-dp-name-th").length / eos_dp_js.plugins_step))
                     eos_dp_send_autosuggest_request(e, s);
                 else {
                     if ("eos_dp_admin" !== eos_dp_js.page && ("undefined" != typeof is_single_post ? jQuery("#eos-dp-lock-single-post").addClass("eos-post-locked") : o.addClass("eos-post-locked")),
@@ -868,7 +868,8 @@ jQuery(document).ready(function(e) {
           , t = document.querySelectorAll("tr.eos-dp-url")
           , o = ""
           , a = e(".eos-dp-section ").attr("data-page_slug")
-          , d = {};
+          , d = {}
+          , notes = {};
         eos_dp_show_all_plugins();
         for (var i = 0; i < t.length - 1; i += 1) {
             var p = []
@@ -879,6 +880,7 @@ jQuery(document).ready(function(e) {
                     r && (p[c] = r.getAttribute("data-path"))
                 }
             o = e(t[i]).find(".eos-dp-url-input").val(),
+            notes[o] = t[i].getElementsByClassName("eos-dp-row-notes")[0].value,
             void 0 !== n[c - 1] && (d[o] = e(n[c - 1].getElementsByTagName("input")).closest("td").hasClass("eos-dp-active")),
             s[i] = {},
             s[i].url = o,
@@ -892,6 +894,7 @@ jQuery(document).ready(function(e) {
             theme_activation: JSON.stringify(d),
             headers: eos_dp_js.headers,
             setts: JSON.stringify(s),
+            notes: JSON.stringify(notes),
             action: "eos_dp_save_url_settings"
         }),
         !1
@@ -920,7 +923,7 @@ jQuery(document).ready(function(e) {
     e(".eos-dp-save-eos_dp_menu").on("click", function() {
         e(".eos-dp-opts-msg").addClass("eos-hidden"),
         eos_dp_remove_all_filters();
-        var s, t, o, a = "not checked", d = "", i = "", p = {}, n = [], r = {}, l = [], c = [], h = "", u = [], rows_order = [], f = 0, title = document.head.getElementsByTagName('title')[0].innerText;
+        var s, t, o, a = "not checked", d = "", i = "", p = {}, n = [], r = {}, l = [], c = [], h = "", u = [], rows_order = [], f = 0, title_el = document.head.getElementsByTagName('title'), title = title_el && 'undefined' !== typeof(title_el) && title_el.length > 0 ? title_el[0].innerText : '';
         e(".eos-dp-post-row").each(function() {
             t = e(this),
             u = [],
@@ -948,18 +951,20 @@ jQuery(document).ready(function(e) {
         p.post_type = e("#eos-dp-setts").attr("data-post_type"),
         p.eos_dp_post_types = JSON.stringify(n),
         p.eos_dp_urls = JSON.stringify(r);
-        var g = e(this).next(".ajax-loader-img"),ws=window.location.search,page=ws.indexOf('eos_page=') > -1 ? ws.split('eos_page=')[1].split('=')[0] : 1,orderby = document.getElementById('eos-dp-orderby-sel').value,order = document.getElementById('eos-dp-order-sel').value;
-        if('custom_order' === orderby){
-            eos_dp_set_cookie('fdp_single_rows_order_' + page,rows_order,90);
-        }
-        eos_dp_set_cookie('fdp_posts_per_page',document.getElementById('eos-dp-posts-per-page').value,90);
-        eos_dp_set_cookie('fdp_orderby',orderby,90);
-        eos_dp_set_cookie('fdp_order',order,90);
-        if(ws.indexOf('&orderby=') > -1){
-            window.history.pushState('page2',title,window.location.href.replace('&orderby=' + ws.split('&orderby=')[1].split('&')[0],'&orderby=' + orderby));
-        }
-        if(ws.indexOf('&order=') > -1){
-            window.history.pushState('page2',title,window.location.href.replace('&order=' + ws.split('&order=')[1].split('&')[0],'&order=' + order));
+        var g = e(this).next(".ajax-loader-img"),ws=window.location.search,page=ws.indexOf('eos_page=') > -1 ? ws.split('eos_page=')[1].split('=')[0] : 1,orderby = document.getElementById('eos-dp-orderby-sel'),order = document.getElementById('eos-dp-order-sel');
+        if(order){
+            if('custom_order' === orderby.value){
+                eos_dp_set_cookie('fdp_single_rows_order_' + page,rows_order,90);
+            }
+            eos_dp_set_cookie('fdp_posts_per_page',document.getElementById('eos-dp-posts-per-page').value,90);
+            eos_dp_set_cookie('fdp_orderby',orderby.value,90);
+            eos_dp_set_cookie('fdp_order',order.value,90);
+            if(orderby && ws.indexOf('&orderby=') > -1){
+                window.history.pushState('page2',title,window.location.href.replace('&orderby=' + ws.split('&orderby=')[1].split('&')[0],'&orderby=' + orderby.value));
+            }
+            if(order && ws.indexOf('&order=') > -1){
+                window.history.pushState('page2',title,window.location.href.replace('&order=' + ws.split('&order=')[1].split('&')[0],'&order=' + order.value));
+            }
         }
         return g.removeClass("eos-not-visible"),
         eos_dp_restore_all_filters(),
@@ -1358,7 +1363,7 @@ jQuery(document).ready(function(e) {
                         a.removeClass("eos-hidden");
                         return
                     }
-                    void 0 !== o.edit && !1 !== o.edit ? e("#fdp-edit-new-plugin").attr("href", o.edit.split("&amp;").join("&")).removeClass("eos-hidden") : e("#fdp-edit-new-plugin").addClass("eos-hidden"),
+                    void 0 !== o.edit && !1 !== o.edit ? e("#fdp-code-editor").attr("src", o.edit.split("&amp;").join("&")).removeClass("eos-hidden") && e("#fdp-edit-new-plugin").attr("href", o.edit.split("&amp;").join("&").replace('fdp-iframe','new-plugin')).removeClass("eos-hidden").css('display','inline-block') && e('#fdp-create-plugins-instructions').addClass('eos-hidden') : e("#fdp-code-editor").addClass('eos-hidden') && e("#fdp-edit-new-plugin").addClass("eos-hidden"),
                     void 0 !== o.activate && "false" !== o.activate ? e("#fdp-activate-new-plugin").attr("href", o.activate.split("&amp;").join("&")).removeClass("eos-hidden") : e("#fdp-activate-new-plugin").addClass("eos-hidden"),
                     e(".eos-dp-opts-msg_success").removeClass("eos-hidden")
                 }

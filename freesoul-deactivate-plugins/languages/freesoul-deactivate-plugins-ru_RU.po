@@ -60,7 +60,7 @@ msgid "Deactivate on mobile devices"
 msgstr "Деактивировать на мобильных устройствах"
 
 #: admin/eos-dp-helper.php:105
-msgid "Deactivate on search resutls page"
+msgid "Deactivate on Search results page"
 msgstr "Деактивировать на странице результатов поиска"
 
 #: admin/eos-dp-helper.php:105
@@ -73,22 +73,22 @@ msgstr "Загрузчик Ajax"
 
 #: admin/eos-dp-helper.php:116
 #: admin/templates/partials/eos-dp-save-button.php:10
-msgid "the actual permalinks structure is not supported"
+msgid "the current permalink structure is not supported"
 msgstr "фактическая структура постоянных ссылок не поддерживается"
 
 #: admin/eos-dp-helper.php:118
 #: admin/templates/partials/eos-dp-save-button.php:12
-msgid "the permalinks are set as plain"
+msgid "Permalinks are set to "Plain""
 msgstr "постоянные ссылки установлены как простые"
 
 #: admin/eos-dp-helper.php:121
 #: admin/templates/partials/eos-dp-save-button.php:15
-msgid "the permalinks are set as numeric"
+msgid "Permalinks are set to "Numeric""
 msgstr "постоянные ссылки заданы как числовые"
 
 #: admin/eos-dp-helper.php:126
 #, php-format
-msgid "No plugins will be permanently deactivated because %s."
+msgid "No plugins will be permanently deactivated because of: %s."
 msgstr "Никакие плагины не будут окончательно деактивированы, потому что %s."
 
 #: admin/eos-dp-helper.php:127
@@ -116,7 +116,7 @@ msgstr "Ориентация имен плагинов"
 #: admin/templates/pages/eos-dp-search.php:9
 #: admin/templates/pages/eos-dp-singles.php:9
 #: admin/templates/pages/eos-dp-terms-archive.php:9
-msgid "Sorry, you have not the right for this page"
+msgid "Sorry, you do not have permission to access this page."
 msgstr "К сожалению, вы не имеете права на эту страницу"
 
 #: admin/templates/pages/eos-dp-archive.php:24
@@ -130,7 +130,7 @@ msgstr ""
 #: admin/templates/pages/eos-dp-singles.php:256
 #: admin/templates/pages/eos-dp-terms-archive.php:79
 #, php-format
-msgid "Activate/deactivate all plugins in %s"
+msgid "Activate/deactivate all plugins for %s"
 msgstr "Активировать/деактивировать все плагины в %s"
 
 #: admin/templates/pages/eos-dp-archive.php:50
@@ -221,13 +221,13 @@ msgstr "Снимите плагины, которые вы хотите откл
 
 #: admin/templates/pages/eos-dp-post-type.php:43
 #, php-format
-msgid "If activated the Single %s Settings will be ignored."
+msgid "If activated, the Single %s settings will be ignored."
 msgstr "При активации одиночные настройки %s будут проигнорированы."
 
 #: admin/templates/pages/eos-dp-post-type.php:47
 #, php-format
 msgid ""
-"If activated the Single %s Settings will have this row settings as default."
+"If activated, the Single %s settings will use these row settings as the default."
 msgstr ""
 "При активации одиночных настроек %s эта строка будет иметь настройки по "
 "умолчанию."
@@ -307,7 +307,7 @@ msgid "Title"
 msgstr "Заголовок"
 
 #: admin/templates/pages/eos-dp-singles.php:107
-msgid "Post id"
+msgid "Post ID"
 msgstr "Пост id"
 
 #: admin/templates/pages/eos-dp-singles.php:108
@@ -319,7 +319,7 @@ msgid "Date"
 msgstr "Дата"
 
 #: admin/templates/pages/eos-dp-singles.php:110
-msgid "Last modified date"
+msgid "Last Modified Date"
 msgstr "Дата последнего изменения"
 
 #: admin/templates/pages/eos-dp-singles.php:114

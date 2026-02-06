@@ -129,6 +129,7 @@ class FDP_Backend_Singles_Page extends Eos_Fdp_Matrix_Page {
 							$keyArr      = $fdp_admin_submenu_labels_item[0];
 							$labels_name = preg_replace( '/[0-9]+/', '', isset( $labels[ $keyArr[2] ] ) ? $labels[ $keyArr[2] ] : $keyArr[0] );
 							if ( '' !== $labels_name && false === strpos( $keyArr[2], 'eos_dp_' ) ) {
+								// Strip any HTML tags and numbers from the label name.
 								$labels_name = sprintf( '<strong>%s</strong> (%s)', wp_strip_all_tags( explode( '<', $labels_name )[0] ), $keyArr[2] );
 								echo '<li>' . wp_kses( $labels_name, array( 'strong' => array() ) ) . '</li>';
 							}
@@ -262,6 +263,7 @@ class FDP_Backend_Singles_Page extends Eos_Fdp_Matrix_Page {
 								if ( $post_type && isset( $post_type->labels ) && isset( $post_type->labels->singular_name ) ) {
 			
 									$last_posts = wp_get_recent_posts( array( 'numberposts' => '1', 'post_type' => sanitize_key( $post_key ) ) );
+									// Translators: %s is the singular name of the post type.
 									$labels_name             = $title = sprintf( esc_attr__( 'Edit Single %s', 'freesoul-deactivate-plugins' ), $post_type->labels->singular_name );
 									$fdp_admin_menu_item[2]  = $admin_page_key = 'single_' . sanitize_key( $post_key );
 									$is_edit_post            = true;
@@ -285,24 +287,26 @@ class FDP_Backend_Singles_Page extends Eos_Fdp_Matrix_Page {
 							?>
 							" data-admin="<?php echo esc_attr( $fdp_admin_menu_item[2] ); ?>">
 			  <td class="eos-dp-post-name-wrp">
-				<span class="fdp-row-actions-ico dashicons dashicons-plus" title="<?php esc_attr__( 'Action buttons', 'freesoul-deactivate-plugins' ); ?>"></span>
-				<span class="eos-dp-not-active-wrp"><input title="<?php printf( esc_attr__( 'Activate/deactivate all plugins in %s', 'freesoul-deactivate-plugins' ), esc_attr( $labels_name ) ); ?>" data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
+				<span class="fdp-row-actions-ico dashicons dashicons-plus" title="<?php esc_attr_e( 'Action buttons', 'freesoul-deactivate-plugins' ); ?>"></span>
+				<span class="eos-dp-not-active-wrp"><input title="<?php 
+				// translators: %s is the labels name.
+				printf( esc_attr__( 'Activate/deactivate all plugins for %s', 'freesoul-deactivate-plugins' ), esc_attr( $labels_name ) ); ?>" data-row="<?php echo esc_attr( $row ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
 				<a class="eos-dp-title"<?php echo empty( $fdp_admin_menu_item_url ) ? ' style="pointer-events:none"' : ''; ?> href="<?php echo esc_url( $fdp_admin_menu_item_url ); ?>" target="_blank"><?php echo esc_html( $title ); ?></a>
 				<div class="eos-dp-actions">
 							<?php if ( $fdp_admin_menu_item_url ) { ?>
 				  <a class="eos-dp-view fdp-has-tooltip" href="<?php echo esc_url( $fdp_admin_menu_item_url ); ?>" target="_blank">
 					<span class="dashicons dashicons-visibility"></span>
-					<div class="fdp-tooltip"><?php esc_html_e( 'View page loading plugins according the saved options', 'freesoul-deactivate-plugins' ); ?></div>
+					<div class="fdp-tooltip"><?php esc_html_e( 'View page with plugins loaded according to the saved options.', 'freesoul-deactivate-plugins' ); ?></div>
 				  </a>
 				  <a data-page_speed_insights="false" class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="<?php echo esc_url( $url ); ?>" target="_blank">
 					<span class="dashicons dashicons-search"></span>
-					<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according the settings you see now on this row', 'freesoul-deactivate-plugins' ); ?></div>
+					<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins according to the settings you see now on this row', 'freesoul-deactivate-plugins' ); ?></div>
 				  </a>
 				  <a data-page_speed_insights="false" class="eos-dp-preview fdp-has-tooltip" oncontextmenu="return false;" href="<?php echo esc_url( add_query_arg( 'js', 'off', $url ) ); ?>" target="_blank">
 					<span class="dashicons dashicons-search">
 					  <span class="eos-dp-no-js">JS</span>
 					</span>
-					<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins and the theme according the settings you see now on this row and disable JavaScript esecution', 'freesoul-deactivate-plugins' ); ?></div>
+					<div class="fdp-tooltip"><?php esc_html_e( 'Preview the page loading plugins and the theme according to the settings you see now on this row and disable JavaScript execution', 'freesoul-deactivate-plugins' ); ?></div>
 				  </a>
 								<?php do_action( 'eos_dp_action_buttons' ); ?>
 				  <a href="#" class="eos-dp-pro-autosettings fdp-has-tooltip">
@@ -315,10 +319,10 @@ class FDP_Backend_Singles_Page extends Eos_Fdp_Matrix_Page {
 					<div class="fdp-tooltip"><?php esc_html_e( 'Invert selection', 'freesoul-deactivate-plugins' ); ?></div>
 				  </a>
 				  <a class="eos-dp-copy fdp-has-tooltip" href="#"><span class="dashicons dashicons-admin-page"></span>
-					<div class="fdp-tooltip"><?php esc_html_e( 'Copy this row settings', 'freesoul-deactivate-plugins' ); ?></div>
+					<div class="fdp-tooltip"><?php esc_html_e( 'Copy settings for this row', 'freesoul-deactivate-plugins' ); ?></div>
 				  </a>
 				  <a class="eos-dp-paste fdp-has-tooltip" href="#"><span class="dashicons dashicons-category"></span>
-					<div class="fdp-tooltip"><?php esc_html_e( 'Paste last copied row settings', 'freesoul-deactivate-plugins' ); ?></div>
+					<div class="fdp-tooltip"><?php esc_html_e( 'Paste previously copied row settings', 'freesoul-deactivate-plugins' ); ?></div>
 				  </a>
 							<?php do_action( 'eos_dp_archive_action_buttons' ); ?>
 				</div>
