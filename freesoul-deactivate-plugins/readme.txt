@@ -2,9 +2,9 @@
 
 Contributors:      giuse
 Requires at least: 4.6
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP:      7.4
-Stable tag:        2.5.0
+Stable tag:        2.6.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -221,8 +221,9 @@ Info LLM page:
 == Changelog ==
 
 
-= 2.5.0 =
-* Fixed: Plugins not disabled correctly during post requests (PRO version)
+= 2.6.0 =
+* Fixed: Plugins not disabled correctly for logged-in users with specific roles (PRO version)
+* Tested up to WordPress 7.0
 
 
 

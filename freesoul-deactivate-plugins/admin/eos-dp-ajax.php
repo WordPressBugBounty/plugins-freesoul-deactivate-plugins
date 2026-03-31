@@ -1319,7 +1319,7 @@ function eos_dp_pro_save_settings() {
 	$main_opts = eos_dp_get_option( 'eos_dp_pro_main' );
 	$opts      = array();
 	foreach ( $data as $key => $value ) {
-		if ( '' !== $value ) {
+		if ( ! empty( $value ) ) {
 			if ( is_object( $value ) ) {
 				$value = json_encode( $value );
 			}

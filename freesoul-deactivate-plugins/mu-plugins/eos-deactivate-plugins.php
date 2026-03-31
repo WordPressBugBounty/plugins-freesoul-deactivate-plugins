@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.5.0
+  Version: 2.6.0
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -50,12 +50,14 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.5.0' );
+define( 'EOS_DP_MU_VERSION','2.6.0' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
 foreach( array(
-	'freesoul-deactivate-plugins-pro/freesoul-deactivate-plugins-pro.php'
+	'freesoul-deactivate-plugins-pro/freesoul-deactivate-plugins-pro.php',
+	'fix-plugin-conflicts-for-contact-form-7/fix-plugin-conflicts-for-contact-form-7.php',
+	'fix-plugin-conflicts-for-ninja-forms/fix-plugin-conflicts-for-ninja-forms.php',
 ) as $fdp_addon ){
 	if( defined( 'WP_PLUGIN_DIR' ) && in_array( $fdp_addon, $active_plugins )  && file_exists( WP_PLUGIN_DIR . '/' . dirname( $fdp_addon ) . '/inc/mu-plugin.php' ) ){
 		// Require mu-plugin file of the FDP addon.
@@ -84,7 +86,7 @@ add_filter( 'fdp_active_by_addon', function( $plugins ) {
 					}
 				}
 			}
-		}	
+		}
 	}
 	return $plugins;
 } );
@@ -152,7 +154,7 @@ if(
 				$trace = array_reverse( $trace );
 				$output = $code = '';
 				$cause = $line = $file = false;
-				
+
 		    foreach( $trace as $arr ){
 		      if( isset( $arr['file'] )  ){
 		        if( false !== strpos( $arr['file'],$plugindir  ) ){
@@ -192,7 +194,7 @@ if(
 				if( $line && $file ){
 					$output .= eos_dp_get_code_extract( $line,$file );
 				}
-				
+
 				$msg = sprintf( 'Be careful! it looks like <strong>%s triggered the update of the rewrite rules during the same HTTP request</strong>.',$cause );
 				$msg .= PHP_EOL.sprintf( "%s may be only the trigger. At the moment we can't say for sure that %s is the only cause. We can only say %s called a function that triggered the flushing of the rewrite rules.",$cause, $cause, $cause );
 				$msg .= PHP_EOL.sprintf( 'FDP rebuilt again the rewrite rules with all plugins active. You should not have issues due to missing rewrite rules, but you may have more load on your server and FDP has to keep all the plugins active to avoid missing rewrite rules when %s saves them into the database. If %s frequently updates the rewrite rules you will have issues with the performance.',$cause,$cause );
@@ -200,7 +202,7 @@ if(
 				$msg .= PHP_EOL.PHP_EOL.wp_kses_post( $output ).$code;
 				$msg .= PHP_EOL.PHP_EOL.sprintf( 'If it is a recurring issue, we also suggest you to contact the support of %s',$cause );
 				$msg .= PHP_EOL.PHP_EOL.sprintf( 'Read %shere%s to learn more about this issue.','<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/rewrite-rules-notice/" target="_blank" rel="noopener">', '</a>' );
-			
+
 				eos_dp_update_admin_notices( 'rewrite_rules',$msg );
 				do_action( 'fdp_flush_rewrite_rules' );
 				eos_dp_update_option( 'rewrite_rules','' );
@@ -460,7 +462,7 @@ if(
 									if( is_object( $p ) && ( ! isset( $p->post_status ) || ! in_array( $p->post_status, array( 'draft' ) ) || eos_dp_is_user_logged() ) ){
 										$eos_page_id =  $p->ID;
 									}
-									
+
 								}
 								else{
 									// the URL looks like https://example-dommain.com/level1/level2/ or https://example-dommain.com/level1/level2/level3/...
@@ -743,7 +745,7 @@ if(
 			}
 		}
 		$GLOBALS['eos_dp_paths'] = isset( $eos_dp_paths ) ? $eos_dp_paths : array();
-		
+
 		if( !defined( 'EOS_DEACTIVE_PLUGINS' ) ) define( 'EOS_DEACTIVE_PLUGINS',true );
 		add_action( 'muplugins_loaded',function() {
 			eos_dp_filter_active_plugins(  'eos_option_active_plugins',0 );
@@ -791,7 +793,7 @@ function eos_dp_one_place( $plugins, $option_key = 'eos_dp_one_place', $keep_if_
 						if( $update_info ) {
 							$info[] = sprintf( '%s disabled bacause of the Plugin By URL settings', esc_attr( eos_dp_get_plugin_name_by_slug( $p ) ) );
 						}
-					}					
+					}
 				}
 			}
 			$eos_dp_debug['info'] = $info;
@@ -861,7 +863,7 @@ function eos_dp_back_untouchables( $plugins ){
  *
  * @param array $plugins
  * @param string $option
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -885,7 +887,7 @@ function eos_dp_untouchables( $plugins,$option ){
  * Disable pugins during cron jobs.
  *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -900,7 +902,7 @@ function eos_dp_cron_active_plugins( $plugins ){
  * Disable specific plugins when Code Profiler is running.
  *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -922,10 +924,10 @@ if( is_admin()
 	add_action( 'wp_loaded',function(){
 		/**
 		 * Assign the initialization time to the global variable $eos_dp_wp_loaded.
-		 * 
+		 *
 		 * @since 1.9.0
 		 *
-		 */	
+		 */
 		$GLOBALS['eos_dp_wp_loaded'] = round( microtime(true) - sanitize_text_field( $_SERVER['REQUEST_TIME_FLOAT'] ),2 );
 	} );
 	add_action( 'muplugins_loaded',function() {
@@ -933,7 +935,7 @@ if( is_admin()
 		 * Add filter to disable specific plugins on backend pages.
 		 *
 		 * @param array $plugins
-		 * 
+		 *
 		 * @since 1.9.0
 		 *
 		 */
@@ -961,7 +963,7 @@ if( is_admin()
  * Disable specific plugins on backend pages.
  *
  * @param array $plugins
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -1170,7 +1172,7 @@ add_action( 'admin_footer', function() {
  * Return active plugins according to the options for the frontend.
  *
  * @param array $plugins
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -1283,7 +1285,7 @@ function eos_option_active_plugins( $plugins ){
  * Disable by Post requests.
  *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1344,7 +1346,7 @@ function eos_dp_mu_deactivate_by_post_requests( $plugins ){
  *
  * @param array $eos_dp_paths
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1398,7 +1400,7 @@ function eos_dp_filter_paths( $eos_dp_paths,$plugins ){
  * Replace the theme for preview.
  *
  * @param string $stylesheet
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1411,7 +1413,7 @@ function eos_dp_get_theme( $stylesheet ){
  * Return parent theme.
  *
  * @param string $template
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1429,7 +1431,7 @@ function eos_dp_get_parent_theme( $template ){
 
 /**
  * Replace the theme with an almost empty theme provided by FDP.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1450,7 +1452,7 @@ function eos_dp_replace_theme(){
  * @param string $stylesheet_dir
  * @param string $styesheet
  * @param string $theme_root
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1462,7 +1464,7 @@ function eos_dp_stylesheet_directory( $stylesheet_dir,$stylesheet,$theme_root ){
  * Return the theme root of the FDP theme.
  *
  * @param string $theme_root
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1474,7 +1476,7 @@ function eos_dp_theme_root( $theme_root ){
  * Return the template of the FDP theme.
  *
  * @param string $template
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1485,7 +1487,7 @@ function eos_dp_template( $template ){
 /**
  * Check the nonce for the preview.
  *
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1522,7 +1524,7 @@ function eos_check_dp_preview_nonce(){
 
 /**
  * Display the memory usage.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1647,7 +1649,7 @@ function eos_dp_display_usage(){
 
 /**
  * Print usage in the JS console.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1684,7 +1686,7 @@ function eos_dp_console_usage(){
 
 /**
  * Print the HTML comment in the footer.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1707,9 +1709,9 @@ function eos_dp_comment(){
 
 /**
  * Get options in case of single or multisite installation.
- * 
+ *
  * @param string $option
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1724,7 +1726,7 @@ function eos_dp_get_option( $option ){
 
 /**
  * Check if it's a mobile device.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1746,7 +1748,7 @@ function eos_dp_is_mobile() {
 
 /**
  * Return the disabled plugins according to the mobile settings.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1760,7 +1762,7 @@ function eos_dp_disabled_plugins_by_device() {
 
 /**
  * Return the disabled plugins according to the search settings.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1775,9 +1777,9 @@ function eos_dp_disabled_plugins_on_search() {
 
 /**
  * Filter the lugisn on mobile.
- * 
+ *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1817,9 +1819,9 @@ function eos_dp_disabled_plugins_by_device_filter( $plugins ) {
 
 /**
  * Filter the lugisn on search.
- * 
+ *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1865,7 +1867,7 @@ if( wp_doing_ajax() || isset( $_REQUEST['wc-ajax'] ) ){
 		add_action( 'muplugins_loaded',function() {
 			/**
 			 * Let FDP alone during its Ajax requests.
-			 * 
+			 *
 			 * @since 1.9.0
 			 *
 			 */
@@ -1878,7 +1880,7 @@ if( wp_doing_ajax() || isset( $_REQUEST['wc-ajax'] ) ){
 		add_action( 'muplugins_loaded',function() {
 			/**
 			 * Add filter to disable specific plugins during Ajax requests of other plugins.
-			 * 
+			 *
 			 * @since 1.9.0
 			 *
 			 */
@@ -1892,10 +1894,10 @@ if( wp_doing_ajax() || isset( $_REQUEST['wc-ajax'] ) ){
 
 	/**
 	 * Disable specific plugins during Ajax requests of other plugins.
-	 * 
+	 *
 	 * @since 1.9.0
 	 *
-	 */	
+	 */
 	function eos_dp_integration_actions_plugins( $plugins ){
 		$plugins_actions = eos_dp_get_option( 'eos_dp_integration_actions' );
 		$plugins = eos_dp_unshift_fdp( $plugins );
@@ -1916,9 +1918,9 @@ if( wp_doing_ajax() || isset( $_REQUEST['wc-ajax'] ) ){
 
 /**
  * Exclude all other plugins during Singles options saving process.
- * 
+ *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1938,7 +1940,7 @@ function eos_dp_only_fdp( $plugins ){
 				$fdp_plugins[] = $plugin;
 			}
 		}
-	}	
+	}
 	if( !empty( $fdp_plugins ) ){
 		return $fdp_plugins;
 	}
@@ -1947,9 +1949,9 @@ function eos_dp_only_fdp( $plugins ){
 
 /**
  * Filter the disabled plugins on ajax.
- * 
+ *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1982,9 +1984,9 @@ function eos_dp_disabled_plugins_on_ajax_filter( $plugins ) {
 
 /**
  * Return the disabled plugins according to the ajax options.
- * 
+ *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -1995,7 +1997,7 @@ function eos_dp_disabled_plugins_on_ajax() {
 		$action = false;
 		if( isset( $_REQUEST['action'] ) ){
 			$action = sanitize_text_field( $_REQUEST['action'] );
-		} 
+		}
 		elseif( isset( $_REQUEST['wc-ajax'] ) ) {
 			$action = sanitize_text_field( $_REQUEST['wc-ajax'] );
 		};
@@ -2027,14 +2029,14 @@ if ( wp_doing_ajax() || isset( $_POST['wc-ajax'] ) ){
 	if( isset( $ajaxTheme[$action] ) && !$ajaxTheme[$action] ){
 		add_action( 'plugins_loaded','eos_dp_replace_theme',99 );
 	}
-	
+
 }
 
 /**
- * Filter the disabled plugins on mobile.
- * 
+ * Filter the disabled plugins for logged-in users.
+ *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2050,7 +2052,7 @@ function eos_dp_disabled_plugins_for_logged_users( $plugins ) {
 	}
 	if( false !== strpos( implode( '',array_keys( $_COOKIE ) ),'wordpress_logged_in' ) ){
 		$opts = eos_dp_get_option( 'eos_dp_pro_main' );
-		
+
 		if( $opts && isset( $opts['eos_dp_logged_conditions'] ) && is_array( $opts['eos_dp_logged_conditions'] ) && !empty( $opts['eos_dp_logged_conditions'] ) ){
 			$conditions_opts = $opts['eos_dp_logged_conditions'];
 			$disabled_plugins_for_user = array();
@@ -2058,12 +2060,15 @@ function eos_dp_disabled_plugins_for_logged_users( $plugins ) {
 			if( $user ){
 					$disabled_plugins = array();
 					$conditions = eos_dp_logged_user_conditions();
+
 					foreach( $conditions_opts as $e => $string ){
 						if( '' === $e || false !== strpos( $e,'_off' ) || '' === $string ) continue;
 						$arr = json_decode( str_replace( '\\','',$string ),true );
 						if( !is_array( $arr ) || !isset( $arr['value'] ) || !isset( $arr['plugins'] ) ) continue;
 						$expression = $arr['value'];
+
 						if( $expression && '' !== $expression && substr_count( $expression,'(' ) === substr_count( $expression,')' ) ){
+
 							if( eos_dp_parse_expression( $expression,$user ) ){
 								$disabled_plugins = array_unique( explode( ';',str_replace( 'pn:','',$arr['plugins'] ) ) );
 								$plugins = array_diff( $plugins,$disabled_plugins );
@@ -2085,6 +2090,7 @@ function eos_dp_disabled_plugins_for_logged_users( $plugins ) {
 	}
 	return $plugins;
 }
+
 add_action( 'plugins_loaded','eos_dp_remove_filters',9999 );
 add_action( 'activate_plugin','eos_dp_remove_filters',9999 );
 add_action( 'deactivated_plugin','eos_dp_remove_filters',9999 );
@@ -2095,9 +2101,9 @@ add_filter( 'pre_update_option_active_plugins','eos_dp_return_all_plugins' );
 
 /**
  * Prevent disabling plugins before updating the rewrite rules or the option active_plugins.
- * 
+ *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2117,12 +2123,12 @@ if( false !== FDP_REMOVE_FILTERS_BEFORE_FIRST_PLUGIN ) add_action( 'fdp_loaded',
 
 /**
  * Remove the active plugins filters to avoid any issue with plugins that save the active_plugins option in the database.
- * 
+ *
  * @since 1.9.0
  *
  */
 function eos_dp_remove_filters(){
-	foreach( apply_filters( 'fdp_deactivation_callbacks', 
+	foreach( apply_filters( 'fdp_deactivation_callbacks',
 		array(
 			'eos_dp_only_fdp' => 0,
 			'eos_dp_code_profiler' => 0,
@@ -2136,16 +2142,16 @@ function eos_dp_remove_filters(){
 			'eos_dp_disabled_plugins_for_logged_users' => 40,
 			'eos_dp_mu_deactivate_by_post_requests' => 50,
 			'eos_dp_front_untouchables' => 50,
-			'eos_dp_back_untouchables' => 50 
+			'eos_dp_back_untouchables' => 50
 		)
 	) as $callback => $priority ) {
-		remove_filter( 'option_active_plugins', $callback, $priority );	
+		remove_filter( 'option_active_plugins', $callback, $priority );
 	}
 }
 
 /**
  * Print the disabled plugins in the JavaScript console in case of preview and debug.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2169,7 +2175,7 @@ function eos_dp_print_disabled_plugins(){
 
 /**
  * Print disabled plugins in a hidden div if the page is called by the debug  button.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2197,7 +2203,7 @@ function eos_dp_debug_options_wrapper(){
 
 /**
  * Send JavaScript on modern browsers with the Content Security Policy.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2209,12 +2215,12 @@ function eos_dp_disable_javascript(){
 
 /**
  * Get the ID of the translated page.
- * 
+ *
  * @param string $page_path
  * @param string $after_home_uri
  * @param array $urlsA
  * @param array $post_types
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2282,9 +2288,9 @@ function eos_dp_translated_id( $page_path,$after_home_uri,$urlsA,$post_types ) {
 
 /**
  * Prevent disabling wrong plugins.
- * 
+ *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2297,9 +2303,9 @@ function eos_dp_prevent_disabling_wrong_plugins( $plugins ){
 
 /**
  * Move FDP to the first position in the plugins array.
- * 
+ *
  * @param array $plugins
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2315,7 +2321,7 @@ function eos_dp_unshift_fdp( $plugins ){
 
 /**
  * Return array of conditions.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2335,10 +2341,10 @@ function eos_dp_logged_user_conditions(){
 
 /**
  * Return $a or $b.
- * 
+ *
  * @param int|string|array|obect $a
  * @param int|string|array|obect $b
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2348,7 +2354,7 @@ function eos_dp_or( $a,$b ){
 
 /**
  * Return $a && $b.
- * 
+ *
  * @param int|string|array|obect $a
  * @param int|string|array|obect $b
  * @since 1.9.0
@@ -2360,7 +2366,7 @@ function eos_dp_and( $a,$b ){
 
 /**
  * Return not of $a.
- * 
+ *
  * @param int|string|array|obect $a
  * @since 1.9.0
  *
@@ -2371,7 +2377,7 @@ function eos_dp_not( $a ){
 
 /**
  * Check if user logged in when the WP core function not available.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2391,7 +2397,7 @@ function eos_dp_is_user_logged(){
 
 /**
  * Get current user when core function not available.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2434,10 +2440,10 @@ function eos_dp_get_current_user() {
 
 /**
  * Parse expression for logged-in user_status.
- * 
+ *
  * @param string $expression
  * @param object $user
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2453,11 +2459,15 @@ function eos_dp_parse_expression( $expression,$user ){
 		switch( $f ){
 			case 'role':
 			case 'capability':
-				$roles = get_user_meta( $user->ID,'wp_capabilities' );
+				$roles = isset( $user->roles ) ? $user->roles : fdp_get_user_roles_by_id( $user->ID );
 				if( 'role' === $f ){
+
 					if( $roles && is_array( $roles ) ){
-						foreach( $roles as $roleA ){
-							if( in_array( $value,array_keys( $roleA ) ) && $roleA[$value] ){
+						foreach( $roles as $role ){
+							if( is_array( $role ) && in_array( $value,array_keys( $role ) ) && $role[$value] ){
+								return !$not;
+							}
+							if($value === $role){
 								return !$not;
 							}
 							else{
@@ -2508,10 +2518,51 @@ function eos_dp_parse_expression( $expression,$user ){
 }
 
 /**
+ * Get user roles safely by User ID.
+ * @param int $user_id The ID of the user.
+ * @return array List of roles (e.g., ['editor', 'author']). Returns empty array on failure.
+ * @since 2.5.1
+ */
+function fdp_get_user_roles_by_id( $user_id ) {
+    global $wpdb;
+
+    // 1. Validate Input: Ensure ID is a positive integer
+    $user_id = absint( $user_id );
+    if ( ! $user_id ) {
+        return [];
+    }
+
+    // 2. Dynamic Prefix: Use $wpdb->get_blog_prefix() for multisite compatibility
+    // In single sites, this is just 'wp_'. In multisite, it could be 'wp_2_'.
+    $capabilities_key = $wpdb->get_blog_prefix() . 'capabilities';
+
+    // 3. Secure Query: Use $wpdb->prepare to prevent SQL Injection
+    $raw_capabilities = $wpdb->get_var( $wpdb->prepare(
+        "SELECT meta_value FROM {$wpdb->usermeta} WHERE user_id = %d AND meta_key = %s",
+        $user_id,
+        $capabilities_key
+    ) );
+
+    // 4. Sanitize Output: Check if data exists and is valid serialized data
+    if ( ! $raw_capabilities ) {
+        return [];
+    }
+
+    $roles_data = maybe_unserialize( $raw_capabilities );
+
+    // 5. Final Structure Check: Ensure we actually have an array to return
+    if ( ! is_array( $roles_data ) ) {
+        return [];
+    }
+
+    return array_keys( $roles_data );
+}
+
+/**
  * Parse expression for logged-in user_status.
- * 
+ *
  * @param int $user_id
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2529,10 +2580,10 @@ function eos_dp_user_has_bought( $user_id ){
 
 /**
  * Check if the usermeta value matches the current user.
- * 
+ *
  * @param int $user_id
  * @param string $key_value
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2555,7 +2606,7 @@ function eos_dp_has_usermeta( $user_id,$key_value ){
 
 /**
  * Warn the user the mu-plugin is still installed.
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -2572,9 +2623,9 @@ function eos_dp_missing_fdp_notice(){
 
 /**
  * Get options by URL.
- * 
+ *
  * @param string $url
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -2613,7 +2664,7 @@ if( isset( $_REQUEST['eos_dp_pro_id'] ) ){
 add_action( 'init',function(){
 	/**
 	 * Fire if FDP is disabled.
-	 * 
+	 *
 	 * @since 1.0.0
 	 *
 	 */
@@ -2626,9 +2677,9 @@ add_action( 'init',function(){
 
 /**
  * Return true if the plugin is active.
- * 
+ *
  * @param string $plugin
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -2638,7 +2689,7 @@ function fdp_is_plugin_globally_active( $plugin ){
 
 /**
  * Return true if the request is done via Ajax.
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -2652,7 +2703,7 @@ function eos_dp_is_maybe_ajax(){
 
 /**
  * Sanitize file name.
- * 
+ *
  * @since 1.9.0
  *
  */
@@ -2726,9 +2777,9 @@ function eos_dp_sanitize_file_name( $filename ){
 
 /**
  * Check if the URL has an extension.
- * 
+ *
  * @param string $url
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -2740,7 +2791,7 @@ function eos_dp_url_has_extension( $url ){
 add_action( 'send_headers', function(){
 	/**
 	 * Add header with the number of disabled plugins.
-	 * 
+	 *
 	 * @since 1.0.0
 	 *
 	 */
@@ -2753,10 +2804,10 @@ add_action( 'send_headers', function(){
 add_filter( 'wp_php_error_message',function( $message, $error ){
 	/**
 	 * Hamdle the fatal errors.
-	 * 
+	 *
 	 * @param string $message
 	 * @param array $error
-	 * 
+	 *
 	 * @since 1.0.0
 	 *
 	 */
@@ -2798,7 +2849,7 @@ add_filter( 'wp_php_error_message',function( $message, $error ){
 
 /**
  * Fatal error notice.
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -2824,7 +2875,7 @@ function eos_dp_fatal_error_notice(){
 
 /**
  * Update the FDP admin notices.
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -2844,7 +2895,7 @@ function eos_dp_update_admin_notices( $key,$msg ){
 
 /**
  * Retrieve an extract of the code from $line and $file.
- * 
+ *
  * @param int $line
  * @param string $file
  * @since 1.0.0
@@ -2871,11 +2922,11 @@ function eos_dp_get_code_extract( $line,$file ){
 
 /**
  * Filter active plugins.
- * 
+ *
  * @param string $callback
  * @param int $priority
  * @param bool $cron
- * 
+ *
  * @since 1.0.0
  *
  */
@@ -2894,7 +2945,7 @@ function eos_dp_filter_active_plugins( $callback,$priority,$cron = false ){
 add_action( 'muplugins_loaded',function(){
 	/**
 	 * Add filters to disable plugins according to the settings.
-	 * 
+	 *
 	 * @since 1.9.0
 	 *
 	 */
@@ -2910,7 +2961,7 @@ add_action( 'muplugins_loaded',function(){
 		eos_dp_filter_active_plugins(  'eos_dp_disabled_plugins_on_ajax_filter',999 );
 
 		$GLOBALS['fdp_post_data'] = false;
-		
+
 		if( isset( $_POST ) && ! empty( $_POST ) ) {
 			$GLOBALS['fdp_post_data'] = $_POST;
 		}
@@ -2920,13 +2971,13 @@ add_action( 'muplugins_loaded',function(){
 				$GLOBALS['fdp_post_data'] = json_decode( $json, true );
 			}
 		}
-		
-		
-	
-		
-		if( 
-			$GLOBALS['fdp_post_data'] && ! empty( $GLOBALS['fdp_post_data'] ) 
-			&& ( ! isset( $_REQUEST['action'] ) || 'heartbeat' !== $_REQUEST['action'] ) 
+
+
+
+
+		if(
+			$GLOBALS['fdp_post_data'] && ! empty( $GLOBALS['fdp_post_data'] )
+			&& ( ! isset( $_REQUEST['action'] ) || 'heartbeat' !== $_REQUEST['action'] )
 		){
 			eos_dp_filter_active_plugins(  'eos_dp_mu_deactivate_by_post_requests',50 );
 		}
