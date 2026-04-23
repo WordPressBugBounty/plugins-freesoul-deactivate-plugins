@@ -346,3 +346,159 @@ if ( ! function_exists( 'get_woocommerce_currency_symbols' ) ) {
 		return $symbols;
 	}
 }
+
+/**
+ * Enhanced Shortcode to display a "Light" Mini-Cart with robust session detection.
+ * Includes fallback for session keys and better unserialization handling.
+ */
+add_shortcode('fdp_cart_emulator', 'fdp_emulate_woocommerce_mini_cart');
+
+function fdp_emulate_woocommerce_mini_cart() {
+    global $wpdb;
+    // 1. Find the WooCommerce session cookie
+    $session_cookie = '';
+    foreach ( $_COOKIE as $key => $value ) {
+        if ( strpos( $key, 'wp_woocommerce_session_' ) === 0 ) {
+            $session_cookie = $value;
+            break;
+        }
+    }
+    $cart_items_html = '';
+    $total_count = 0;
+    $total_price = 0;
+    if ( ! empty( $session_cookie ) ) {
+        // Break the cookie: [0] is the customer_id/hash, [1] is expiration
+        $cookie_parts = explode( '|', $session_cookie );
+        $customer_id  = $cookie_parts[0];
+        $table_name = $wpdb->prefix . 'woocommerce_sessions';
+        // 2. Fetch the session. We try to match the customer_id
+        $session_raw = $wpdb->get_var( $wpdb->prepare( 
+            "SELECT session_value FROM $table_name WHERE session_key = %s", 
+            $customer_id 
+        ) );
+        if ( $session_raw ) {
+            // WooCommerce stores data in a double-serialized or specially encoded format
+            $session_data = maybe_unserialize( $session_raw );
+            // Critical check: Ensure 'cart' exists and is not empty
+            if ( isset( $session_data['cart'] ) && ! empty( $session_data['cart'] ) ) {
+                $cart_array = maybe_unserialize( $session_data['cart'] );
+
+                if ( is_array( $cart_array ) ) {
+                    foreach ( $cart_array as $item ) {
+                        $product_id = isset($item['product_id']) ? $item['product_id'] : 0;
+                        $qty        = isset($item['quantity']) ? $item['quantity'] : 0;
+
+                        if ( $product_id > 0 ) {
+                            $product_title = get_the_title($product_id);
+                            // Get price (handling both simple and variable products)
+                            $price = get_post_meta($product_id, '_price', true);
+                            
+                            $total_count += $qty;
+                            $total_price += ($price * $qty);
+
+                            $cart_items_html .= '<li style="display: flex; justify-content: space-between; gap: 20px; padding: 8px 0; border-bottom: 1px solid #eee;">';
+                            $cart_items_html .= '<span style="font-size:13px;">' . esc_html($product_title) . ' <strong>x' . $qty . '</strong></span>';
+                            $cart_items_html .= '<span style="font-size:13px; font-weight:bold;">' . number_format($price * $qty, 2) . '€</span>';
+                            $cart_items_html .= '</li>';
+                        }
+                    }
+                }
+            }
+        }
+    }
+	// Fetch URLs for Cart and Checkout pages from wp_options
+	$cart_url     = get_permalink(get_option('woocommerce_cart_page_id'));
+	$checkout_url = get_permalink(get_option('woocommerce_checkout_page_id'));
+    // 3. UI and Logic for the dropdown
+    ob_start(); ?>
+    <style>
+        .fdp-mini-cart { position: relative; display: inline-block; font-family: sans-serif; }
+        .fdp-cart-link { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 5px; }
+        .fdp-cart-dropdown { 
+            display: none; position: absolute; top: 100%; right: 0; background: #fff; 
+            min-width: 280px; border: 1px solid #ddd; padding: 15px; z-index: 9999;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 4px;
+        }
+        .fdp-mini-cart:hover .fdp-cart-dropdown { display: block; }
+        .fdp-cart-dropdown ul { list-style: none; margin: 0; padding: 0; max-height: 300px; overflow-y: auto; }
+        .fdp-total { font-weight: bold; margin-top: 15px; padding-top: 10px; border-top: 2px solid #333; text-align: right; }
+        .fdp-btn-cart { display: block; text-align: center; margin-top: 15px; background: #222; color: #fff; padding: 10px; text-decoration: none; font-size: 14px; border-radius: 3px; }
+        .fdp-btn-cart:hover { background: #000; }
+        .badge { background: #e21; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 11px; }
+    </style>
+    <div class="fdp-mini-cart">
+        <a href="<?php echo get_permalink(get_option('woocommerce_cart_page_id')); ?>" class="fdp-cart-link">
+            <span style="font-size: 20px;">🛒</span>
+            <?php if ( $total_count > 0 ) : ?>
+                <span class="badge"><?php echo $total_count; ?></span>
+            <?php endif; ?>
+        </a>
+        
+        <div class="fdp-cart-dropdown">
+            <?php if ( $total_count > 0 ) : ?>
+                <ul><?php echo $cart_items_html; ?></ul>
+                <div class="fdp-total">Total: <?php echo number_format($total_price, 2); ?> €</div>
+				<div class="fdp-buttons-container">
+                    <a href="<?php echo esc_url($cart_url); ?>" class="fdp-btn button btn fdp-btn-view-cart">View Cart</a>
+                    <a href="<?php echo esc_url($checkout_url); ?>" class="fdp-btn button btnfdp-btn-checkout">Checkout</a>
+                </div>
+            <?php else : ?>
+                <p style="text-align:center; color:#888;">Your cart is empty.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+	<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() {
+		const container = document.getElementById('fdp-mini-cart-container');
+		if (!container) return;
+		const refreshFdpCart = () => {
+			const formData = new FormData();
+			formData.append('action', 'fdp_woo_ajax_update_mini_cart');
+
+			fetch(window.location.origin + '/wp-admin/admin-ajax.php', {
+				method: 'POST',
+				body: formData
+			})
+			.then(response => response.text())
+			.then(html => {
+				container.innerHTML = html;
+				// Dispatch a native vanilla event in case other scripts need it
+				document.dispatchEvent(new CustomEvent('fdp_cart_updated'));
+			})
+			.catch(err => console.warn('FDP: Update failed', err));
+		};
+		const send = XMLHttpRequest.prototype.send;
+		XMLHttpRequest.prototype.send = function() {
+			this.addEventListener('load', function() {
+				if (this.responseURL && (
+					this.responseURL.includes('add_to_cart') || 
+					this.responseURL.includes('get_refreshed_fragments')
+				)) {
+					setTimeout(refreshFdpCart, 100);
+				}
+			});
+			return send.apply(this, arguments);
+		};
+		document.addEventListener('click', function(e) {
+			if (e.target.classList.contains('add_to_cart_button')) {
+				setTimeout(refreshFdpCart, 800);
+			}
+		}, true);
+	});
+	</script>
+    <?php
+	$output = '<div id="fdp-mini-cart-container">' . ob_get_clean() . '</div>';
+	return $output;
+}
+
+// Hook for logged-in and guest users
+add_action('wp_ajax_fdp_woo_ajax_update_mini_cart', 'fdp_ajax_update_mini_cart');
+add_action('wp_ajax_nopriv_fdp_woo_ajax_update_mini_cart', 'fdp_ajax_update_mini_cart');
+
+/*
+* AJAX Update Mini Cart
+*/
+function fdp_ajax_update_mini_cart() {
+    echo fdp_emulate_woocommerce_mini_cart();
+    wp_die();
+}

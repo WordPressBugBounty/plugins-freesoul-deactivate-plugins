@@ -74,7 +74,11 @@ add_action( 'plugins_loaded', 'eos_dp_prevent_missing_functions_errors' );
  *
  */
 function eos_dp_prevent_missing_functions_errors() {
-	if ( ! is_admin() && function_exists( 'fdp_is_plugin_globally_active' ) && fdp_is_plugin_globally_active( 'woocommerce/woocommerce.php' ) ) {
+	if ( 
+		( ! is_admin() || ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && false !== strpos( sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ), 'fdp_woo_ajax_' ) ) )
+		&& function_exists( 'fdp_is_plugin_globally_active' ) 
+		&& fdp_is_plugin_globally_active( 'woocommerce/woocommerce.php' ) 
+) {
 		require_once EOS_DP_PLUGIN_DIR . '/inc/fdp-woocommerce.php';
 	}
 }

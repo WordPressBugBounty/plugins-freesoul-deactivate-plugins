@@ -1347,7 +1347,6 @@ function eos_dp_pro_save_settings() {
 	die();
 	exit;
 }
-
 add_action( 'wp_ajax_eos_dp_save_addon_settings', 'eos_dp_save_addon_settings' );
 // Save settings.
 function eos_dp_save_addon_settings() {
@@ -1406,6 +1405,197 @@ function eos_dp_code_profiler_save() {
 	);
 	die();
 	exit;
+}
+
+add_action( 'wp_ajax_eos_dp_code_profiler_results', 'eos_dp_code_profiler_results' );
+// Return the heaviest plugins from a Code Profiler profile.
+function eos_dp_code_profiler_results() {
+	if ( ! current_user_can( 'activate_plugins' ) ) {
+		wp_send_json_error(
+			array(
+				'message' => esc_html__( 'You are not allowed to access Code Profiler results.', 'freesoul-deactivate-plugins' ),
+			)
+		);
+	}
+
+	if (
+		! isset( $_POST['nonce'] )
+		|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'fdp_cp_profile_row' )
+		|| ! isset( $_POST['profile_id'] )
+	) {
+		wp_send_json_error(
+			array(
+				'message' => esc_html__( 'Missing or invalid profiling request.', 'freesoul-deactivate-plugins' ),
+			)
+		);
+	}
+
+	if ( ! function_exists( 'code_profiler_get_profile_path' ) || ! function_exists( 'code_profiler_get_profile_data' ) ) {
+		$cp_helper = WP_PLUGIN_DIR . '/code-profiler/lib/helper.php';
+		if ( file_exists( $cp_helper ) ) {
+			require_once $cp_helper;
+		}
+	}
+
+	if ( ! function_exists( 'code_profiler_get_profile_path' ) || ! function_exists( 'code_profiler_get_profile_data' ) ) {
+		wp_send_json_error(
+			array(
+				'message' => esc_html__( 'Code Profiler is not available.', 'freesoul-deactivate-plugins' ),
+			)
+		);
+	}
+
+	$profile_id = sanitize_text_field( wp_unslash( $_POST['profile_id'] ) );
+	if ( ! preg_match( '/^\d{10}\.\d+$/', $profile_id ) ) {
+		wp_send_json_error(
+			array(
+				'message' => esc_html__( 'The profile identifier is not valid.', 'freesoul-deactivate-plugins' ),
+			)
+		);
+	}
+
+	$profile_path = false;
+	for ( $attempt = 0; $attempt < 5; $attempt++ ) {
+		$profile_path = code_profiler_get_profile_path( $profile_id );
+		if ( false !== $profile_path ) {
+			break;
+		}
+		usleep( 200000 );
+	}
+	if ( false === $profile_path ) {
+		wp_send_json_error(
+			array(
+				'message' => esc_html__( 'The profile could not be found.', 'freesoul-deactivate-plugins' ),
+			)
+		);
+	}
+
+	$buffer = code_profiler_get_profile_data( $profile_path, 'slugs' );
+	if ( isset( $buffer['error'] ) ) {
+		wp_send_json_error(
+			array(
+				'message' => wp_strip_all_tags( (string) $buffer['error'] ),
+			)
+		);
+	}
+
+	if ( ! function_exists( 'get_plugins' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
+	$active_plugins = eos_dp_active_plugins();
+	$installed      = get_plugins();
+	$slug_map       = array();
+	$name_map       = array();
+	$ignored_paths  = array( EOS_DP_PLUGIN_BASE_NAME );
+	$ignored_slugs  = array( 'freesoul-deactivate-plugins', 'freesoul-deactivate-plugins-pro' );
+	$ignored_names  = array( 'freesoul deactivate plugins', 'freesoul deactivate plugins pro' );
+
+	if ( defined( 'EOS_DP_PRO_PLUGIN_BASE_NAME' ) ) {
+		$ignored_paths[] = EOS_DP_PRO_PLUGIN_BASE_NAME;
+	}
+	$ignored_paths = array_unique( array_filter( $ignored_paths ) );
+
+	foreach ( $active_plugins as $plugin_path ) {
+		if ( ! isset( $installed[ $plugin_path ] ) ) {
+			continue;
+		}
+		$slug = dirname( $plugin_path );
+		if ( '.' === $slug ) {
+			$slug = basename( $plugin_path );
+		}
+		if ( ! isset( $slug_map[ $slug ] ) ) {
+			$slug_map[ $slug ] = array();
+		}
+		$slug_map[ $slug ][] = $plugin_path;
+
+		$name = trim( wp_strip_all_tags( $installed[ $plugin_path ]['Name'] ) );
+		if ( '' !== $name ) {
+			$key = strtolower( $name );
+			if ( ! isset( $name_map[ $key ] ) ) {
+				$name_map[ $key ] = array();
+			}
+			$name_map[ $key ][] = $plugin_path;
+		}
+	}
+
+	usort(
+		$buffer,
+		function( $a, $b ) {
+			return (float) $b[1] <=> (float) $a[1];
+		}
+	);
+
+	$total_time = 0;
+	foreach ( $buffer as $row ) {
+		if ( isset( $row[3] ) && 'plugin' === $row[3] ) {
+			$total_time += (float) $row[1];
+		}
+	}
+
+	$top_plugins = array();
+	$seen_paths  = array();
+	foreach ( $buffer as $row ) {
+		if ( count( $top_plugins ) >= 10 ) {
+			break;
+		}
+		if ( ! isset( $row[3] ) || 'plugin' !== $row[3] ) {
+			continue;
+		}
+
+		$path = '';
+		$slug = isset( $row[0] ) ? sanitize_text_field( $row[0] ) : '';
+		$name = isset( $row[2] ) ? trim( wp_strip_all_tags( $row[2] ) ) : $slug;
+
+		if ( in_array( strtolower( $slug ), $ignored_slugs, true ) || in_array( strtolower( $name ), $ignored_names, true ) ) {
+			continue;
+		}
+
+		if ( '' !== $slug && ! empty( $slug_map[ $slug ] ) ) {
+			$path = $slug_map[ $slug ][0];
+		} elseif ( '' !== $name ) {
+			$key = strtolower( $name );
+			if ( ! empty( $name_map[ $key ] ) ) {
+				$path = $name_map[ $key ][0];
+			}
+		}
+
+		if ( '' === $path || in_array( $path, $ignored_paths, true ) || isset( $seen_paths[ $path ] ) ) {
+			continue;
+		}
+
+		$seen_paths[ $path ] = true;
+		$time                = round( (float) $row[1], 4 );
+		$top_plugins[]       = array(
+			'rank'    => count( $top_plugins ) + 1,
+			'path'    => $path,
+			'slug'    => $slug,
+			'name'    => '' !== $name ? $name : $slug,
+			'time'    => $time,
+			'percent' => $total_time > 0 ? round( ( $time / $total_time ) * 100, 1 ) : 0,
+		);
+	}
+
+	$view_url = admin_url(
+		add_query_arg(
+			array(
+				'page'    => defined( 'CODE_PROFILER_PRO_MU_ON' ) ? 'code-profiler-pro' : 'code-profiler',
+				'cptab'   => 'profiles_list',
+				'action'  => 'view_profile',
+				'id'      => $profile_id,
+				'section' => 1,
+			),
+			'admin.php'
+		)
+	);
+
+	wp_send_json_success(
+		array(
+			'profile_id'   => $profile_id,
+			'view_url'     => $view_url,
+			'top_plugins'  => $top_plugins,
+		)
+	);
 }
 
 add_action( 'wp_ajax_eos_dp_generate_critical_css', 'eos_dp_generate_critical_css' );

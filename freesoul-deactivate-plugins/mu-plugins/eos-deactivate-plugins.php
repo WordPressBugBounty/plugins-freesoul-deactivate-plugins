@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.6.0
+  Version: 2.6.1
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -50,7 +50,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.6.0' );
+define( 'EOS_DP_MU_VERSION','2.6.1' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -692,11 +692,11 @@ if(
 					$home_url_A = explode( '://', get_home_url() );
 					if( isset( $home_url_A[1] ) && $cuA && isset( $cuA[1] ) ){
 						$home_url_A = explode( '/', $home_url_A[1] );
-						$key = 'all_archives_' . sanitize_key( $cuA[count( $home_url_A )] );
+						$key = isset( $cuA[count( $home_url_A )] ) ? 'all_archives_' . sanitize_key( $cuA[count( $home_url_A )] ) : '';
 						if( !isset( $archives ) ){
 							$archives = eos_dp_get_option( 'eos_dp_archives' );
 						}
-						if( isset( $archives[$key] ) ){
+						if( $key && isset( $archives[$key] ) ){
 							$eos_dp_paths = explode( ',',$archives[$key] );
 							$archive_found = true;
 							$info[] = sprintf( 'Plugins disabled according to the archive settings, all %s archives',esc_attr( $cuA[1] ) );
@@ -907,8 +907,29 @@ function eos_dp_cron_active_plugins( $plugins ){
  *
  */
 function eos_dp_code_profiler( $plugins ){
-	$opts = eos_dp_get_option( 'fdp_code_profiler' );
-	$disabled = isset( $opts['plugins'] ) && is_array( $opts['plugins'] ) ? $opts['plugins'] : array();
+	if( isset( $_REQUEST['eos_dp_preview'] ) && isset( $_REQUEST['admin_page_key'] ) ){
+		$transient_name = 'fdp_test_'.sanitize_key( $_REQUEST['admin_page_key'] ).'_'.esc_attr( sanitize_text_field( $_REQUEST['test_id'] ) );
+		$disabled = explode( ';pn:',esc_attr( get_transient( $transient_name ) ) );
+		delete_transient( $transient_name );
+	}
+	elseif( isset( $_REQUEST['fdp_tax'] ) && isset( $_REQUEST['eos_dp_preview'] ) && isset( $_REQUEST['test_id'] ) ){
+		$transient_name = 'fdp_test_'.sanitize_key( $_REQUEST['fdp_tax'] ).'_'.sanitize_text_field( $_REQUEST['test_id'] );
+		$disabled = explode( ';pn:',esc_attr( get_transient( $transient_name ) ) );
+		delete_transient( $transient_name );
+	}
+	elseif( isset( $_REQUEST['fdp_post_id'] ) && isset( $_REQUEST['eos_dp_preview'] ) ){
+		$eos_page_id = absint( $_REQUEST['fdp_post_id'] );
+		$cron = isset( $_REQUEST['internal_call'] ) && 'true' === $_REQUEST['internal_call'] ? 'cron_' : '';
+		$after_save = isset( $_REQUEST['after_save'] ) && 'true' === $_REQUEST['after_save'] ? 'after_save_' : '';
+		$tool = isset( $_REQUEST['tool'] ) && in_array( $_REQUEST['tool'],array( 'gtmetrix','gpsi' ) ) ? sanitize_key( $_REQUEST['tool'] ) : '';
+		$transient_name = 'fdp_test_'.$after_save.$cron.$tool.sanitize_key( $_REQUEST['fdp_post_id'].'_'.sanitize_text_field( $_REQUEST['test_id'] ) );
+		$disabled = explode( ';pn:',esc_attr( get_transient( $transient_name ) ) );
+		delete_transient( $transient_name );
+	}
+	else{
+		$opts = eos_dp_get_option( 'fdp_code_profiler' );
+		$disabled = isset( $opts['plugins'] ) && is_array( $opts['plugins'] ) ? $opts['plugins'] : array();
+	}
 	if( !empty( $disabled ) ){
 		return eos_dp_filter_paths( $disabled,$plugins );
 	}
@@ -1071,7 +1092,7 @@ function eos_dp_admin_option_active_plugins( $plugins ){
 		if( isset( $_REQUEST['theme'] ) && 'false' === $_REQUEST['theme'] ){
 			eos_dp_replace_theme();
 		}
-		if( !isset( $GLOBALS['eos_dp_paths'] ) ){
+		if( !isset( $GLOBALS['eos_dp_paths'] ) || empty( $GLOBALS['eos_dp_paths'] ) ){
 			$GLOBALS['eos_dp_paths'] = array_filter( $disabled_plugins );
 		}
 		$untouchables = array(
@@ -1157,6 +1178,7 @@ function eos_dp_admin_option_active_plugins( $plugins ){
 		}
 	}
 	$GLOBALS['eos_dp_paths'] = array_diff( $all_plugins,$plugins );
+
 	add_action( 'admin_footer','eos_dp_print_disabled_plugins',9999 );
 	return $plugins;
 }
@@ -1561,6 +1583,7 @@ function eos_dp_display_usage(){
 	$n = 0;
 	$separators = array( ' | ',' | ',' | ','' );
 	global $eos_dp_paths,$eos_dp_all_plugins;
+
 	$eos_dp_paths = is_array( $eos_dp_paths ) && !empty( $eos_dp_paths ) ? array_filter( $eos_dp_paths ) : array();
 	$plugins_str = '[p]DISABLED PLUGINS ('.count( $eos_dp_paths ).'):[pp]';
 	foreach( $eos_dp_paths as $plugin ){
