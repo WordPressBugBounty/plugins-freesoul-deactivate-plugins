@@ -73,6 +73,18 @@ if ( ! function_exists( 'is_product' ) ) {
 	}
 }
 
+if ( ! function_exists( 'is_checkout' ) ) {
+
+	/**
+	 * Is_checkout - Returns false. If WooCommerce isn't active, we return false.
+	 *
+	 * @return bool
+	 */
+	function is_checkout() {
+		return false;
+	}
+}
+
 if ( ! function_exists( 'wc_get_page_id' ) ) {
 	/**
 	 * Wc_get_page_id - Returns page ID.

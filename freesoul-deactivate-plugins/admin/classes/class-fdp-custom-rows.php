@@ -167,7 +167,7 @@ class FDP_Custom_Rows_Page extends Eos_Fdp_Matrix_Page {
 		?>
 	<tr>
 	  <td colspan="<?php echo count( $this->active_plugins ) + 2; ?>" id="eos-dp-url-actions" style="border:none;padding:0">
-		<button id="eos-dp-add-url" style="margin-top:16px"><?php esc_html_e( 'Add URL', 'freesoul-deactivate-plugins' ); ?></button>
+		<button id="eos-dp-add-url" style="margin-top:16px"><?php echo apply_filters( 'fdp_add_url_button_text', esc_html__( 'Add URL', 'freesoul-deactivate-plugins' ) ); ?></button>
 	  </td>
 	</tr>
 		<?php

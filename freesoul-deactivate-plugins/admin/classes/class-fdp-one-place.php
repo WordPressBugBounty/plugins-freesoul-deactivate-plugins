@@ -131,7 +131,7 @@ class FDP_One_Place extends Eos_Fdp_One_Column_Page {
 			echo wp_kses_post( sprintf( apply_filters( 'fdp_one_place_popup_title', __( 'Write the only URLs where %s has to be active. Separate them by a return line.', 'freesoul-deactivate-plugins' ) ), '<span id="fdp-one-place-plugin-in-popup"></span>' ) ); ?></p>
 			<p><?php 
 			// translators: %s is an example URL.
-			echo esc_html( sprintf( __( 'Use the star * to replace any groups of characters. E.g. %s', 'freesoul-deactivate-plugins' ), '*about/' ) ); ?></p>
+			echo esc_html( apply_filters( 'fdp_one_place_popup_example',sprintf( __( 'Use the star * to replace any groups of characters. E.g. %s', 'freesoul-deactivate-plugins' ), '*about/' ) ) ); ?></p>
 			<textarea id="fdp-one-place-textarea"></textarea>
 			<div class="right" style="position:absolute;bottom:0;left:0;right:0;padding:10px">
 				<button id="fdp-one-place-close-popup" class="button"><?php esc_html_e( 'Close', 'freesoul-deactivate-plugins' ); ?></button>

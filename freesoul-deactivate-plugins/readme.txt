@@ -4,7 +4,7 @@ Contributors:      giuse
 Requires at least: 4.6
 Tested up to: 7.0
 Requires PHP:      7.4
-Stable tag:        2.6.1
+Stable tag:        2.6.2
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -221,10 +221,9 @@ Info LLM page:
 == Changelog ==
 
 
-= 2.6.1 =
-* Fixed: List of disabled plugins not working in the preview for backend pages (PRO version)
-* Added: Row button to check the heaviest plugins when Code Profiler and FDP PRO are active
-* Fixed: PHP warnings
+= 2.6.2 =
+* Added: Filter hook to modify the button text of Custom URL rows.
+* Fixed: Conflict with Relenvassi.
 
 
 
