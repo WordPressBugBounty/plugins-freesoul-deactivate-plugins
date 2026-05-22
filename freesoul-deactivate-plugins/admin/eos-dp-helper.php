@@ -193,7 +193,7 @@ function eos_dp_redirect_to_settings() {
 	}
 	$previous_version = eos_dp_get_option( 'eos_dp_version' );
 	$version_compare  = version_compare( $previous_version, EOS_DP_VERSION, '<' );
-	if ( $version_compare && EOS_DP_NEED_UPDATE_MU ) {
+	if ( $previous_version && $version_compare && EOS_DP_NEED_UPDATE_MU ) {
 		// if the plugin was updated and we need to update also the mu-plugin.
 		define( 'EOS_DP_DOING_MU_UPDATE', true );
 		if ( file_exists( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' ) ) {

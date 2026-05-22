@@ -22,13 +22,15 @@ add_action( 'plugins_loaded', function() {
 	);
 } );
 
-if( defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE ) {
-	add_action( 'eos_dp_action_buttons', 'eos_dp_code_profiler_action_button', 20 );
-	add_action( 'fdp_after_admin_footer_removed', 'eos_dp_code_profiler_inline_assets' );
-}
+add_action( 'fdp_pro_loaded', function() {
+	if( defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE ) {
+		add_action( 'eos_dp_action_buttons', 'eos_dp_code_profiler_action_button', 20 );
+		add_action( 'fdp_after_admin_footer_removed', 'eos_dp_code_profiler_inline_assets' );
+	}
+} );
 
 function eos_dp_code_profiler_action_button() {
-	if ( ! is_super_admin() ) {
+	if ( ! current_user_can( 'activate_plugins' ) ) {
 		return;
 	}
 	?>
@@ -41,7 +43,7 @@ function eos_dp_code_profiler_action_button() {
 }
 
 function eos_dp_code_profiler_inline_assets() {
-	if ( ! is_admin() || ! is_super_admin() ) {
+	if ( ! is_admin() || ! current_user_can( 'activate_plugins' ) ) {
 		return;
 	}
 	$user          = wp_get_current_user();

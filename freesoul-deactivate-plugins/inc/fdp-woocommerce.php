@@ -85,6 +85,31 @@ if ( ! function_exists( 'is_checkout' ) ) {
 	}
 }
 
+if ( ! function_exists( 'is_cart' ) ) {
+
+	/**
+	 * Is_cart - Returns false. If WooCommerce isn't active, we return false.
+	 *
+	 * @return bool
+	 */
+	function is_cart() {
+		return false;
+	}
+}
+
+if ( ! function_exists( 'is_woocommerce' ) ) {
+
+	/**
+	 * Is_woocommerce - Returns false. If WooCommerce isn't active, we return false.
+	 *
+	 * @return bool
+	 */
+	function is_woocommerce() {
+		return false;
+	}
+}
+
+
 if ( ! function_exists( 'wc_get_page_id' ) ) {
 	/**
 	 * Wc_get_page_id - Returns page ID.
