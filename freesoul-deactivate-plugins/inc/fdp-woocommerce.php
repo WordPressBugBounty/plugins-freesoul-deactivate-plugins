@@ -97,6 +97,18 @@ if ( ! function_exists( 'is_cart' ) ) {
 	}
 }
 
+if ( ! function_exists( 'is_account_page' ) ) {
+
+	/**
+	 * Is_account_page - Returns false. If WooCommerce isn't active, we return false.
+	 *
+	 * @return bool
+	 */
+	function is_account_page() {
+		return false;
+	}
+}
+
 if ( ! function_exists( 'is_woocommerce' ) ) {
 
 	/**
