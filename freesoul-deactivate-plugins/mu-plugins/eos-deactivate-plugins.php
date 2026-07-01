@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.6.4
+  Version: 2.6.5
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -50,7 +50,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.6.4' );
+define( 'EOS_DP_MU_VERSION','2.6.5' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -3049,22 +3049,55 @@ function eos_dp_get_plugin_slug_by_name( $plugin_name ){
 }
 
 /**
- * Return true if URL is matched.
+ * Normalize URL for Custom URL matching (path without trailing slash, query preserved).
  *
  * @param string $url
+ * @since 2.6.6
+ *
+ */
+function eos_dp_normalize_url_for_match( $url ){
+	$url = str_replace( array( 'https://','http://','www.' ), array( '', '', '' ), $url );
+	$query = '';
+	if( false !== strpos( $url, '?' ) ){
+		$parts = explode( '?', $url, 2 );
+		$url   = $parts[0];
+		$query = '?' . $parts[1];
+	}
+	return untrailingslashit( $url ) . $query;
+}
+
+/**
+ * Return true if URL is matched.
+ *
+ * @param string $url Pattern.
+ * @param string $uri Request URI (host + path).
  * @since 2.1.5
  *
  */
 function eos_dp_is_url_matched( $url, $uri ){
-	if( '[home]?*' === $url && false === strpos( '?', $uri ) ) return false;
-	$url = str_replace( array( 'https://','http://','www.' ),array( '','','' ),$url );
-	$url = str_replace( '[home]',get_home_url(),str_replace( '[home]?','[home]/?',$url ) );
-	$pattern = '/'.str_replace( '/','\/',str_replace( '*','(.*)',str_replace( '**','*',$url ) ) ).'\s/';
-	$pattern = '/'.str_replace( '/','\/',str_replace( '*','(.*)',str_replace( '**','*',$url ) ) ).'\s/i';
-	$pattern = str_replace( '?','\?',$pattern );
-	$pattern = str_replace( '&','\&',$pattern );
-	preg_match( $pattern,$uri.' ',$matches );
-	return 	( !empty( $matches ) && count( $matches ) - 1 === substr_count( $pattern,'(.*)' ) ) || ( str_replace( array( 'https://','http://','www.' ),array( '','','' ),$url ) === explode( '?',$uri )[0].'?*' );
+	if( '[home]?*' === $url && false === strpos( $uri, '?' ) ){
+		return false;
+	}
+	$home = untrailingslashit( str_replace( array( 'https://','http://','www.' ), array( '', '', '' ), get_home_url() ) );
+	$url  = str_replace( '[home]', $home, str_replace( '[home]?', '[home]/?', $url ) );
+	$url  = eos_dp_normalize_url_for_match( $url );
+	$url  = preg_replace( '#/+#', '/', $url );
+	$uri  = eos_dp_normalize_url_for_match( $uri );
+	$uri  = preg_replace( '#/+#', '/', $uri );
+	if( $url === explode( '?', $uri )[0] . '?*' ){
+		return true;
+	}
+	$regex = str_replace( '*', '(.*)', str_replace( '**', '*', $url ) );
+	$regex = preg_replace( '#/+#', '/', $regex );
+	$escaped = str_replace( '/', '\/', $regex );
+	$escaped = str_replace( '?', '\?', $escaped );
+	$escaped = str_replace( '&', '\&', $escaped );
+	if( ! preg_match( '/\(.*\)$/', $regex ) ){
+		$escaped = rtrim( $escaped, '/' ) . '\/?';
+	}
+	$pattern = '/' . $escaped . '(?:\?.*)?$/i';
+	preg_match( $pattern, $uri, $matches );
+	return ! empty( $matches ) && count( $matches ) - 1 === substr_count( $regex, '(.*)' );
 }
 
 add_action( 'admin_bar_menu', 'eos_dp_admin_top_bar', 9999 );

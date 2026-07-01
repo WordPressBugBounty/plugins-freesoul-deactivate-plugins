@@ -4,7 +4,7 @@ Contributors:      giuse
 Requires at least: 4.6
 Tested up to: 7.0
 Requires PHP:      7.4
-Stable tag:        2.6.4
+Stable tag:        2.6.5
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -128,8 +128,8 @@ FDP is compatible with all <a href="https://wordpress.org/plugins/search/optimiz
 
 
 == 🚫 Plugins not compatible with Freesoul Deactivate Plugins ==
-🔌 <a href="https://wordpress.org/plugins/domain-mapping-system/">Domain Mapping System</a>: It loads Freemius on the frontend and this may cause the unexpacted deactivationg of some plugins. 
-🔌 <a href="https://wordpress.org/plugins/admin-menu-editor/">Admin Menu Editor</a>: It gives you the possibility to customize the admin menu. If you disable plugins on the backend pages, this plugin is not compatible with FDP. 
+🔌 <a href="https://wordpress.org/plugins/domain-mapping-system/">Domain Mapping System</a>: It loads Freemius on the frontend and this may cause the unexpacted deactivationg of some plugins.
+🔌 <a href="https://wordpress.org/plugins/admin-menu-editor/">Admin Menu Editor</a>: It gives you the possibility to customize the admin menu. If you disable plugins on the backend pages, this plugin is not compatible with FDP.
 
 
 == 𐧺 Multisites ==
@@ -220,15 +220,10 @@ Info LLM page:
 
 == Changelog ==
 
-= 2.6.4 =
-* Fixed: Conflict with Rank Math
-
-
-
+= 2.6.5 =
+* Fixed: Custom URL matching when the request URI has no trailing slash. Patterns with or without a final slash (e.g. */account* and */account/) now match the same URLs, including exact paths such as /account.
 
 *<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/change-log/">Complete Change Log</a>
-
-
 
 
 == Screenshots ==

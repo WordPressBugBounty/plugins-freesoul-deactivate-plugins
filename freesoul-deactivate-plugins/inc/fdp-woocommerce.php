@@ -109,7 +109,7 @@ if ( ! function_exists( 'is_account_page' ) ) {
 	}
 }
 
-if ( ! function_exists( 'is_woocommerce' ) ) {
+if ( ! function_exists( 'is_woocommerce' ) && apply_filters( 'fdp_is_woocommerce_function_exists', true ) ) {
 
 	/**
 	 * Is_woocommerce - Returns false. If WooCommerce isn't active, we return false.
