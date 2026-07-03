@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.6.5
+  Version: 2.6.6
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -50,7 +50,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.6.5' );
+define( 'EOS_DP_MU_VERSION','2.6.6' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -2954,6 +2954,9 @@ function eos_dp_get_code_extract( $line,$file ){
  *
  */
 function eos_dp_filter_active_plugins( $callback,$priority,$cron = false ){
+	if( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'],array( 'activate','deactivate','delete','delete-plugin' ) ) && isset( $_REQUEST['plugin'] ) ){
+		return; // Do not disable any plugin if the action is activate, deactivate, delete or delete-plugin.
+	}
 	if( class_exists( 'Health_Check_Troubleshooting_MU' ) ) {
 		$health_check = new Health_Check_Troubleshooting_MU();
 		if( method_exists( $health_check, 'is_troubleshooting' ) && $health_check->is_troubleshooting() ) {
