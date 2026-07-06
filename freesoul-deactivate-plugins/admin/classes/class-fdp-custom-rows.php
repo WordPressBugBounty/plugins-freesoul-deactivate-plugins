@@ -74,8 +74,13 @@ class FDP_Custom_Rows_Page extends Eos_Fdp_Matrix_Page {
 		$this->home_url = get_home_url();
 		?>
 	<style id="fdp-custom-rows-css">
-	.fdp-exact-filter{margin-left:15px;margin-top:3px}
-	.fdp-exact-filter-off{opacity:0.6}
+	.fdp-exact-filter{margin-left:15px;margin-top:3px;cursor:pointer}
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.dashicons.dashicons-filter:not(.fdp-exact-filter-off),
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.dashicons.dashicons-filter:not(.fdp-exact-filter-off):before,
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.dashicons.dashicons-filter:not(.fdp-exact-filter-off):hover,
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.dashicons.dashicons-filter:not(.fdp-exact-filter-off):hover:before{color:#253042 !important;opacity:1 !important}
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.fdp-exact-filter-off,
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.fdp-exact-filter-off:before{opacity:0.7 !important}
 	#eos-dp-setts .eos-dp-post-name-wrp{padding-top:20px;padding-bottom:12px;border-left:none}
 	#eos-dp-setts input.eos-dp-row-notes{width:100%}
 	#eos-dp-setts input.eos-dp-row-notes:focus{border-color:transparent;outline:none;box-shadow:none}
@@ -109,20 +114,18 @@ class FDP_Custom_Rows_Page extends Eos_Fdp_Matrix_Page {
 		// Sanitization applied after urldecode.
 		foreach ( $this->urls as $urlA ) {
 			$note = isset( $urlA['url'] ) && isset( $notes_md5[md5( $urlA['url'] )] )? $notes_md5[md5( $urlA['url'] )] : '';
+			$row_classes = 'eos-dp-url eos-dp-post-row';
+			$row_classes .= isset( $urlA['url'] ) && $h_pattern === $urlA['url'] ? ' fdp-actions-on' : '';
+			$row_classes .= $row + 1 === $urlsN ? ' eos-hidden' : '';
+			$row_classes .= isset( $urlA['needs_url'] ) && absint( $urlA['needs_url'] ) > 0 ? ' eos-dp-need-from-singe' : '';
 			?>
-	  <tr class="eos-dp-url eos-dp-post-row
-			<?php
-			echo isset( $urlA['url'] ) && $h_pattern === $urlA['url'] ? ' fdp-actions-on' : '';
-			echo $row + 1 === $urlsN ? ' eos-hidden' : '';
-			echo isset( $urlA['needs_url'] ) && absint( $urlA['needs_url'] ) > 0 ? ' eos-dp-need-from-singe' : '';
-			?>
-		">
+	  <tr class="<?php echo esc_attr( $row_classes ); ?>" data-f="<?php echo esc_attr( isset( $urlA['f'] ) && '1' === $urlA['f'] ? '1' : '0' ); ?>">
 		<td class="eos-dp-post-name-wrp">
 		  <input type="text" class="eos-dp-row-notes" placeholder="<?php esc_attr_e( 'Write your notes here for this row','freesoul-deactivate-plugins' ); ?>" value="<?php echo esc_attr( $note ); ?>"/>
 		  <span class="eos-dp-not-active-wrp"><input title="<?php esc_attr_e( 'Activate/deactivate all plugins for this URL', 'freesoul-deactivate-plugins' ); ?>" class="eos-dp-global-chk-row" type="checkbox" /></span>
 		  <span class="dashicons dashicons-move" title="<?php esc_attr_e( 'Move it up to assign higher priority', 'freesoul-deactivate-plugins' ); ?>"></span>
 			  <?php if ( defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE ) { ?>
-		  <span class="hover fdp-exact-filter<?php echo isset( $urlA['f'] ) && '1' === $urlA['f'] ? '' : ' fdp-exact-filter-off'; ?> dashicons dashicons-filter" title="<?php esc_attr_e( 'Disable exactly the plugins of this row/filter the plugins of this row and take into account also other settings.', 'freesoul-deactivate-plugins' ); ?>"></span>
+		  <span class="hover fdp-exact-filter<?php echo isset( $urlA['f'] ) && '1' === $urlA['f'] ? '' : ' fdp-exact-filter-off'; ?> dashicons dashicons-filter" title="<?php esc_attr_e( 'Off (dimmed icon, default): this row overrides Singles and Post Types for this URL. On (bright icon): plugins from this row are combined with Singles and Post Types. Click to toggle.', 'freesoul-deactivate-plugins' ); ?>"></span>
 		  <?php } ?>
 		  <input type="text" class="eos-dp-url-input" title="<?php echo isset( $urlA['url'] ) ? esc_attr( $urlA['url'] ) : ''; ?>" placeholder="<?php echo wp_kses_post( sprintf( apply_filters( 'fdp_custom_row_placeholder', __( 'Write here the URL', 'freesoul-deactivate-plugins' ) ), esc_url( $this->home_url ) ) ); ?>" value="<?php echo isset( $urlA['url'] ) ? esc_attr( $urlA['url'] ) : ''; ?>" />
 			  <?php if ( isset( $urlA['needs_url'] ) && absint( $urlA['needs_url'] ) > 0 ) { ?>

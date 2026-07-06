@@ -4,7 +4,7 @@ Contributors:      giuse
 Requires at least: 4.6
 Tested up to: 7.0
 Requires PHP:      7.4
-Stable tag:        2.6.6
+Stable tag:        2.6.7
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -220,8 +220,9 @@ Info LLM page:
 
 == Changelog ==
 
-= 2.6.6 =
-* Fixed: Plugins were not always all active during rewrite rules flushing.
+= 2.6.7 =
+* Fixed: PRO filter mode was incorrectly saved as on when saving Custom URLs from the free version.
+* Improved: Clearer PRO filter-mode tooltip and more visible active filter icon on Custom URL rows.
 
 *<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/change-log/">Complete Change Log</a>
 

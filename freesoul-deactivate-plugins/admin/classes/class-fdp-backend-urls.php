@@ -50,8 +50,13 @@ class FDP_Backend_Urls_Page extends FDP_Custom_Rows_Page {
 	public function before_section( $page_slug ) {
 		?>
 	<style id="fdp-custom-rows-css">
-	.fdp-exact-filter{margin-left:15pxmargin-top: 3px}
-	.fdp-exact-filter-off{opacity:0.6}
+	.fdp-exact-filter{margin-left:15px;margin-top: 3px;cursor:pointer}
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.dashicons.dashicons-filter:not(.fdp-exact-filter-off),
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.dashicons.dashicons-filter:not(.fdp-exact-filter-off):before,
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.dashicons.dashicons-filter:not(.fdp-exact-filter-off):hover,
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.dashicons.dashicons-filter:not(.fdp-exact-filter-off):hover:before{color:#253042 !important;opacity:1 !important}
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.fdp-exact-filter-off,
+	#eos-dp-setts .eos-dp-post-name-wrp .fdp-exact-filter.fdp-exact-filter-off:before{opacity:0.7 !important}
 	#eos-dp-setts .eos-dp-post-name-wrp{padding-top:20px;padding-bottom:12px;border-<?php echo is_rtl() ? 'right' : 'left'; ?>:none}
 	#eos-dp-setts input.eos-dp-row-notes{width:100%}
 	#eos-dp-setts input.eos-dp-row-notes:focus{border-color:transparent;outline:none;box-shadow:none}

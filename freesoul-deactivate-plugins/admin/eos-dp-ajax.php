@@ -169,7 +169,7 @@ function eos_dp_save_url_settings() {
 			$setts[ $n ] = array(
 				'url'     => sanitize_text_field( $arr['url'] ),
 				'plugins' => sanitize_text_field( $arr['plugins'] ),
-				'f'       => sanitize_text_field( $arr['f'] ),
+				'f'       => isset( $arr['f'] ) && '1' === $arr['f'] ? '1' : '0',
 			);
 			++$n;
 		}
