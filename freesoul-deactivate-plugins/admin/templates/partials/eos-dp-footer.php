@@ -18,7 +18,7 @@ function eos_dp_save_button( $css_class = false ) {
 	} elseif ( '/archives/%post_id%' === $permalink_structure ) {
 		$permalinks_label = __( 'Permalinks are set to "Numeric"', 'freesoul-deactivate-plugins' );
 	}
-	if ( false === strpos( basename( $permalink_structure ), '%postname%' ) && ! in_array( $_GET['page'], array( 'eos_dp_admin', 'eos_dp_admin_url', 'eos_dp_url' ) ) ) {
+	if ( false === strpos( basename( $permalink_structure ), '%postname%' ) && ! in_array( $_GET['page'], array( 'eos_dp_admin', 'eos_dp_admin_by_post_type', 'eos_dp_admin_url', 'eos_dp_url' ), true ) ) {
 			$extra_class = ' eos-no-events';
 			// translators: %s is the permalink structure label.
 			$warning     = '<div style="background:#fff;color:#000;padding:10px;margin-bottom:10px;border-left:4px solid  #dc3232">' . sprintf( esc_html__( "You can't save because %s", 'freesoul-deactivate-plugins' ), esc_html( $permalinks_label ) );

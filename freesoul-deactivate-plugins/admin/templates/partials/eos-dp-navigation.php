@@ -150,6 +150,7 @@ function eos_dp_navigation() {
 				'eos_dp_by_term_archive',
 				'eos_dp_url',
 				'eos_dp_admin',
+				'eos_dp_admin_by_post_type',
 				'eos_dp_admin_url',
 				'eos_dp_by_post_requests',
 				'eos_dp_rest_api',
@@ -212,6 +213,7 @@ function eos_dp_navigation() {
 						'fdp_theme_filter_pages',
 						array(
 							'eos_dp_admin',
+							'eos_dp_admin_by_post_type',
 							'eos_dp_by_post_requests',
 							'eos_dp_rest_api',
 							'eos_dp_integration',

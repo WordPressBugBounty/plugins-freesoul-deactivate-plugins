@@ -191,17 +191,20 @@ function eos_dp_redirect_to_settings() {
 	if ( isset( $_REQUEST['eos_dp_activated_from'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
 		wp_safe_redirect( esc_url( add_query_arg( 'page', esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['eos_dp_activated_from'] ) ) ), admin_url( 'admin.php' ) ) ) );
 	}
-	$previous_version = eos_dp_get_option( 'eos_dp_version' );
-	$version_compare  = version_compare( $previous_version, EOS_DP_VERSION, '<' );
-	if ( $previous_version && $version_compare && EOS_DP_NEED_UPDATE_MU ) {
-		// if the plugin was updated and we need to update also the mu-plugin.
-		define( 'EOS_DP_DOING_MU_UPDATE', true );
-		if ( file_exists( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' ) ) {
-			wp_delete_file( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' );
+	if ( EOS_DP_NEED_UPDATE_MU ) {
+		if ( eos_dp_mu_plugin_is_current() ) {
+			$previous_version = eos_dp_get_option( 'eos_dp_version' );
+			if ( $previous_version && version_compare( $previous_version, EOS_DP_VERSION, '<' ) ) {
+				eos_dp_update_option( 'eos_dp_version', EOS_DP_VERSION );
+			}
+		} else {
+			// Retry mu-plugin install after a failed update or background upgrade.
+			define( 'EOS_DP_DOING_MU_UPDATE', true );
+			if ( eos_dp_install_mu_plugin( true ) ) {
+				eos_dp_update_option( 'eos_dp_version', EOS_DP_VERSION );
+				set_transient( 'freesoul-dp-updating-mu', 5 );
+			}
 		}
-		require EOS_DP_PLUGIN_DIR . '/plugin-activation.php';
-		eos_dp_update_option( 'eos_dp_version', EOS_DP_VERSION );
-		set_transient( 'freesoul-dp-updating-mu', 5 );
 	}
 }
 
@@ -366,6 +369,17 @@ function eos_dp_options_page() {
 			esc_attr( $menu_page[4] ),
 			esc_attr( isset( $_GET['page'] ) && $menu_page[4] === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ? $menu_page[5] : '__return_false' ), // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
 			absint( $menu_page[6] ) );
+	}
+	if ( defined( 'FDP_PRO_ACTIVE' ) && FDP_PRO_ACTIVE ) {
+		add_submenu_page(
+			'fdp_hidden_menu',
+			esc_html__( 'Edit by Post Type', 'freesoul-deactivate-plugins' ),
+			esc_html__( 'Edit by Post Type', 'freesoul-deactivate-plugins' ),
+			$capability,
+			'eos_dp_admin_by_post_type',
+			isset( $_GET['page'] ) && 'eos_dp_admin_by_post_type' === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ? 'eos_dp_admin_by_post_type_callback' : '__return_false', // phpcs:ignore WordPress.Security.NonceVerification -- No nonce needed here.
+			95
+		);
 	}
 	if( ( ! defined( 'FDP_PRO_ACTIVE' ) || true !== FDP_PRO_ACTIVE ) && isset( $GLOBALS['submenu'] ) ) {
 		$GLOBALS['submenu']['eos_dp_menu'][] = array( esc_html__( 'Upgrade', 'freesoul-deactivate-plugins' ), $capability, FDP_STORE_URL );
@@ -756,6 +770,7 @@ function eos_dp_is_fdp_page() {
 			array(
 				'eos_dp_admin_url',
 				'eos_dp_admin',
+				'eos_dp_admin_by_post_type',
 				'eos_dp_advanced_support',
 				'eos_dp_ajax',
 				'eos_dp_by_archive',
@@ -1557,8 +1572,8 @@ function eos_dp_menu_items(){
 			'backend'      => array(
 				'title'     => __( 'Backend', 'freesoul-deactivate-plugins' ),
 				'section'   => 'admin',
-				'active_if' => array( 'eos_dp_admin', 'eos_dp_admin_url', 'eos_dp_backend_everywhere' ),
-				'subitems'  => array( 'eos_dp_admin', 'eos_dp_admin_url', 'eos_dp_backend_everywhere' ),
+				'active_if' => array( 'eos_dp_admin', 'eos_dp_admin_by_post_type', 'eos_dp_admin_url', 'eos_dp_backend_everywhere' ),
+				'subitems'  => array( 'eos_dp_admin', 'eos_dp_admin_by_post_type', 'eos_dp_admin_url', 'eos_dp_backend_everywhere' ),
 				'href'      => admin_url( 'admin.php?page=eos_dp_admin' ),
 				'file'      => $menu_file . 'backend.php',
 			),

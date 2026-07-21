@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.6.7
+  Version: 2.6.8
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -50,7 +50,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.6.7' );
+define( 'EOS_DP_MU_VERSION','2.6.8' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -936,6 +936,79 @@ function eos_dp_code_profiler( $plugins ){
 	return $plugins;
 }
 
+/**
+ * Return the post ID from an admin post edit/save request.
+ *
+ * @since 2.6.8
+ *
+ */
+function eos_dp_get_admin_post_id_from_request(){
+	if( isset( $_GET['post'] ) && absint( $_GET['post'] ) > 0 ){
+		return absint( $_GET['post'] );
+	}
+	if( ( defined( 'FDP_ALLOW_POST' ) && FDP_ALLOW_POST ) && isset( $_POST['post_ID'] ) && absint( $_POST['post_ID'] ) > 0 ){
+		return absint( $_POST['post_ID'] );
+	}
+	return 0;
+}
+
+/**
+ * Return the post type from an admin post.php/post-new.php request before plugins load.
+ *
+ * @since 2.6.8
+ *
+ */
+function eos_dp_get_post_type_from_request(){
+	static $cached_post_type = null;
+	static $resolved = false;
+
+	if( $resolved ){
+		return $cached_post_type;
+	}
+	$resolved = true;
+
+	if( ! is_admin() ){
+		$cached_post_type = false;
+		return $cached_post_type;
+	}
+
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+	if( false !== strpos( $request_uri,'post-new.php' ) && isset( $_GET['post_type'] ) && is_string( $_GET['post_type'] ) && '' !== $_GET['post_type'] ){
+		$cached_post_type = sanitize_key( wp_unslash( $_GET['post_type'] ) );
+		return $cached_post_type;
+	}
+
+	$post_id    = eos_dp_get_admin_post_id_from_request();
+	$is_post_php = false !== strpos( $request_uri,'post.php' );
+	$is_edit     = isset( $_GET['action'] ) && 'edit' === sanitize_key( wp_unslash( $_GET['action'] ) );
+
+	if( $post_id > 0 && $is_post_php && ( $is_edit || ( defined( 'FDP_ALLOW_POST' ) && FDP_ALLOW_POST ) ) ){
+		if( function_exists( 'get_post_type' ) ){
+			$post_type = get_post_type( $post_id );
+			if( $post_type ){
+				$cached_post_type = sanitize_key( $post_type );
+				return $cached_post_type;
+			}
+		}
+
+		global $wpdb;
+		if( isset( $wpdb ) && $wpdb instanceof wpdb ){
+			$post_type = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT post_type FROM {$wpdb->posts} WHERE ID = %d LIMIT 1",
+					$post_id
+				)
+			);
+			$cached_post_type = $post_type ? sanitize_key( $post_type ) : false;
+			return $cached_post_type;
+		}
+	}
+
+	$cached_post_type = false;
+	return $cached_post_type;
+}
+
 if( is_admin()
 	&& isset( $_SERVER['HTTP_HOST'] )
 	&& isset( $_SERVER['REQUEST_URI'] )
@@ -965,12 +1038,9 @@ if( is_admin()
 	$adminTheme = eos_dp_get_option( 'eos_dp_admin_theme' );
 	$adminThemeUrl = eos_dp_get_option( 'eos_dp_admin_url_theme' );
 	$base_url = basename( sanitize_text_field( $_SERVER['HTTP_HOST'] ).sanitize_text_field( $_SERVER['REQUEST_URI'] ) );
-	if( false !== strpos( $base_url,'post.php?post=' ) && false !== strpos( $base_url,'&action=edit' ) ){
-		$base_urlA = explode( 'post.php?post=',$base_url );
-		if( isset( $base_urlA[1] ) ){
-			$base_urlA = explode( '&',$base_urlA[1] );
-			$base_url = 'single_'.get_post_type( $base_urlA[0] );
-		}
+	$admin_post_type = eos_dp_get_post_type_from_request();
+	if( $admin_post_type ){
+		$base_url = 'single_' . $admin_post_type;
 	}
 	if( isset( $adminTheme[$base_url] ) && ! $adminTheme[$base_url] ){
 		eos_dp_disable_theme();
@@ -1143,11 +1213,9 @@ function eos_dp_admin_option_active_plugins( $plugins ){
 			}
 		}
 		$admin_plugins = eos_dp_get_option( 'eos_dp_admin_setts' );
-		if( false !== strpos( $base_url,'post.php' ) && isset( $_GET['post'] ) && absint( $_GET['post'] ) > 0 && isset( $_GET['action'] ) && 'edit' === $_GET['action'] ){
-			$post_type = get_post_type( absint( $_GET['post'] ) );
-			if( $post_type ){
-				$admin_page = sanitize_key( 'single_'.$post_type );
-			}
+		$post_type = eos_dp_get_post_type_from_request();
+		if( $post_type ){
+			$admin_page = sanitize_key( 'single_'.$post_type );
 		}
 		add_action( 'muplugins_loaded',function() {
 			eos_dp_filter_active_plugins( 'eos_dp_back_untouchables',9999999,1 );

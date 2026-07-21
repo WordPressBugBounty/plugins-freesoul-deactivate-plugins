@@ -101,6 +101,7 @@ if ( eos_dp_is_fdp_page() ) {
 	require_once $dir . 'partials/eos-dp-navigation.php';
 	require_once $dir . 'partials/eos-dp-table-head.php';
 	require_once $dir . 'partials/eos-dp-footer.php';
+	require_once $dir . 'pages/eos-dp-backend-singles-by-post-type.php';
 	foreach ( array(
 		array( array( 'eos_dp_home', 'eos_dp_menu' ), 'pages/eos-dp-singles.php' ),
 		array( array( 'eos_dp_by_post_type' ), 'pages/eos-dp-post-type.php' ),
@@ -114,6 +115,7 @@ if ( eos_dp_is_fdp_page() ) {
 		array( array( 'eos_dp_admin_url' ), 'pages/eos-dp-backend-url.php' ),
 		array( array( 'eos_dp_integration' ), 'pages/eos-dp-integration.php' ),
 		array( array( 'eos_dp_admin' ), 'pages/eos-dp-backend.php' ),
+		array( array( 'eos_dp_admin_by_post_type' ), 'pages/eos-dp-backend-singles-by-post-type.php' ),
 		array( array( 'eos_dp_smoke_tests' ), 'pages/eos-dp-smoke-tests.php' ),
 		array( array( 'eos_dp_firing_order' ), 'pages/eos-dp-firing-order.php' ),
 		array( array( 'eos_dp_reset_settings' ), 'pages/eos-dp-reset.php' ),
@@ -158,6 +160,7 @@ function eos_dp_admin_page_title( $title, $sep ) {
 		'shortcuts'                 => esc_attr__( 'Shortcuts', 'freesoul-deactivate-plugins' ),
 		'eos_dp_admin_url'          => esc_attr__( 'Backend URLs', 'freesoul-deactivate-plugins' ),
 		'eos_dp_admin'              => esc_attr__( 'Backend Singles', 'freesoul-deactivate-plugins' ),
+		'eos_dp_admin_by_post_type' => esc_attr__( 'Edit by Post Type', 'freesoul-deactivate-plugins' ),
 		'eos_dp_ajax'               => esc_attr__( 'Custom Ajax Actions', 'freesoul-deactivate-plugins' ),
 		'eos_dp_cron'               => esc_attr__( 'Cron Jobs', 'freesoul-deactivate-plugins' ),
 		'eos_dp_rest_api'           => esc_attr__( 'REST API', 'freesoul-deactivate-plugins' ),

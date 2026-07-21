@@ -29,10 +29,9 @@ add_role(
 		'view_fdp_settings'    => true,
 	)
 );
-if ( file_exists( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' ) ) {
-	wp_delete_file( WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php' );
+if ( eos_dp_install_mu_plugin( true ) ) {
+	eos_dp_update_option( 'eos_dp_version', EOS_DP_VERSION );
 }
-eos_dp_write_file( EOS_DP_PLUGIN_DIR . '/mu-plugins/eos-deactivate-plugins.php', WPMU_PLUGIN_DIR, WPMU_PLUGIN_DIR . '/eos-deactivate-plugins.php', true );
 
 if ( function_exists( 'eos_dp_update_fdp_admin_menu' ) && function_exists( 'eos_dp_user_headers' ) ) {
 	eos_dp_update_fdp_admin_menu(
