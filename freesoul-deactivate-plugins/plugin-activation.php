@@ -29,7 +29,7 @@ add_role(
 		'view_fdp_settings'    => true,
 	)
 );
-if ( eos_dp_install_mu_plugin( true ) ) {
+if ( eos_dp_install_mu_plugin( true, true ) ) {
 	eos_dp_update_option( 'eos_dp_version', EOS_DP_VERSION );
 }
 

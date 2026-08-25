@@ -298,20 +298,30 @@ function eos_dp_save_integration_actions_settings() {
 }
 
 add_action( 'wp_ajax_eos_dp_save_firing_order', 'eos_dp_save_firing_order' );
-// Saves activation/deactivation settings for search.
+/**
+ * Save plugin firing order preference (does not modify active_plugins).
+ *
+ * @return void
+ */
 function eos_dp_save_firing_order() {
 	eos_dp_check_intentions_and_rights( 'eos_dp_firing_order_setts' );
-	if ( isset( $_POST['eos_dp_plugins'] ) && ! empty( $_POST['eos_dp_plugins'] ) ) {
-		$opts = array_map( 'sanitize_text_field', $_POST['eos_dp_plugins'] );
-		$fdp  = EOS_DP_PLUGIN_BASE_NAME;
-		if ( ! in_array( $fdp, $opts ) ) {
-			array_unshift( $opts, $fdp );
-		}
-		eos_dp_update_option( 'active_plugins', $opts );
-		echo 1;
+	if ( empty( $_POST['eos_dp_plugins'] ) || ! is_array( $_POST['eos_dp_plugins'] ) ) {
+		echo 0;
 		die();
 	}
-	echo 0;
+
+	$ordered = array_values(
+		array_unique(
+			array_filter(
+				array_map( 'sanitize_text_field', wp_unslash( $_POST['eos_dp_plugins'] ) )
+			)
+		)
+	);
+
+	// Persist preference only; load order is applied via option_active_plugins filter.
+	$updated = eos_dp_update_option( 'eos_dp_firing_order', $ordered );
+	$current = function_exists( 'eos_dp_get_firing_order' ) ? eos_dp_get_firing_order() : array();
+	echo ( $updated || $current === $ordered ) ? 1 : 0;
 	die();
 }
 add_action( 'wp_ajax_eos_dp_preview', 'eos_dp_preview' );

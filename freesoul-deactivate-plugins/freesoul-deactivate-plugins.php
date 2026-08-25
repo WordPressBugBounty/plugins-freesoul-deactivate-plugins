@@ -10,7 +10,7 @@
  * Requires PHP: 7.4
  * Requires CP:  1.4
  * Premium URI:  https://freesoul-deactivate-plugins.com/
- * Version: 2.6.8
+ * Version: 2.6.9
  *
  * @package Freesoul Deactivate Plugins
  */
@@ -39,7 +39,7 @@ if( defined( 'FDP_STANDARD_DISABLED' ) && FDP_STANDARD_DISABLED ) {
 }
 
 // Definitions.
-define( 'EOS_DP_VERSION', '2.6.8' );
+define( 'EOS_DP_VERSION', '2.6.9' );
 define( 'FDP_PLUGIN_FILE', __FILE__ );
 define( 'EOS_DP_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) );
 define( 'EOS_DP_PLUGIN_URL', untrailingslashit( plugins_url( '', __FILE__ ) ) );

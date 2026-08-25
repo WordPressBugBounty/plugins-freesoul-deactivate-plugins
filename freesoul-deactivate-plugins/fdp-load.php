@@ -166,7 +166,7 @@ function eos_dp_after_upgrade( $upgrader_object, $options ) {
 		 * @since 1.0.0
 		 *
 		 */
-		if ( eos_dp_install_mu_plugin( true ) ) {
+		if ( eos_dp_install_mu_plugin( true, true ) ) {
 			eos_dp_update_option( 'eos_dp_version', EOS_DP_VERSION );
 		}
 		delete_transient( 'eos_dp_changelog_version' );
@@ -294,51 +294,104 @@ function eos_dp_get_wp_filesystem() {
 }
 
 /**
- * Install or update the FDP mu-plugin using an atomic write.
+ * Return true when the mu-plugin destination directory is writable.
  *
- * @param bool $update_info Whether to store activation notices on success.
+ * @param string $dest_dir Destination directory.
  * @since 2.6.8
  *
  */
-function eos_dp_install_mu_plugin( $update_info = false ) {
+function eos_dp_mu_plugin_dir_is_writable( $dest_dir ) {
+	if ( ! is_dir( $dest_dir ) ) {
+		return false;
+	}
+	return is_writable( $dest_dir );
+}
+
+/**
+ * Install or update the FDP mu-plugin using an atomic write when possible.
+ *
+ * @param bool $update_info Whether to store activation notices on success.
+ * @param bool $force       Whether to retry even after a previous write failure.
+ * @since 2.6.8
+ *
+ */
+function eos_dp_install_mu_plugin( $update_info = false, $force = false ) {
 	$source      = eos_dp_get_mu_plugin_source_path();
 	$destination = eos_dp_get_mu_plugin_path();
 	$dest_dir    = WPMU_PLUGIN_DIR;
+
+	if ( ! $force && eos_dp_get_option( 'fdp_mu_install_aborted' ) ) {
+		return false;
+	}
+
+	if ( $force ) {
+		eos_dp_update_option( 'fdp_mu_install_aborted', false );
+	}
 
 	if ( ! file_exists( $source ) ) {
 		if ( $update_info ) {
 			set_transient( 'freesoul-dp-notice-fail', true, DAY_IN_SECONDS );
 		}
+		eos_dp_update_option( 'fdp_mu_install_aborted', true );
 		return false;
 	}
 
-	$temp_suffix = '.fdp-install-' . wp_generate_password( 8, false );
-	$temp_file   = $destination . $temp_suffix;
-	$installed   = false;
-	$wp_filesystem = eos_dp_get_wp_filesystem();
+	if ( ! is_dir( $dest_dir ) ) {
+		wp_mkdir_p( $dest_dir );
+	}
 
-	if ( $wp_filesystem ) {
-		if ( ! $wp_filesystem->is_dir( $dest_dir ) ) {
-			$wp_filesystem->mkdir( $dest_dir );
+	$installed     = false;
+	$dir_writable  = eos_dp_mu_plugin_dir_is_writable( $dest_dir );
+	$file_writable = ! file_exists( $destination ) || is_writable( $destination );
+	$wp_filesystem = eos_dp_get_wp_filesystem();
+	$contents      = file_get_contents( $source );
+	$chmod         = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
+
+	if ( false === $contents || '' === $contents ) {
+		if ( $update_info ) {
+			set_transient( 'freesoul-dp-notice-fail', true, DAY_IN_SECONDS );
 		}
-		if ( $wp_filesystem->copy( $source, $temp_file, true ) ) {
-			$installed = $wp_filesystem->move( $temp_file, $destination, true );
+		eos_dp_update_option( 'fdp_mu_install_aborted', true );
+		return false;
+	}
+
+	if ( ! $dir_writable && ! $file_writable ) {
+		if ( $update_info ) {
+			set_transient( 'freesoul-dp-notice-fail', true, DAY_IN_SECONDS );
 		}
-		if ( ! $installed && $wp_filesystem->exists( $temp_file ) ) {
-			$wp_filesystem->delete( $temp_file );
-		}
-	} else {
-		if ( ! is_dir( $dest_dir ) ) {
-			wp_mkdir_p( $dest_dir );
-		}
-		if ( copy( $source, $temp_file ) ) {
-			if ( file_exists( $destination ) ) {
-				wp_delete_file( $destination );
+		eos_dp_update_option( 'fdp_mu_install_aborted', true );
+		return false;
+	}
+
+	// Prefer atomic write in the same directory when it is writable.
+	if ( $dir_writable ) {
+		$temp_file = trailingslashit( $dest_dir ) . 'eos-deactivate-plugins.php.fdp-install-' . wp_generate_password( 8, false );
+		if ( $wp_filesystem ) {
+			if ( $wp_filesystem->put_contents( $temp_file, $contents, $chmod ) ) {
+				$installed = $wp_filesystem->move( $temp_file, $destination, true );
 			}
-			$installed = rename( $temp_file, $destination );
+			if ( ! $installed && $wp_filesystem->exists( $temp_file ) ) {
+				$wp_filesystem->delete( $temp_file );
+			}
+		} else {
+			if ( false !== file_put_contents( $temp_file, $contents ) ) {
+				if ( file_exists( $destination ) ) {
+					wp_delete_file( $destination );
+				}
+				$installed = rename( $temp_file, $destination );
+			}
+			if ( ! $installed && file_exists( $temp_file ) ) {
+				wp_delete_file( $temp_file );
+			}
 		}
-		if ( ! $installed && file_exists( $temp_file ) ) {
-			wp_delete_file( $temp_file );
+	}
+
+	// Fallback: overwrite the destination file when the directory is not writable for temp files.
+	if ( ! $installed && $file_writable ) {
+		if ( $wp_filesystem ) {
+			$installed = (bool) $wp_filesystem->put_contents( $destination, $contents, $chmod );
+		} else {
+			$installed = false !== file_put_contents( $destination, $contents );
 		}
 	}
 
@@ -346,12 +399,16 @@ function eos_dp_install_mu_plugin( $update_info = false ) {
 		if ( $update_info ) {
 			set_transient( 'freesoul-dp-notice-fail', true, DAY_IN_SECONDS );
 		}
+		eos_dp_update_option( 'fdp_mu_install_aborted', true );
 		return false;
 	}
 
+	eos_dp_update_option( 'fdp_mu_install_aborted', false );
+	delete_transient( 'fdp_mu_install_cooldown' );
+	delete_transient( 'freesoul-dp-notice-fail' );
+
 	if ( $update_info ) {
 		set_transient( 'freesoul-dp-notice-succ', true, 5 );
-		delete_transient( 'freesoul-dp-notice-fail' );
 		eos_dp_update_option(
 			'eos_dp_activation_info',
 			array(
@@ -471,6 +528,7 @@ if( !function_exists( 'eos_dp_update_option' ) ) {
 						'active_plugins',
 						'eos_dp_by_plugin',
 						'eos_dp_plugin_conflicts',
+						'eos_dp_firing_order',
 					)
 				)
 			);

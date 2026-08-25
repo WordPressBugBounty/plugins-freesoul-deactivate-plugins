@@ -40,6 +40,7 @@ delete_site_option( 'eos_dp_admin_page_hooks' );
 delete_site_option( 'fdp_code_profiler' );
 delete_site_option( 'fdp_plugin_slug_names' );
 delete_site_option( 'eos_dp_by_rest_api' );
+delete_site_option( 'eos_dp_firing_order' );
 delete_site_option( 'fdp_site_id' );
 delete_site_option( 'fdp_last_save' );
 delete_site_option( 'fdp_addons' );

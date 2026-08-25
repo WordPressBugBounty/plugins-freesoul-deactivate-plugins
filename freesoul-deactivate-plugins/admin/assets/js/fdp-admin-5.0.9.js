@@ -1126,8 +1126,9 @@ jQuery(document).ready(function(e) {
     e(".eos-dp-save-eos_dp_firing_order").on("click", function() {
         e(".eos-dp-opts-msg").addClass("eos-hidden");
         var s = [];
-        return e(".eos-dp-plugin.ui-sortable-handle").each(function() {
-            s.push(e(this).attr("data-path"))
+        return e(".eos-dp-firing-order .eos-dp-plugin[data-path]").each(function() {
+            var path = e(this).attr("data-path");
+            path && s.push(path)
         }),
         eos_dp_send_ajax(e(this), {
             nonce: e("#eos_dp_firing_order_setts").val(),
@@ -1368,7 +1369,8 @@ jQuery(document).ready(function(e) {
     e(".eos-dp-firing-order").sortable({
         axis: "y",
         containment: "parent",
-        items: ".eos-dp-plugin"
+        items: ".eos-dp-plugin:not(.eos-dp-not-touchable)",
+        cancel: ".eos-dp-not-touchable"
     }),
     e(".eos-ui-sortable").disableSelection()),
     e("#fdp-create-plugin").on("click", function() {

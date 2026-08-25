@@ -197,8 +197,8 @@ function eos_dp_redirect_to_settings() {
 			if ( $previous_version && version_compare( $previous_version, EOS_DP_VERSION, '<' ) ) {
 				eos_dp_update_option( 'eos_dp_version', EOS_DP_VERSION );
 			}
-		} else {
-			// Retry mu-plugin install after a failed update or background upgrade.
+		} elseif ( ! eos_dp_get_option( 'fdp_mu_install_aborted' ) ) {
+			// One automatic retry after a failed update. If writing fails, stop retrying until activation/upgrade.
 			define( 'EOS_DP_DOING_MU_UPDATE', true );
 			if ( eos_dp_install_mu_plugin( true ) ) {
 				eos_dp_update_option( 'eos_dp_version', EOS_DP_VERSION );
@@ -469,9 +469,12 @@ function eos_dp_post_types_empty() {
 // Returns the active plugins, excluding Freesoul Deactivate Plugins.
 function eos_dp_active_plugins() {
 	$active = isset( $GLOBALS['fdp_all_plugins'] ) && is_array( $GLOBALS['fdp_all_plugins'] ) ? array_unique( $GLOBALS['fdp_all_plugins'] ) : array_unique( get_option( 'active_plugins', array() ) );
-	unset( $active[ array_search( EOS_DP_PLUGIN_BASE_NAME, $active ) ] );
-	if ( defined( 'EOS_DP_PRO_PLUGIN_BASE_NAME' ) && isset( $active[EOS_DP_PRO_PLUGIN_BASE_NAME] ) ) {
-		unset( $active[ array_search( EOS_DP_PRO_PLUGIN_BASE_NAME, $active ) ] );
+	unset( $active[ array_search( EOS_DP_PLUGIN_BASE_NAME, $active, true ) ] );
+	if ( defined( 'EOS_DP_PRO_PLUGIN_BASE_NAME' ) ) {
+		$pro_key = array_search( EOS_DP_PRO_PLUGIN_BASE_NAME, $active, true );
+		if ( false !== $pro_key ) {
+			unset( $active[ $pro_key ] );
+		}
 	}
 	$active = array_filter( array_values( $active ) );
 	$n      = 0;

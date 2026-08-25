@@ -4,7 +4,7 @@ Contributors:      giuse
 Requires at least: 4.6
 Tested up to: 7.0
 Requires PHP:      7.4
-Stable tag:        2.6.8
+Stable tag:        2.6.9
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -220,14 +220,9 @@ Info LLM page:
 
 == Changelog ==
 
-= 2.6.8 =
-* Fixed: The mu-plugin file could disappear after plugin updates (including auto-updates and MainWP), requiring a manual deactivate/reactivate to restore it.
-* Improved: Safer mu-plugin install with an atomic write (copy to temp file, then replace).
-* Improved: Automatic retry on admin load when the mu-plugin is missing or outdated.
-* Improved: The stored plugin version is updated only after the mu-plugin is successfully recreated.
-* Added: PRO page "Edit by Post Type" to manage admin edit-screen plugin rules by post type.
-* Fixed: Backend Singles rules (e.g. single_page) now apply on post.php?post=X&action=edit before standard plugins are loaded.
-* Improved: Unified admin post type detection from request data with a direct database fallback when needed.
+= 2.6.9 =
+* Fixed: Saving the Firing Order no longer deactivates Freesoul Deactivate Plugins PRO (or other active plugins missing from the sortable list)
+* Improved: Firing Order is stored in its own option and applied with a filter, so activating/deactivating plugins no longer breaks the saved load order
 
 *<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/change-log/">Complete Change Log</a>
 

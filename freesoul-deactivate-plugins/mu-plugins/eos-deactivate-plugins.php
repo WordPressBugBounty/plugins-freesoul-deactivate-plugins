@@ -2,7 +2,7 @@
 /*
   Plugin Name: freesoul deactivate plugins [fdp]
   Description: mu-plugin automatically installed by freesoul deactivate plugins
-  Version: 2.6.8
+  Version: 2.6.9
   Plugin URI: https://freesoul-deactivate-plugins.com/
   Author: Jose Mortellaro
   Author URI: https://josemortellaro.com/
@@ -30,13 +30,6 @@ if( !defined( 'FDP_PRO_IS_ACTIVE' ) ){
 if( !( $active_plugins && is_array( $active_plugins ) ) ){
 	$active_plugins = array();
 }
-if( isset( $_REQUEST['action'] ) && 'eos_dp_save_firing_order' === $_REQUEST['action'] && isset( $_POST['eos_dp_plugins'] ) && is_array( $_POST['eos_dp_plugins'] ) ){
-	$fdp_plugins = array( 'freesoul-deactivate-plugins/freesoul-deactivate-plugins.php' );
-	if( in_array( 'freesoul-deactivate-plugins-pro/freesoul-deactivate-plugins-pro.php',$active_plugins ) ){
-		$fdp_plugins[] = 'freesoul-deactivate-plugins-pro/freesoul-deactivate-plugins-pro.php';
-	}
-	$active_plugins = array_unique( array_merge( $fdp_plugins,array_map( 'sanitize_text_field',$_POST['eos_dp_plugins'] ) ) );
-}
 $GLOBALS['fdp_all_plugins'] = $active_plugins;
 if( defined( 'FDP_EMERGENCY_ADMIN_THEME_OFF' ) && FDP_EMERGENCY_ADMIN_THEME_OFF ){
 	eos_dp_disable_theme();
@@ -50,7 +43,7 @@ if( is_admin() && isset( $_REQUEST['action'] ) && in_array( sanitize_text_field(
 	return;
 }
 
-define( 'EOS_DP_MU_VERSION','2.6.8' );
+define( 'EOS_DP_MU_VERSION','2.6.9' );
 define( 'EOS_DP_MU_PLUGIN_DIR',untrailingslashit( dirname( __FILE__ ) ) );
 
 
@@ -118,7 +111,8 @@ function eos_dp_update_option( $option, $newvalue ) {
 					'eos_dp_pro_main',
 					'fdp_addons',
 					'active_plugins',
-					'eos_dp_by_plugin'
+					'eos_dp_by_plugin',
+					'eos_dp_firing_order',
 				)
 			)
 		);
@@ -1816,6 +1810,59 @@ function eos_dp_get_option( $option ){
 }
 
 /**
+ * Return the saved plugin firing order preference.
+ *
+ * @return array
+ */
+function eos_dp_get_firing_order() {
+	$order = eos_dp_get_option( 'eos_dp_firing_order' );
+	if ( ! is_array( $order ) || empty( $order ) ) {
+		return array();
+	}
+	return array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $order ) ) ) );
+}
+
+/**
+ * Reorder an active plugins list using the saved firing order.
+ * Plugins not present in the saved order are appended (e.g. newly activated).
+ *
+ * @param array $plugins Active plugin basenames.
+ * @return array
+ */
+function eos_dp_apply_firing_order( $plugins ) {
+	if ( ! is_array( $plugins ) || empty( $plugins ) ) {
+		return $plugins;
+	}
+	$order = eos_dp_get_firing_order();
+	if ( empty( $order ) ) {
+		return $plugins;
+	}
+	$plugins = array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $plugins ) ) ) );
+	$ordered = array();
+	foreach ( $order as $plugin ) {
+		if ( in_array( $plugin, $plugins, true ) && ! in_array( $plugin, $ordered, true ) ) {
+			$ordered[] = $plugin;
+		}
+	}
+	foreach ( $plugins as $plugin ) {
+		if ( ! in_array( $plugin, $ordered, true ) ) {
+			$ordered[] = $plugin;
+		}
+	}
+	return $ordered;
+}
+
+/**
+ * Filter callback: apply firing order to option_active_plugins.
+ *
+ * @param array $plugins Active plugins.
+ * @return array
+ */
+function eos_dp_apply_firing_order_filter( $plugins ) {
+	return eos_dp_apply_firing_order( $plugins );
+}
+
+/**
  * Check if it's a mobile device.
  *
  * @since 1.9.0
@@ -2233,7 +2280,8 @@ function eos_dp_remove_filters(){
 			'eos_dp_disabled_plugins_for_logged_users' => 40,
 			'eos_dp_mu_deactivate_by_post_requests' => 50,
 			'eos_dp_front_untouchables' => 50,
-			'eos_dp_back_untouchables' => 50
+			'eos_dp_back_untouchables' => 50,
+			'eos_dp_apply_firing_order_filter' => 999999,
 		)
 	) as $callback => $priority ) {
 		remove_filter( 'option_active_plugins', $callback, $priority );
@@ -3079,6 +3127,8 @@ add_action( 'muplugins_loaded',function(){
 			add_filter( 'option_active_plugins','eos_dp_cron_active_plugins' );
 		}
 	}
+	// Apply custom load order last, after deactivation filters have chosen which plugins load.
+	eos_dp_filter_active_plugins( 'eos_dp_apply_firing_order_filter', 999999, 1 );
 } );
 
 /**
