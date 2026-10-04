@@ -2,9 +2,9 @@
 
 Contributors:      giuse
 Requires at least: 4.6
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP:      7.4
-Stable tag:        2.6.9
+Stable tag:        2.7.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              cleanup, speed optimization, performance, debugging, dequeue
@@ -220,9 +220,8 @@ Info LLM page:
 
 == Changelog ==
 
-= 2.6.9 =
-* Fixed: Saving the Firing Order no longer deactivates Freesoul Deactivate Plugins PRO (or other active plugins missing from the sortable list)
-* Improved: Firing Order is stored in its own option and applied with a filter, so activating/deactivating plugins no longer breaks the saved load order
+= 2.7.0 =
+* Improved: Full page titles are now displayed on hover in matrix tables.
 
 *<a href="https://freesoul-deactivate-plugins.com/how-deactivate-plugins-on-specific-pages/change-log/">Complete Change Log</a>
 
